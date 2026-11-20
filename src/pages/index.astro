@@ -9,6 +9,7 @@ import SkillsGrid from '../components/SkillsGrid.astro';
 import Timeline from '../components/Timeline.astro';
 import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
+import AtmosphericClouds from '../components/AtmosphericClouds.astro';
 import { projects } from '../data/projects';
 
 const featuredProjects = projects.filter((p) => p.featured);
@@ -23,11 +24,16 @@ const additionalProjects = projects.filter((p) => !p.featured);
 
   <main id="main-content" class="relative">
     
-    <!-- Hero Section -->
+    <!-- Hero Section (Preserved Untouched) -->
     <Hero />
 
-    <!-- Systems / Projects Section -->
-    <section id="systems" class="py-24 border-b border-white/5 relative">
+    <!-- Continuous Atmospheric Cloud Container for All Sections Below Hero -->
+    <div class="relative overflow-hidden">
+      <!-- Atmospheric Dynamic Cloud Layer (Jet Black #080808, Smoke Grey #929292, Cherry Red #C72C41) -->
+      <AtmosphericClouds />
+
+      <!-- Systems / Projects Section -->
+      <section id="systems" class="py-24 border-b border-white/5 relative">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
@@ -87,8 +93,9 @@ const additionalProjects = projects.filter((p) => !p.featured);
     <!-- Timeline / Education & Experience -->
     <Timeline />
 
-    <!-- Contact & Interactive Terminal -->
-    <ContactSection />
+      <!-- Contact & Interactive Terminal -->
+      <ContactSection />
+    </div>
 
   </main>
 
