@@ -45,17 +45,14 @@ Every project and technical claim in this portfolio has been verified directly a
   - **Transactional Notification Engine:** Automated email verification and notification workflows.
   - **Statutory Document Distribution:** Hierarchical document routing for electricity tariffs, Right to Information (RTI) disclosures, executive acts, and annual financial statements.
 
-### 3. Crop Disease Detection Using Image Processing
-- **Context:** Academic Research associated with National Institute of Technology Silchar (NIT Silchar).
-- **Stack:** Python 3, OpenCV, TensorFlow / PyTorch, NumPy.
-- **Verified Pipeline:**
-  - Multi-stage chromatic segmentation converting RGB captures into HSV and LAB color spaces to isolate chlorosis and foliar necrosis.
-  - Mathematical morphology (bilateral noise filtering, Otsu thresholding) for lesion contour extraction.
-  - Convolutional deep learning classifier diagnosing agricultural pathologies.
-
-### 4. MicroBounty — Sandboxed Code Evaluation Engine
+### 3. MicroBounty — Sandboxed Code Evaluation Engine
 - **Stack:** Node.js, Express, Docker API, BullMQ, Redis, MongoDB Atlas.
-- **Verified Features:** Ephemeral, disposable Docker containers with `--network=none`, 128MB RAM limit, 0.5 CPU core ceiling, and non-root execution. GitHub webhook idempotency with distributed Redis locks on `x-github-delivery`.
+- **Features:** Ephemeral Docker containers with resource limits (128MB RAM, 0.5 CPU) and BullMQ task queue buffering for automated code testing.
+
+### 4. Crop Disease Detection Using Image Processing
+- **Context:** Academic Research associated with National Institute of Technology Silchar (NIT Silchar).
+- **Stack:** Python 3, OpenCV, TensorFlow, NumPy.
+- **Pipeline:** Color space segmentation (HSV/LAB), bilateral filtering, and image processing for agricultural foliar disease identification.
 
 ### 5. SecureVault — Enterprise Document Storage Engine
 - **Stack:** Python 3, Flask, 3NF Normalized MySQL, Isolated Chunk Store.

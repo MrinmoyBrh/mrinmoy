@@ -3,7 +3,7 @@ import { projects } from '../data/projects';
 
 const p1 = projects.find((p) => p.id === 'ai-resilient-gateway')!;
 const p2 = projects.find((p) => p.id === 'apgcl-app')!;
-const p3 = projects.find((p) => p.id === 'crop-disease-detection')!;
+const p3 = projects.find((p) => p.id === 'microbounty')!;
 const additional = projects.filter((p) => !p.featured);
 ---
 
@@ -23,7 +23,7 @@ const additional = projects.filter((p) => !p.featured);
       </div>
       
       <p class="text-smoke text-sm sm:text-base max-w-md leading-relaxed font-normal">
-        Three distinct architectural undertakings—distributed queue gateways, public utility infrastructure, and computer vision pathology diagnostics.
+        Three distinct architectural undertakings—distributed queue gateways, public utility infrastructure, and containerized code runners.
       </p>
     </div>
 
@@ -335,8 +335,8 @@ const additional = projects.filter((p) => !p.featured);
     </article>
 
     <!-- ====================================================================
-         PROJECT 03: Crop Disease Detection Using Image Processing
-         Immersive Editorial Layout: Botanical Computer Vision Canvas & Detection Overlays
+         PROJECT 03: MicroBounty — Sandboxed Code Evaluation Engine
+         Immersive Editorial Layout: Container Sandbox Topology & Execution Overlays
          ==================================================================== -->
     <article class="mb-32 relative group">
       
@@ -345,15 +345,15 @@ const additional = projects.filter((p) => !p.featured);
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
         
-        <!-- Left: Project Narrative & Academic Context (5 cols) -->
+        <!-- Left: Project Narrative & Technical Context (5 cols) -->
         <div class="lg:col-span-5 flex flex-col justify-between">
           <div>
             <div class="flex items-center space-x-3 mb-4 technical-mono text-xs">
               <span class="text-cherry font-bold">PROJECT // 03</span>
               <span class="text-white/20">/</span>
-              <span class="text-smoke uppercase">Computer Vision & AI</span>
+              <span class="text-smoke uppercase">Backend & Automation</span>
               <span class="text-white/20">/</span>
-              <span class="text-smoke-dark">NIT Silchar</span>
+              <span class="text-smoke-dark">2024</span>
             </div>
 
             <h3 class="editorial-title text-3xl sm:text-4xl lg:text-5xl font-bold text-pearl mb-6 leading-[1.08]">
@@ -363,22 +363,22 @@ const additional = projects.filter((p) => !p.featured);
             </h3>
 
             <p class="text-sm sm:text-base text-smoke-light leading-relaxed mb-8 font-normal">
-              An academic research initiative conducted in association with the National Institute of Technology Silchar. The project processes plant leaf photographs to autonomously detect and classify foliar diseases, separating chlorotic and necrotic lesion boundaries from healthy green chlorophyll before feeding features to a convolutional network.
+              An automated code evaluation runner that tests code submissions and pull requests inside isolated Docker containers. It sets strict resource limits (128MB RAM, 0.5 CPU cores) to prevent memory exhaustion, buffers incoming tasks through BullMQ and Redis queues, and processes webhook triggers to return structured execution logs and exit codes.
             </p>
 
             <!-- Highlights -->
             <div class="space-y-3 mb-8 pb-8 border-b border-white/10 technical-mono text-xs">
               <div class="flex items-start space-x-3">
                 <span class="text-cherry font-bold">›</span>
-                <span class="text-smoke-light"><strong class="text-pearl font-medium">HSV / LAB Segmentation:</strong> Decouples color from ambient lighting field shadows.</span>
+                <span class="text-smoke-light"><strong class="text-pearl font-medium">Docker Execution:</strong> Spawns ephemeral containers with resource caps (128MB RAM, 0.5 CPU).</span>
               </div>
               <div class="flex items-start space-x-3">
                 <span class="text-cherry font-bold">›</span>
-                <span class="text-smoke-light"><strong class="text-pearl font-medium">Morphological Filters:</strong> Bilateral smoothing and Otsu thresholding for contour extraction.</span>
+                <span class="text-smoke-light"><strong class="text-pearl font-medium">Queue Buffering:</strong> Decouples evaluation tasks through BullMQ to absorb traffic spikes.</span>
               </div>
               <div class="flex items-start space-x-3">
                 <span class="text-cherry font-bold">›</span>
-                <span class="text-smoke-light"><strong class="text-pearl font-medium">Neural Classification:</strong> Deep CNN architecture distinguishing fungal and viral pathogens.</span>
+                <span class="text-smoke-light"><strong class="text-pearl font-medium">Webhook Ingestion:</strong> Handles automated test triggers from GitHub pull requests.</span>
               </div>
             </div>
 
@@ -404,58 +404,83 @@ const additional = projects.filter((p) => !p.featured);
           </div>
         </div>
 
-        <!-- Right: Computer Vision Inspection Reticle Visual (7 cols) -->
+        <!-- Right: Docker Sandbox Telemetry & Topology Visual (7 cols) -->
         <div class="lg:col-span-7 relative">
           <div class="relative w-full aspect-[16/11] bg-[#0A0A0A] border border-white/10 rounded-none overflow-hidden p-6 sm:p-8 flex flex-col justify-between shadow-2xl">
             
             <div class="absolute inset-0 tech-grid-bg opacity-25 pointer-events-none"></div>
 
-            <!-- Optical Reticle Header -->
+            <!-- Header -->
             <div class="flex items-center justify-between z-10 technical-mono text-[11px] text-smoke pb-4 border-b border-white/5">
               <div class="flex items-center space-x-2">
                 <span class="w-2 h-2 rounded-full bg-cherry"></span>
-                <span class="text-pearl font-semibold">PATHOLOGICAL VISION SCANNER</span>
+                <span class="text-pearl font-semibold">DOCKER RUNNER ENGINE // ISOLATED SANDBOX</span>
               </div>
-              <span class="text-cherry font-mono">[NIT_SILCHAR_RESEARCH]</span>
+              <span class="text-cherry font-mono">[CONTAINER_ISOLATION]</span>
             </div>
 
-            <!-- Stylized Botanical & Vision Reticle Composition -->
+            <!-- Stylized Docker Sandbox Topology SVG -->
             <div class="relative z-10 my-auto py-4 flex items-center justify-center">
               <svg class="w-full max-w-[480px] h-auto overflow-visible" viewBox="0 0 480 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Reticle Center Crosshairs -->
-                <line x1="240" y1="10" x2="240" y2="230" stroke="#333333" stroke-width="1" stroke-dasharray="2 4"/>
-                <line x1="20" y1="120" x2="460" y2="120" stroke="#333333" stroke-width="1" stroke-dasharray="2 4"/>
-                <circle cx="240" cy="120" r="85" stroke="#C72C41" stroke-width="1" stroke-opacity="0.3"/>
-                <circle cx="240" cy="120" r="50" stroke="#929292" stroke-width="1" stroke-dasharray="3 3" stroke-opacity="0.4"/>
+                <!-- Connecting Bus Lines -->
+                <path d="M 65 120 L 155 120" stroke="#333333" stroke-width="1.5" stroke-dasharray="3 3"/>
+                <path d="M 155 120 L 225 120" stroke="#C72C41" stroke-width="2"/>
+                <path d="M 375 120 L 435 120" stroke="#C72C41" stroke-width="2" stroke-dasharray="3 3"/>
 
-                <!-- Leaf Contour Graphic -->
-                <path d="M 140 160 C 130 80 200 40 330 60 C 350 140 280 200 140 160 Z" fill="#0C140C" stroke="#2D4A2D" stroke-width="2"/>
-                <path d="M 155 150 C 210 120 280 90 320 65" stroke="#3D6A3D" stroke-width="1.5"/>
+                <!-- Node 1: Ingress Webhook Trigger -->
+                <g transform="translate(65, 120)">
+                  <rect x="-35" y="-30" width="70" height="60" fill="#0E0E0E" stroke="#333333" stroke-width="1.5"/>
+                  <text y="-6" font-family="'JetBrains Mono', monospace" font-size="8.5" fill="#F4F2EF" text-anchor="middle" font-weight="bold">TRIGGER</text>
+                  <text y="10" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#929292" text-anchor="middle">WEBHOOK</text>
+                </g>
 
-                <!-- Detected Lesion Area 1 (Bounding Box + Overlay) -->
-                <rect x="200" y="80" width="65" height="45" fill="none" stroke="#C72C41" stroke-width="1.5" stroke-dasharray="2 2"/>
-                <polygon points="208,88 238,84 252,108 220,118 208,102" fill="#C72C41" fill-opacity="0.35"/>
-                <text x="272" y="88" font-family="'JetBrains Mono', monospace" font-size="8" fill="#C72C41" font-weight="bold">LESION #01</text>
-                <text x="272" y="99" font-family="'JetBrains Mono', monospace" font-size="7" fill="#929292">CONF: 94.2%</text>
+                <!-- Node 2: BullMQ Buffer Queue -->
+                <g transform="translate(155, 120)">
+                  <circle r="26" fill="#140608" stroke="#C72C41" stroke-width="1.5"/>
+                  <text y="-4" font-family="'JetBrains Mono', monospace" font-size="8" fill="#F4F2EF" text-anchor="middle" font-weight="bold">BULLMQ</text>
+                  <text y="9" font-family="'JetBrains Mono', monospace" font-size="7" fill="#C72C41" text-anchor="middle">BUFFER</text>
+                </g>
 
-                <!-- Detected Lesion Area 2 -->
-                <rect x="270" y="125" width="45" height="35" fill="none" stroke="#C72C41" stroke-width="1.2"/>
-                <circle cx="292" cy="142" r="12" fill="#C72C41" fill-opacity="0.3"/>
-                <text x="322" y="138" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#C72C41">CHLOROSIS</text>
+                <!-- Node 3: Isolated Docker Container Outer Boundary -->
+                <g transform="translate(300, 120)">
+                  <rect x="-75" y="-70" width="150" height="140" fill="#0C0C0C" stroke="#C72C41" stroke-width="1.5" stroke-dasharray="4 4"/>
+                  
+                  <!-- Container Title Bar -->
+                  <rect x="-75" y="-70" width="150" height="22" fill="#180A0C"/>
+                  <circle cx="-62" cy="-59" r="3" fill="#C72C41"/>
+                  <text x="-48" y="-56" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#F4F2EF" font-weight="bold">DOCKER CONTAINER</text>
 
-                <!-- Scanning HUD Ticks at Corners -->
-                <line x1="185" y1="65" x2="195" y2="65" stroke="#C72C41" stroke-width="2"/>
-                <line x1="185" y1="65" x2="185" y2="75" stroke="#C72C41" stroke-width="2"/>
-                <line x1="365" y1="185" x2="355" y2="185" stroke="#C72C41" stroke-width="2"/>
-                <line x1="365" y1="185" x2="365" y2="175" stroke="#C72C41" stroke-width="2"/>
+                  <!-- Internal Runner Box -->
+                  <rect x="-60" y="-36" width="120" height="42" fill="#080808" stroke="#2A2A2A" stroke-width="1"/>
+                  <text y="-20" font-family="'JetBrains Mono', monospace" font-size="8" fill="#F4F2EF" text-anchor="middle" font-weight="bold">CODE RUNNER</text>
+                  <text y="-7" font-family="'JetBrains Mono', monospace" font-size="7" fill="#929292" text-anchor="middle">SANDBOX PROCESS</text>
+
+                  <!-- Resource Limits Readout -->
+                  <rect x="-60" y="16" width="120" height="24" fill="#111111" stroke="#222222" stroke-width="1"/>
+                  <text y="28" font-family="'JetBrains Mono', monospace" font-size="7" fill="#C72C41" text-anchor="middle">RAM: 128MB | CPU: 0.5</text>
+                  <text y="36" font-family="'JetBrains Mono', monospace" font-size="6.5" fill="#555555" text-anchor="middle">TIMEOUT: 5000MS</text>
+                </g>
+
+                <!-- Node 4: Execution Output Stream -->
+                <g transform="translate(435, 120)">
+                  <rect x="-24" y="-28" width="48" height="56" fill="#0E0E0E" stroke="#333333" stroke-width="1.5"/>
+                  <text y="-6" font-family="'JetBrains Mono', monospace" font-size="8" fill="#F4F2EF" text-anchor="middle" font-weight="bold">EXIT</text>
+                  <text y="8" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#C72C41" text-anchor="middle">CODE 0</text>
+                </g>
+
+                <!-- Corner HUD Ticks -->
+                <line x1="210" y1="40" x2="220" y2="40" stroke="#C72C41" stroke-width="1.5"/>
+                <line x1="210" y1="40" x2="210" y2="50" stroke="#C72C41" stroke-width="1.5"/>
+                <line x1="390" y1="200" x2="380" y2="200" stroke="#C72C41" stroke-width="1.5"/>
+                <line x1="390" y1="200" x2="390" y2="190" stroke="#C72C41" stroke-width="1.5"/>
               </svg>
             </div>
 
-            <!-- Optical Telemetry Footer -->
+            <!-- Footer Readout -->
             <div class="flex items-center justify-between z-10 technical-mono text-[10px] text-smoke-dark pt-3 border-t border-white/5">
-              <span>COLORSPACE: HSV + LAB DUAL-PASS</span>
-              <span>FILTER: BILATERAL GAUSSIAN</span>
-              <span class="text-cherry">DIAGNOSTIC: FOLIAR RUST (ACTIVE)</span>
+              <span>RUNTIME: NODE.JS / EXPRESS</span>
+              <span>LIMIT: 128MB RAM // 0.5 CPU</span>
+              <span class="text-cherry">STATUS: CONTAINER_ISOLATED</span>
             </div>
 
           </div>
@@ -472,9 +497,9 @@ const additional = projects.filter((p) => !p.featured);
       
       <div class="flex flex-col sm:flex-row sm:items-baseline justify-between mb-12 gap-3">
         <h3 class="technical-mono text-xs uppercase tracking-widest text-smoke-light font-bold">
-          ADDITIONAL SYSTEMS // CODE SANDBOXING & STORAGE
+          ADDITIONAL SYSTEMS // APPLIED RESEARCH & STORAGE
         </h3>
-        <span class="text-smoke-dark text-xs technical-mono">[VERIFIED LOCAL REPOSITORIES]</span>
+        <span class="text-smoke-dark text-xs technical-mono">[ENGINEERING ARCHIVES]</span>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">

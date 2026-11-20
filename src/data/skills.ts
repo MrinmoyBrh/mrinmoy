@@ -29,12 +29,12 @@ export const skillCategories: SkillCategory[] = [
     id: 'languages',
     code: 'MOD_02 // LANGUAGES',
     title: 'Programming Languages',
-    tagline: 'Core languages used for problem solving, backend development, and application building.',
+    tagline: 'Languages used for problem solving, backend development, and application building.',
     skills: [
-      { name: 'Python', context: 'General scripting, image processing scripts, and automation', highlight: true },
-      { name: 'C & C++', context: 'Core programming fundamentals, data structures, and algorithms', highlight: true },
+      { name: 'Python', context: 'General scripting, data processing scripts, and backend tasks', highlight: true },
       { name: 'PHP', context: 'Server-side scripting and dynamic web applications', highlight: true },
-      { name: 'SQL', context: 'Relational data querying, joins, and table definitions', highlight: false },
+      { name: 'SQL', context: 'Relational data querying, joins, and table definitions', highlight: true },
+      { name: 'C & C++ (Fundamentals)', context: 'Basic programming syntax, foundational memory concepts, and simple algorithms', highlight: false },
       { name: 'JavaScript', context: 'Client-side interactions and asynchronous requests', highlight: false },
       { name: 'HTML & CSS', context: 'Semantic page structuring and responsive web styling', highlight: false },
     ]
@@ -65,15 +65,15 @@ export const skillCategories: SkillCategory[] = [
     ]
   },
   {
-    id: 'ml-vision',
-    code: 'MOD_05 // ML & VISION',
-    title: 'Machine Learning & Vision',
-    tagline: 'Image processing fundamentals, color analysis, and academic research applied to plant pathology.',
+    id: 'microbounty',
+    code: 'MOD_05 // MICROBOUNTY',
+    title: 'MicroBounty Code Runner',
+    tagline: 'Automated code execution and PR evaluation using Docker containers and task queues.',
     skills: [
-      { name: 'Python for Vision', context: 'NumPy and image processing routines for pixel array operations', highlight: true },
-      { name: 'Color Segmentation', context: 'HSV and LAB color space transformations for leaf pathology', highlight: true },
-      { name: 'Basic Machine Learning', context: 'Fundamental classification concepts and model training basics', highlight: false },
-      { name: 'Crop Disease Project', context: 'Academic research identifying foliar infections from leaf images', highlight: false },
+      { name: 'Docker Execution', context: 'Running submitted code inside isolated containers with resource limits', highlight: true },
+      { name: 'Queue Buffering', context: 'Buffering evaluation jobs through BullMQ and Redis queues', highlight: true },
+      { name: 'Webhook Ingestion', context: 'Processing incoming GitHub webhook triggers for test verification', highlight: false },
+      { name: 'Node.js & Express', context: 'Backend API service managing execution requests and job states', highlight: false },
     ]
   }
 ];

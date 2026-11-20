@@ -230,7 +230,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     role: 'Lead Researcher & CV Engineer',
     organization: 'Associated with National Institute of Technology Silchar (NIT Silchar)',
     period: 'Academic Research',
-    featured: true,
+    featured: false,
     badges: ['Computer Vision', 'OpenCV', 'TensorFlow', 'Deep Learning', 'Image Processing'],
     summary: 'An academic research project associated with NIT Silchar that detects and classifies plant leaf diseases from camera captures. It isolates diseased foliage using HSV and LAB color spaces and classifies pathologies using a convolutional neural network.',
     challenge: 'Delayed detection of crop diseases like rust and chlorosis leads to severe agricultural loss in smallholder farms. Diagnosing infections traditionally requires field agronomists, causing critical delays in intervention.',
@@ -298,43 +298,42 @@ infection_ratio = infected_pixels / max(1, total_leaf_pixels)`
     id: 'microbounty',
     slug: 'microbounty',
     title: 'MicroBounty — Sandboxed Code Evaluation & PR Verifier Engine',
-    tagline: 'Asynchronous code runner that executes untrusted programs in disposable Docker sandboxes.',
+    tagline: 'Asynchronous code runner that executes submitted programs in isolated Docker containers.',
     category: 'Distributed Systems',
-    role: 'Backend Architect',
+    role: 'Backend Developer',
     period: '2024',
-    featured: false,
-    badges: ['Node.js', 'Docker API', 'BullMQ', 'Redis', 'MongoDB Atlas'],
-    summary: 'A code evaluation runner that tests untrusted code submissions and pull requests inside disposable Docker containers. Strips network access (`--network=none`), limits RAM to 128MB, and buffers incoming GitHub webhooks through BullMQ queues to keep the API server fast and responsive.',
-    challenge: 'Running untrusted code submitted over the web creates security risks like container breakouts, network abuse, and memory exhaustion from infinite loops.',
-    architectureNarrative: 'An Express gateway buffers submissions into Redis BullMQ queues with sliding-window rate limiting. Dedicated worker processes spawn temporary Docker containers with network access disabled, memory capped at 128MB, CPU throttled to 0.5 cores, and a strict 5-second timeout.',
+    featured: true,
+    badges: ['Node.js', 'Express', 'Docker', 'BullMQ', 'Redis'],
+    summary: 'A code evaluation runner that tests code submissions and pull requests inside isolated Docker containers. Applies resource limits (128MB RAM, 0.5 CPU) and buffers evaluation tasks through BullMQ and Redis queues to maintain a reliable, responsive execution service.',
+    challenge: 'Executing submitted code creates resource contention risks like infinite loops and high memory consumption that can degrade host server availability.',
+    architectureNarrative: 'An Express gateway buffers incoming evaluation requests into BullMQ queues. Dedicated worker processes spawn temporary Docker containers with memory limits capped at 128MB, CPU throttled, and a strict timeout before returning execution logs and results.',
     architectureSteps: [
       {
         step: '01',
         name: 'Webhook Ingestion',
-        description: 'Deduplicates GitHub delivery IDs in Redis with a 10-minute lock to prevent duplicate test runs.',
-        technology: 'Redis Key Locks'
+        description: 'Receives code evaluation triggers from GitHub webhooks or direct API submissions.',
+        technology: 'Express + Webhooks'
       },
       {
         step: '02',
         name: 'Queue Buffering',
-        description: 'Buffers submissions into BullMQ so sudden waves of tests never overwhelm worker memory.',
+        description: 'Buffers submissions into BullMQ to prevent sudden bursts of jobs from overwhelming memory.',
         technology: 'BullMQ + Redis'
       },
       {
         step: '03',
-        name: 'Air-Gapped Container',
-        description: 'Spawns an ephemeral Docker container with NetworkDisabled=true, Memory=128MB, and non-root execution.',
+        name: 'Isolated Container Execution',
+        description: 'Spawns an ephemeral Docker container with memory caps (128MB) and CPU ceilings.',
         technology: 'Docker Engine API'
       }
     ],
     technicalHighlights: [
       {
-        title: 'Disposable Air-Gapped Docker Containers',
-        description: 'Enforces container safety by stripping network access and setting strict memory and CPU caps.',
+        title: 'Resource-Constrained Docker Containers',
+        description: 'Enforces execution safety by applying strict memory and CPU caps on test runners.',
         codeSnippet: `// Ephemeral container configuration
 const container = await docker.createContainer({
   Image: 'sandbox-runner:node',
-  NetworkDisabled: true,
   HostConfig: {
     Memory: 128 * 1024 * 1024, // 128MB hard cap
     NanoCPUs: 500000000,        // 0.5 CPU cores
@@ -344,16 +343,16 @@ const container = await docker.createContainer({
       }
     ],
     verifiedClaims: [
-      'Working local codebase with Express, BullMQ, and Docker Engine API',
+      'Backend service built with Express, BullMQ, and Docker',
       'Asynchronous task buffering via BullMQ and Redis',
-      'Air-gapped Docker execution with NetworkDisabled and memory limits'
+      'Isolated Docker container execution with memory and CPU resource caps'
     ],
     stack: {
       runtime: ['Node.js', 'Express'],
       dataStores: ['MongoDB Atlas', 'Redis'],
       messaging: ['BullMQ'],
       protocols: ['GitHub Webhooks', 'Docker Engine API'],
-      tooling: ['Docker Multi-stage Builds']
+      tooling: ['Docker']
     }
   },
   {
