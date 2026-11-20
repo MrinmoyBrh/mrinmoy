@@ -1,0 +1,522 @@
+---
+import { projects } from '../data/projects';
+
+const p1 = projects.find((p) => p.id === 'ai-resilient-gateway')!;
+const p2 = projects.find((p) => p.id === 'apgcl-app')!;
+const p3 = projects.find((p) => p.id === 'crop-disease-detection')!;
+const additional = projects.filter((p) => !p.featured);
+---
+
+<section id="systems" class="py-24 sm:py-32 relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Section Editorial Header -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 pb-8 border-b border-white/10 gap-6">
+      <div>
+        <div class="flex items-center space-x-3 technical-mono text-xs text-coral mb-4">
+          <span class="w-2 h-2 rounded-full bg-coral animate-pulse"></span>
+          <span class="tracking-widest uppercase text-cherry">ENGINEERING PORTFOLIO // VERIFIED WORK</span>
+        </div>
+        <h2 class="editorial-title text-5xl sm:text-6xl lg:text-7xl font-bold text-pearl tracking-tight">
+          Featured <span class="italic font-serif text-smoke-light font-normal">Systems.</span>
+        </h2>
+      </div>
+      
+      <p class="text-smoke text-sm sm:text-base max-w-md leading-relaxed font-normal">
+        Three distinct architectural undertakings—distributed queue gateways, public utility infrastructure, and computer vision pathology diagnostics.
+      </p>
+    </div>
+
+    <!-- ====================================================================
+         PROJECT 01: Adaptive AI Gateway & Resilient Workflow Engine
+         Cinematic Asymmetric Layout: Project Dossier Left, 3D Abstract Architecture Right
+         ==================================================================== -->
+    <article class="mb-32 relative group">
+      
+      <!-- Ambient Backlight -->
+      <div class="absolute -top-12 -left-12 w-[550px] h-[550px] bg-cherry/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+        
+        <!-- Left: Project Narrative & Technical Data (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center space-x-3 mb-4 technical-mono text-xs">
+              <span class="text-cherry font-bold">PROJECT // 01</span>
+              <span class="text-white/20">/</span>
+              <span class="text-smoke uppercase">Distributed Systems</span>
+              <span class="text-white/20">/</span>
+              <span class="text-smoke-dark">2024</span>
+            </div>
+
+            <h3 class="editorial-title text-3xl sm:text-4xl lg:text-5xl font-bold text-pearl mb-6 leading-[1.08]">
+              <a href={`/projects/${p1.slug}`} class="hover:text-cherry transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cherry">
+                {p1.title}
+              </a>
+            </h3>
+
+            <p class="text-sm sm:text-base text-smoke-light leading-relaxed mb-8 font-normal">
+              A high-throughput API gateway built with Fastify and TypeScript. It buffers inference traffic through BullMQ queues so sudden surges don't stall upstream models, caches repetitive prompts in Redis with sub-5ms SHA-256 lookups, and automatically trips a circuit breaker to switch between Groq and Gemini when upstream errors spike.
+            </p>
+
+            <!-- Key Mechanics Checklist -->
+            <div class="space-y-3 mb-8 pb-8 border-b border-white/10 technical-mono text-xs">
+              <div class="flex items-start space-x-3">
+                <span class="text-cherry font-bold">›</span>
+                <span class="text-smoke-light"><strong class="text-pearl font-medium">Sub-5ms Cache:</strong> SHA-256 prompt hashing in Redis (3600s TTL).</span>
+              </div>
+              <div class="flex items-start space-x-3">
+                <span class="text-cherry font-bold">›</span>
+                <span class="text-smoke-light"><strong class="text-pearl font-medium">Stateful Circuit Breaker:</strong> 3-failure threshold tripping to OPEN for fast failover.</span>
+              </div>
+              <div class="flex items-start space-x-3">
+                <span class="text-cherry font-bold">›</span>
+                <span class="text-smoke-light"><strong class="text-pearl font-medium">Asynchronous BullMQ:</strong> Concurrency of 5 with exponential backoff retries.</span>
+              </div>
+            </div>
+
+            <!-- Tech Tags -->
+            <div class="flex flex-wrap gap-2 mb-8 technical-mono text-xs">
+              {p1.badges.map((badge) => (
+                <span class="px-2.5 py-1 bg-white/5 text-smoke-light border border-white/5 rounded-none">
+                  [{badge}]
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <!-- Action Links -->
+          <div class="flex items-center space-x-6 technical-mono text-xs">
+            <a
+              href={`/projects/${p1.slug}`}
+              class="inline-flex items-center space-x-2 text-pearl font-bold hover:text-cherry transition-colors"
+            >
+              <span>Explore Case Study</span>
+              <span>→</span>
+            </a>
+
+            {p1.githubUrl && (
+              <a
+                href={p1.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-smoke hover:text-pearl transition-colors"
+              >
+                GitHub Repository ↗
+              </a>
+            )}
+          </div>
+        </div>
+
+        <!-- Right: Abstract 3D Architecture Visual Composition (7 cols) -->
+        <div class="lg:col-span-7 relative">
+          <div class="relative w-full aspect-[16/11] bg-[#0A0A0A] border border-white/10 rounded-none overflow-hidden p-6 sm:p-8 flex flex-col justify-between shadow-2xl">
+            
+            <!-- Technical Canvas Grid Backdrop -->
+            <div class="absolute inset-0 tech-grid-bg opacity-30 pointer-events-none"></div>
+            <div class="absolute top-0 right-0 w-32 h-32 bg-cherry/15 blur-3xl pointer-events-none"></div>
+
+            <!-- Header Overlay Telemetry -->
+            <div class="flex items-center justify-between z-10 technical-mono text-[11px] text-smoke pb-4 border-b border-white/5">
+              <div class="flex items-center space-x-2">
+                <span class="w-2 h-2 rounded-full bg-cherry animate-ping"></span>
+                <span class="text-pearl font-semibold">GATEWAY TOPOLOGY SIMULATION</span>
+              </div>
+              <span class="text-smoke-dark">ORCHESTRATOR // V1.0</span>
+            </div>
+
+            <!-- SVG Isometric / Node Network Graphic -->
+            <div class="relative z-10 my-auto py-4 flex items-center justify-center">
+              <svg class="w-full max-w-[520px] h-auto overflow-visible" viewBox="0 0 520 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Connecting Bus Lines -->
+                <path d="M 60 130 L 160 130" stroke="#333333" stroke-width="1.5" stroke-dasharray="3 3"/>
+                <path d="M 160 130 L 260 70" stroke="#C72C41" stroke-width="2" stroke-opacity="0.8"/>
+                <path d="M 160 130 L 260 190" stroke="#555555" stroke-width="1.5"/>
+                <path d="M 260 70 L 390 70" stroke="#C72C41" stroke-width="2" stroke-dasharray="4 4"/>
+                <path d="M 260 190 L 390 190" stroke="#444444" stroke-width="1.5" stroke-dasharray="4 4"/>
+                <path d="M 390 70 L 470 130" stroke="#C72C41" stroke-width="1.5"/>
+                <path d="M 390 190 L 470 130" stroke="#444444" stroke-width="1.5"/>
+
+                <!-- Node 1: Ingress Gateway -->
+                <g transform="translate(60, 130)">
+                  <rect x="-35" y="-35" width="70" height="70" fill="#111111" stroke="#333333" stroke-width="1.5"/>
+                  <rect x="-25" y="-25" width="50" height="50" fill="#080808" stroke="#C72C41" stroke-width="1"/>
+                  <text y="-5" font-family="'JetBrains Mono', monospace" font-size="9" fill="#F4F2EF" text-anchor="middle" font-weight="bold">INGRESS</text>
+                  <text y="10" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#929292" text-anchor="middle">FASTIFY</text>
+                </g>
+
+                <!-- Node 2: Deterministic SHA-256 Cache -->
+                <g transform="translate(260, 70)">
+                  <polygon points="0,-36 32,-18 32,18 0,36 -32,18 -32,-18" fill="#140608" stroke="#C72C41" stroke-width="2"/>
+                  <text y="-4" font-family="'JetBrains Mono', monospace" font-size="8.5" fill="#F4F2EF" text-anchor="middle" font-weight="bold">REDIS CACHE</text>
+                  <text y="11" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#C72C41" text-anchor="middle">&lt;5ms HIT</text>
+                </g>
+
+                <!-- Node 3: BullMQ Queue Buffer -->
+                <g transform="translate(260, 190)">
+                  <rect x="-38" y="-28" width="76" height="56" fill="#111111" stroke="#444444" stroke-width="1.5"/>
+                  <text y="-4" font-family="'JetBrains Mono', monospace" font-size="8.5" fill="#F4F2EF" text-anchor="middle" font-weight="bold">BULLMQ</text>
+                  <text y="11" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#929292" text-anchor="middle">CONCURRENCY: 5</text>
+                </g>
+
+                <!-- Node 4: Circuit Breaker State Machine -->
+                <g transform="translate(390, 70)">
+                  <rect x="-32" y="-28" width="64" height="56" fill="#111111" stroke="#C72C41" stroke-width="1.5"/>
+                  <text y="-4" font-family="'JetBrains Mono', monospace" font-size="8" fill="#F4F2EF" text-anchor="middle" font-weight="bold">CIRCUIT</text>
+                  <text y="10" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#C72C41" text-anchor="middle">CLOSED / OK</text>
+                </g>
+
+                <!-- Node 5: Failover Upstream Tier -->
+                <g transform="translate(470, 130)">
+                  <circle r="26" fill="#0E0E0E" stroke="#555555" stroke-width="1.5"/>
+                  <circle r="10" fill="#C72C41" opacity="0.8"/>
+                  <text y="-32" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#929292" text-anchor="middle">UPSTREAM</text>
+                  <text y="38" font-family="'JetBrains Mono', monospace" font-size="7" fill="#555555" text-anchor="middle">GROQ / GEMINI</text>
+                </g>
+              </svg>
+            </div>
+
+            <!-- Footer Readout Strip -->
+            <div class="flex items-center justify-between z-10 technical-mono text-[10px] text-smoke-dark pt-3 border-t border-white/5">
+              <span>METRIC // CACHE_RESOLUTION_TIME: 3MS</span>
+              <span class="text-cherry font-semibold">RETRY_POLICY: EXPONENTIAL</span>
+              <span>STORAGE: POSTGRESQL_TELEMETRY</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ====================================================================
+         PROJECT 02: APGCL Web Application
+         Cinematic Industrial Utility Layout: Translucent Panels & Power Grid Telemetry
+         ==================================================================== -->
+    <article class="mb-32 relative group">
+      
+      <!-- Subtle cherry ambient glow -->
+      <div class="absolute -bottom-10 right-0 w-[500px] h-[500px] bg-cherry/10 rounded-full blur-[140px] pointer-events-none -z-10"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+        
+        <!-- Left: Industrial Grid Visual Dashboard (7 cols) -->
+        <div class="lg:col-span-7 order-2 lg:order-1 relative">
+          <div class="relative w-full aspect-[16/11] bg-[#0A0A0A] border border-white/10 rounded-none overflow-hidden p-6 sm:p-8 flex flex-col justify-between shadow-2xl">
+            
+            <div class="absolute inset-0 tech-grid-bg opacity-20 pointer-events-none"></div>
+
+            <!-- Industrial Header Bar -->
+            <div class="flex items-center justify-between z-10 technical-mono text-[11px] text-smoke pb-4 border-b border-white/5">
+              <div class="flex items-center space-x-2">
+                <span class="w-2 h-2 bg-cherry inline-block"></span>
+                <span class="text-pearl font-semibold">ASSAM POWER GENERATION CORP // SECURE PORTAL</span>
+              </div>
+              <span class="border border-white/10 px-2 py-0.5 bg-black/40 text-smoke-light">STATE UTILITY</span>
+            </div>
+
+            <!-- Layered Translucent Information Panels -->
+            <div class="relative z-10 my-auto py-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              
+              <!-- Panel A: Hardened Authentication Guard -->
+              <div class="p-4 bg-black/60 border border-white/10 backdrop-blur-md">
+                <div class="flex items-center justify-between text-[10px] technical-mono text-smoke mb-2">
+                  <span>SECURITY LAYER</span>
+                  <span class="text-cherry font-bold">FIDO2 / TOTP</span>
+                </div>
+                <h4 class="font-display font-bold text-sm text-pearl mb-1">WebAuthn Passkeys</h4>
+                <p class="text-[11px] text-smoke-light leading-snug">
+                  Hardware-backed biometric passkey login integrated with Laravel Fortify to defend administrative credentials.
+                </p>
+                <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[10px] technical-mono text-smoke-dark">
+                  <span>2FA CHALLENGE</span>
+                  <span class="text-cherry">VERIFIED</span>
+                </div>
+              </div>
+
+              <!-- Panel B: Statutory Document Archiving -->
+              <div class="p-4 bg-black/60 border border-white/10 backdrop-blur-md">
+                <div class="flex items-center justify-between text-[10px] technical-mono text-smoke mb-2">
+                  <span>STATUTORY REPOSITORY</span>
+                  <span class="text-smoke-light">MYSQL 8.0</span>
+                </div>
+                <h4 class="font-display font-bold text-sm text-pearl mb-1">Tariff & RTI Architecture</h4>
+                <p class="text-[11px] text-smoke-light leading-snug">
+                  Scoped prefix routing organizing state electricity tariffs, RTI disclosures, and official legislative statements.
+                </p>
+                <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[10px] technical-mono text-smoke-dark">
+                  <span>ROUTING SCOPE</span>
+                  <span class="text-pearl">/documents/*</span>
+                </div>
+              </div>
+
+              <!-- Panel C: Notification Engine (Full Width) -->
+              <div class="sm:col-span-2 p-3.5 bg-black/40 border border-white/5 technical-mono text-[11px] flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-cherry"></span>
+                  <span class="text-pearl">TRANSACTIONAL PIPELINE:</span>
+                  <span class="text-smoke">Automated email verification & admin alert dispatch</span>
+                </div>
+                <span class="text-smoke-dark">STATUS: ACTIVE</span>
+              </div>
+
+            </div>
+
+            <!-- Footer Readout -->
+            <div class="flex items-center justify-between z-10 technical-mono text-[10px] text-smoke-dark pt-3 border-t border-white/5">
+              <span>FRAMEWORK: LARAVEL 13 / PHP 8.4</span>
+              <span>UI: LIVEWIRE 4 + FLUX</span>
+              <span>LOCATION: GUWAHATI, ASSAM</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right: Project Narrative & Contribution (5 cols) -->
+        <div class="lg:col-span-5 order-1 lg:order-2 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center space-x-3 mb-4 technical-mono text-xs">
+              <span class="text-cherry font-bold">PROJECT // 02</span>
+              <span class="text-white/20">/</span>
+              <span class="text-smoke uppercase">Enterprise Backend</span>
+              <span class="text-white/20">/</span>
+              <span class="text-smoke-dark">Internship</span>
+            </div>
+
+            <h3 class="editorial-title text-3xl sm:text-4xl lg:text-5xl font-bold text-pearl mb-6 leading-[1.08]">
+              <a href={`/projects/${p2.slug}`} class="hover:text-cherry transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cherry">
+                {p2.title}
+              </a>
+            </h3>
+
+            <p class="text-sm sm:text-base text-smoke-light leading-relaxed mb-8 font-normal">
+              Engineered during my software engineering internship at Assam Power Generation Corporation Limited. The application serves as an operations portal equipped with WebAuthn passkeys and two-factor authentication, transactional email notifications, and an organized document repository for statutory state electricity filings.
+            </p>
+
+            <!-- Key Highlights -->
+            <div class="space-y-3 mb-8 pb-8 border-b border-white/10 technical-mono text-xs">
+              <div class="flex items-start space-x-3">
+                <span class="text-cherry font-bold">›</span>
+                <span class="text-smoke-light"><strong class="text-pearl font-medium">Authentication:</strong> WebAuthn hardware passkeys + TOTP authenticator challenge.</span>
+              </div>
+              <div class="flex items-start space-x-3">
+                <span class="text-cherry font-bold">›</span>
+                <span class="text-smoke-light"><strong class="text-pearl font-medium">Notification Flow:</strong> Automated account verification and administrative dispatch.</span>
+              </div>
+              <div class="flex items-start space-x-3">
+                <span class="text-cherry font-bold">›</span>
+                <span class="text-smoke-light"><strong class="text-pearl font-medium">Statutory Archiving:</strong> Structured hierarchy for tariffs, RTI, and official directives.</span>
+              </div>
+            </div>
+
+            <!-- Tech Tags -->
+            <div class="flex flex-wrap gap-2 mb-8 technical-mono text-xs">
+              {p2.badges.map((badge) => (
+                <span class="px-2.5 py-1 bg-white/5 text-smoke-light border border-white/5 rounded-none">
+                  [{badge}]
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <!-- Action Links -->
+          <div class="flex items-center space-x-6 technical-mono text-xs">
+            <a
+              href={`/projects/${p2.slug}`}
+              class="inline-flex items-center space-x-2 text-pearl font-bold hover:text-cherry transition-colors"
+            >
+              <span>Explore Case Study</span>
+              <span>→</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ====================================================================
+         PROJECT 03: Crop Disease Detection Using Image Processing
+         Immersive Editorial Layout: Botanical Computer Vision Canvas & Detection Overlays
+         ==================================================================== -->
+    <article class="mb-32 relative group">
+      
+      <!-- Backlight -->
+      <div class="absolute -top-10 -left-10 w-[500px] h-[500px] bg-cherry/10 rounded-full blur-[130px] pointer-events-none -z-10"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+        
+        <!-- Left: Project Narrative & Academic Context (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center space-x-3 mb-4 technical-mono text-xs">
+              <span class="text-cherry font-bold">PROJECT // 03</span>
+              <span class="text-white/20">/</span>
+              <span class="text-smoke uppercase">Computer Vision & AI</span>
+              <span class="text-white/20">/</span>
+              <span class="text-smoke-dark">NIT Silchar</span>
+            </div>
+
+            <h3 class="editorial-title text-3xl sm:text-4xl lg:text-5xl font-bold text-pearl mb-6 leading-[1.08]">
+              <a href={`/projects/${p3.slug}`} class="hover:text-cherry transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cherry">
+                {p3.title}
+              </a>
+            </h3>
+
+            <p class="text-sm sm:text-base text-smoke-light leading-relaxed mb-8 font-normal">
+              An academic research initiative conducted in association with the National Institute of Technology Silchar. The project processes plant leaf photographs to autonomously detect and classify foliar diseases, separating chlorotic and necrotic lesion boundaries from healthy green chlorophyll before feeding features to a convolutional network.
+            </p>
+
+            <!-- Highlights -->
+            <div class="space-y-3 mb-8 pb-8 border-b border-white/10 technical-mono text-xs">
+              <div class="flex items-start space-x-3">
+                <span class="text-cherry font-bold">›</span>
+                <span class="text-smoke-light"><strong class="text-pearl font-medium">HSV / LAB Segmentation:</strong> Decouples color from ambient lighting field shadows.</span>
+              </div>
+              <div class="flex items-start space-x-3">
+                <span class="text-cherry font-bold">›</span>
+                <span class="text-smoke-light"><strong class="text-pearl font-medium">Morphological Filters:</strong> Bilateral smoothing and Otsu thresholding for contour extraction.</span>
+              </div>
+              <div class="flex items-start space-x-3">
+                <span class="text-cherry font-bold">›</span>
+                <span class="text-smoke-light"><strong class="text-pearl font-medium">Neural Classification:</strong> Deep CNN architecture distinguishing fungal and viral pathogens.</span>
+              </div>
+            </div>
+
+            <!-- Tech Tags -->
+            <div class="flex flex-wrap gap-2 mb-8 technical-mono text-xs">
+              {p3.badges.map((badge) => (
+                <span class="px-2.5 py-1 bg-white/5 text-smoke-light border border-white/5 rounded-none">
+                  [{badge}]
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <!-- Action Links -->
+          <div class="flex items-center space-x-6 technical-mono text-xs">
+            <a
+              href={`/projects/${p3.slug}`}
+              class="inline-flex items-center space-x-2 text-pearl font-bold hover:text-cherry transition-colors"
+            >
+              <span>Explore Case Study</span>
+              <span>→</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Computer Vision Inspection Reticle Visual (7 cols) -->
+        <div class="lg:col-span-7 relative">
+          <div class="relative w-full aspect-[16/11] bg-[#0A0A0A] border border-white/10 rounded-none overflow-hidden p-6 sm:p-8 flex flex-col justify-between shadow-2xl">
+            
+            <div class="absolute inset-0 tech-grid-bg opacity-25 pointer-events-none"></div>
+
+            <!-- Optical Reticle Header -->
+            <div class="flex items-center justify-between z-10 technical-mono text-[11px] text-smoke pb-4 border-b border-white/5">
+              <div class="flex items-center space-x-2">
+                <span class="w-2 h-2 rounded-full bg-cherry"></span>
+                <span class="text-pearl font-semibold">PATHOLOGICAL VISION SCANNER</span>
+              </div>
+              <span class="text-cherry font-mono">[NIT_SILCHAR_RESEARCH]</span>
+            </div>
+
+            <!-- Stylized Botanical & Vision Reticle Composition -->
+            <div class="relative z-10 my-auto py-4 flex items-center justify-center">
+              <svg class="w-full max-w-[480px] h-auto overflow-visible" viewBox="0 0 480 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Reticle Center Crosshairs -->
+                <line x1="240" y1="10" x2="240" y2="230" stroke="#333333" stroke-width="1" stroke-dasharray="2 4"/>
+                <line x1="20" y1="120" x2="460" y2="120" stroke="#333333" stroke-width="1" stroke-dasharray="2 4"/>
+                <circle cx="240" cy="120" r="85" stroke="#C72C41" stroke-width="1" stroke-opacity="0.3"/>
+                <circle cx="240" cy="120" r="50" stroke="#929292" stroke-width="1" stroke-dasharray="3 3" stroke-opacity="0.4"/>
+
+                <!-- Leaf Contour Graphic -->
+                <path d="M 140 160 C 130 80 200 40 330 60 C 350 140 280 200 140 160 Z" fill="#0C140C" stroke="#2D4A2D" stroke-width="2"/>
+                <path d="M 155 150 C 210 120 280 90 320 65" stroke="#3D6A3D" stroke-width="1.5"/>
+
+                <!-- Detected Lesion Area 1 (Bounding Box + Overlay) -->
+                <rect x="200" y="80" width="65" height="45" fill="none" stroke="#C72C41" stroke-width="1.5" stroke-dasharray="2 2"/>
+                <polygon points="208,88 238,84 252,108 220,118 208,102" fill="#C72C41" fill-opacity="0.35"/>
+                <text x="272" y="88" font-family="'JetBrains Mono', monospace" font-size="8" fill="#C72C41" font-weight="bold">LESION #01</text>
+                <text x="272" y="99" font-family="'JetBrains Mono', monospace" font-size="7" fill="#929292">CONF: 94.2%</text>
+
+                <!-- Detected Lesion Area 2 -->
+                <rect x="270" y="125" width="45" height="35" fill="none" stroke="#C72C41" stroke-width="1.2"/>
+                <circle cx="292" cy="142" r="12" fill="#C72C41" fill-opacity="0.3"/>
+                <text x="322" y="138" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#C72C41">CHLOROSIS</text>
+
+                <!-- Scanning HUD Ticks at Corners -->
+                <line x1="185" y1="65" x2="195" y2="65" stroke="#C72C41" stroke-width="2"/>
+                <line x1="185" y1="65" x2="185" y2="75" stroke="#C72C41" stroke-width="2"/>
+                <line x1="365" y1="185" x2="355" y2="185" stroke="#C72C41" stroke-width="2"/>
+                <line x1="365" y1="185" x2="365" y2="175" stroke="#C72C41" stroke-width="2"/>
+              </svg>
+            </div>
+
+            <!-- Optical Telemetry Footer -->
+            <div class="flex items-center justify-between z-10 technical-mono text-[10px] text-smoke-dark pt-3 border-t border-white/5">
+              <span>COLORSPACE: HSV + LAB DUAL-PASS</span>
+              <span>FILTER: BILATERAL GAUSSIAN</span>
+              <span class="text-cherry">DIAGNOSTIC: FOLIAR RUST (ACTIVE)</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ====================================================================
+         ADDITIONAL SYSTEMS ARCHIVE (MicroBounty & SecureVault)
+         Clean Editorial Duo Strip with Asymmetric Typography
+         ==================================================================== -->
+    <div class="pt-16 border-t border-white/10">
+      
+      <div class="flex flex-col sm:flex-row sm:items-baseline justify-between mb-12 gap-3">
+        <h3 class="technical-mono text-xs uppercase tracking-widest text-smoke-light font-bold">
+          ADDITIONAL SYSTEMS // CODE SANDBOXING & STORAGE
+        </h3>
+        <span class="text-smoke-dark text-xs technical-mono">[VERIFIED LOCAL REPOSITORIES]</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        {additional.map((item, idx) => (
+          <div class="p-8 bg-[#0A0A0A] border border-white/10 relative flex flex-col justify-between hover:border-white/25 transition-colors">
+            
+            <div class="mb-6">
+              <div class="flex items-center justify-between technical-mono text-xs text-smoke-dark mb-4 pb-3 border-b border-white/5">
+                <span class="text-cherry font-bold">ARCHIVE // 0{idx + 4}</span>
+                <span>{item.period}</span>
+              </div>
+
+              <h4 class="editorial-title text-2xl font-bold text-pearl mb-3 leading-snug">
+                <a href={`/projects/${item.slug}`} class="hover:text-cherry transition-colors">
+                  {item.title}
+                </a>
+              </h4>
+
+              <p class="text-xs sm:text-sm text-smoke-light leading-relaxed mb-6">
+                {item.summary}
+              </p>
+
+              <div class="flex flex-wrap gap-1.5 technical-mono text-[11px] text-smoke">
+                {item.badges.map((b) => (
+                  <span class="px-2 py-0.5 bg-white/5 border border-white/5">
+                    [{b}]
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs technical-mono">
+              <a href={`/projects/${item.slug}`} class="text-pearl hover:text-cherry font-semibold transition-colors">
+                Read architecture case study →
+              </a>
+            </div>
+
+          </div>
+        ))}
+      </div>
+
+    </div>
+
+  </div>
+</section>

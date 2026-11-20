@@ -2,71 +2,96 @@
 import { principles } from '../data/principles';
 ---
 
-<section id="principles" class="py-24 border-b border-white/5 relative">
+<section id="principles" class="py-24 sm:py-32 border-b border-white/10 relative">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
-    <!-- Section Header Dossier -->
-    <div class="max-w-3xl mb-16">
-      <div class="flex items-center space-x-2 technical-mono text-xs text-coral mb-3">
-        <span class="w-2 h-2 rounded-full bg-coral"></span>
-        <span>ARCHITECTURAL MANIFESTO</span>
+    <!-- Section Editorial Header -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 pb-8 border-b border-white/10 gap-6">
+      <div class="max-w-3xl">
+        <div class="flex items-center space-x-3 technical-mono text-xs text-cherry mb-4">
+          <span class="w-2 h-2 rounded-full bg-cherry animate-pulse"></span>
+          <span class="tracking-widest uppercase">ENGINEERING PHILOSOPHY // SYSTEM AXIOMS</span>
+        </div>
+        <h2 class="editorial-title text-5xl sm:text-6xl lg:text-7xl font-bold text-pearl tracking-tight">
+          Axioms of <span class="italic font-serif text-smoke-light font-normal">Resilience.</span>
+        </h2>
       </div>
-      <h2 class="editorial-title text-4xl sm:text-5xl lg:text-6xl font-bold text-pearl mb-6">
-        Principles of Resilience.
-      </h2>
-      <p class="text-smoke-light text-base sm:text-lg leading-relaxed">
-        Reliable backend systems aren't built on wishful optimism; they are forged by assuming networks drop, processes crash, and upstream APIs degrade. These axioms dictate how I design every service layer, queue, and database schema.
+      <p class="text-smoke text-sm sm:text-base max-w-md leading-relaxed font-normal">
+        Reliable backend systems aren't built on wishful optimism; they are forged by assuming networks drop, processes crash, and upstream APIs degrade.
       </p>
     </div>
 
-    <!-- Principles Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+    <!-- Staggered Editorial Manifesto List -->
+    <div class="space-y-0 divide-y divide-white/10 mb-20">
       {principles.map((principle) => (
-        <div class="rounded-2xl bg-ink-900 border border-white/10 p-7 flex flex-col justify-between hover:border-coral/40 transition-colors shadow-surface-elevated group">
-          <div>
-            <div class="flex items-baseline justify-between mb-4">
-              <span class="technical-mono text-2xl font-black text-coral/80 group-hover:text-coral transition-colors">
-                {principle.number}
-              </span>
-              <span class="technical-mono text-[11px] text-smoke uppercase tracking-wider">
-                {principle.subtitle}
-              </span>
-            </div>
+        <article class="py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start group hover:bg-white/[0.015] transition-colors px-4 sm:px-6 -mx-4 sm:-mx-6">
+          
+          <!-- Large Editorial Number (2 cols) -->
+          <div class="lg:col-span-2 flex items-baseline justify-between lg:block">
+            <span class="editorial-title text-5xl sm:text-6xl lg:text-7xl font-bold text-white/15 group-hover:text-cherry transition-colors duration-300 block select-none">
+              {principle.number}
+            </span>
+            <span class="lg:hidden technical-mono text-xs text-cherry font-semibold uppercase tracking-wider">
+              {principle.subtitle}
+            </span>
+          </div>
 
-            <h3 class="font-display font-bold text-xl text-pearl mb-3 group-hover:text-pearl transition-colors">
+          <!-- Principle Narrative (7 cols) -->
+          <div class="lg:col-span-7">
+            <div class="hidden lg:flex items-center space-x-2 text-xs technical-mono text-cherry mb-2 uppercase tracking-widest font-semibold">
+              <span>// {principle.subtitle}</span>
+            </div>
+            
+            <h3 class="editorial-title text-2xl sm:text-3xl lg:text-4xl font-bold text-pearl mb-4 group-hover:text-pearl transition-colors">
               {principle.title}
             </h3>
 
-            <p class="text-xs sm:text-sm text-smoke-light leading-relaxed mb-6">
+            <p class="text-sm sm:text-base text-smoke-light leading-relaxed font-normal">
               {principle.description}
             </p>
           </div>
 
-          <div class="pt-4 border-t border-white/5">
-            <code class="block technical-mono text-[11px] text-orbital bg-ink-950 p-2.5 rounded-lg border border-white/5 overflow-x-auto">
+          <!-- Technical Verification Formula (3 cols) -->
+          <div class="lg:col-span-3 lg:pl-6 lg:border-l lg:border-white/5 pt-2">
+            <span class="block technical-mono text-[10px] text-smoke-dark uppercase tracking-wider mb-2">
+              IMPLEMENTATION INVARIANT
+            </span>
+            <code class="block technical-mono text-xs text-pearl/80 bg-[#0A0A0A] p-3 border border-white/10 leading-snug break-all font-mono">
               {principle.codeAccent}
             </code>
           </div>
-        </div>
-      ))}
 
-      <!-- Summary Callout Block -->
-      <div class="rounded-2xl bg-gradient-to-br from-ink-800 to-ink-900 border border-coral/20 p-7 flex flex-col justify-between">
-        <div>
-          <span class="technical-mono text-xs font-bold text-coral block mb-2">SYSTEM INTEGRITY GUARANTEE</span>
-          <h3 class="editorial-title text-2xl font-bold text-pearl mb-3">Zero Invented Metrics.</h3>
-          <p class="text-xs sm:text-sm text-smoke-light leading-relaxed mb-4">
+        </article>
+      ))}
+    </div>
+
+    <!-- Editorial Guarantee Callout Banner (Cinematic Industrial Finish) -->
+    <div class="p-8 sm:p-12 bg-[#0A0A0A] border border-white/10 relative overflow-hidden shadow-2xl">
+      <!-- Cherry ambient accent lighting -->
+      <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-cherry/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-8">
+          <div class="flex items-center space-x-2 text-xs technical-mono text-cherry mb-3 font-semibold uppercase tracking-wider">
+            <span class="w-2 h-2 bg-cherry inline-block"></span>
+            <span>SYSTEM INTEGRITY COMMITMENT</span>
+          </div>
+          <h3 class="editorial-title text-3xl sm:text-4xl font-bold text-pearl mb-3">
+            Zero Invented Metrics. Real, Runnable Code.
+          </h3>
+          <p class="text-sm sm:text-base text-smoke-light leading-relaxed max-w-2xl font-normal">
             Every technical claim in this portfolio is backed by runnable, verified source code—from Fastify queue orchestrators and Redis state machines to Laravel passkeys and OpenCV digital image pipelines.
           </p>
         </div>
-        <div class="pt-4 border-t border-white/10">
+
+        <div class="lg:col-span-4 lg:flex lg:justify-end">
           <a
             href="https://github.com/MrinmoyBrh"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center space-x-2 text-xs font-bold technical-mono text-coral hover:text-coral-light transition-colors"
+            class="inline-flex items-center space-x-3 px-6 py-4 bg-cherry hover:bg-cherry/90 text-white font-bold technical-mono text-xs uppercase tracking-wider transition-colors shadow-lg shadow-cherry/20"
           >
-            <span>Review Source Code on GitHub</span>
+            <span>Audit Repositories on GitHub</span>
             <span>→</span>
           </a>
         </div>

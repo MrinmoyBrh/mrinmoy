@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
-import ProjectCard from '../components/ProjectCard.astro';
+import EditorialProjectShowcase from '../components/EditorialProjectShowcase.astro';
 import CircuitSimulator from '../components/CircuitSimulator.astro';
 import Principles from '../components/Principles.astro';
 import SkillsGrid from '../components/SkillsGrid.astro';
@@ -10,10 +10,6 @@ import Timeline from '../components/Timeline.astro';
 import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
 import AtmosphericClouds from '../components/AtmosphericClouds.astro';
-import { projects } from '../data/projects';
-
-const featuredProjects = projects.filter((p) => p.featured);
-const additionalProjects = projects.filter((p) => !p.featured);
 ---
 
 <Layout
@@ -32,66 +28,20 @@ const additionalProjects = projects.filter((p) => !p.featured);
       <!-- Atmospheric Dynamic Cloud Layer (Jet Black #080808, Smoke Grey #929292, Cherry Red #C72C41) -->
       <AtmosphericClouds />
 
-      <!-- Systems / Projects Section -->
-      <section id="systems" class="py-24 border-b border-white/5 relative">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
-          <div class="max-w-3xl">
-            <div class="flex items-center space-x-2 technical-mono text-xs text-coral mb-3">
-              <span class="w-1.5 h-1.5 bg-coral inline-block"></span>
-              <span class="tracking-widest uppercase">PROJECT SHOWCASE // CODE & RESEARCH</span>
-            </div>
-            <h2 class="editorial-title text-4xl sm:text-5xl lg:text-6xl font-bold text-pearl mb-4">
-              Systems I've built.
-            </h2>
-            <p class="text-smoke-light text-base leading-relaxed">
-              A breakdown of projects I have engineered across distributed task queues, state utility administration, and academic computer vision research.
-            </p>
-          </div>
+      <!-- Systems / Projects Section (Cinematic Editorial Showcase) -->
+      <EditorialProjectShowcase />
 
-          <div class="technical-mono text-xs text-smoke-dark shrink-0">
-            [SYS_REGISTRY // 05 ACTIVE]
-          </div>
-        </div>
+      <!-- Interactive Circuit Breaker & Queue Simulator -->
+      <CircuitSimulator />
 
-        <!-- Featured Projects Grid (Custom HUD Panels) -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 mb-14">
-          {featuredProjects.map((project, idx) => (
-            <ProjectCard project={project} index={idx} />
-          ))}
-        </div>
+      <!-- Engineering Principles Manifesto -->
+      <Principles />
 
-        <!-- Additional Engineering Repositories -->
-        <div class="pt-10 border-t border-white/5">
-          <div class="flex items-center justify-between mb-6">
-            <h3 class="technical-mono text-xs uppercase tracking-wider text-smoke-light font-bold">
-              ADDITIONAL REPOSITORIES // SANDBOXING & 3NF STORAGE
-            </h3>
-            <span class="text-[10px] technical-mono text-smoke-dark">LOCAL REPOS</span>
-          </div>
+      <!-- Curated Skills Matrix -->
+      <SkillsGrid />
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7">
-            {additionalProjects.map((project, idx) => (
-              <ProjectCard project={project} index={idx + featuredProjects.length} />
-            ))}
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Interactive Circuit Breaker & Queue Simulator -->
-    <CircuitSimulator />
-
-    <!-- Engineering Principles Manifesto -->
-    <Principles />
-
-    <!-- Curated Skills Matrix -->
-    <SkillsGrid />
-
-    <!-- Timeline / Education & Experience -->
-    <Timeline />
+      <!-- Timeline / Education & Experience -->
+      <Timeline />
 
       <!-- Contact & Interactive Terminal -->
       <ContactSection />
