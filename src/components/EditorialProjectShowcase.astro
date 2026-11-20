@@ -1,5 +1,6 @@
 ---
 import { projects } from '../data/projects';
+import CircuitSimulator from './CircuitSimulator.astro';
 
 const p1 = projects.find((p) => p.id === 'ai-resilient-gateway')!;
 const p2 = projects.find((p) => p.id === 'apgcl-app')!;
@@ -487,6 +488,10 @@ const additional = projects.filter((p) => !p.featured);
         </div>
 
       </div>
+
+      <!-- MicroBounty Simulation Harness Console -->
+      <CircuitSimulator />
+
     </article>
 
     <!-- ====================================================================
