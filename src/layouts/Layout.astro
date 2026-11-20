@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { getSeoSettings } from '../lib/content';
 
 interface Props {
   title?: string;
@@ -8,14 +9,23 @@ interface Props {
   type?: string;
 }
 
-const {
-  title = 'Mrinmoy Borah | Backend Software Engineer',
-  description = 'Personal portfolio of Mrinmoy Borah — Backend Software Engineer specializing in distributed systems, asynchronous queue architectures (BullMQ/Redis), fault-tolerant gateways, and database modeling.',
-  image = '/og-image.png',
-  type = 'website',
-} = Astro.props;
+const props = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://mrinmoybrh.github.io');
+let seoDefaults: any = {};
+try {
+  seoDefaults = getSeoSettings();
+} catch (e) {
+  // Fallback
+}
+
+const title = props.title || seoDefaults.site_title || 'Mrinmoy Borah | Backend Software Engineer';
+const description = props.description || seoDefaults.site_description || 'Personal portfolio of Mrinmoy Borah — Backend Software Engineer specializing in distributed systems, asynchronous queue architectures (BullMQ/Redis), fault-tolerant gateways, and database modeling.';
+const image = props.image || seoDefaults.og_image || '/og-image.png';
+const type = props.type || 'website';
+const twitterCard = seoDefaults.twitter_card || 'summary_large_image';
+const robotsDirectives = seoDefaults.robots_directives || 'index, follow';
+
+const canonicalURL = new URL(Astro.url.pathname, seoDefaults.canonical_url || Astro.site || 'https://mrinmoybrh.github.io');
 
 const personJsonLd = {
   '@context': 'https://schema.org',
@@ -60,6 +70,7 @@ const personJsonLd = {
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
+    <meta name="robots" content={robotsDirectives} />
     <meta name="author" content="Mrinmoy Borah" />
     <meta name="theme-color" content="#080808" />
 
@@ -71,7 +82,7 @@ const personJsonLd = {
     <meta property="og:image" content={new URL(image, canonicalURL)} />
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:card" content={twitterCard} />
     <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />

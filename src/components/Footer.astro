@@ -1,5 +1,20 @@
 ---
+import { getModuleConfig } from '../lib/content';
+
 const currentYear = new Date().getFullYear();
+
+let footerConfig = {
+  copyrightText: 'Mrinmoy Borah. Engineered with architectural precision.',
+  locationText: 'ASSAM, INDIA // UTC+5:30',
+  availabilityText: 'SYSTEM NOMINAL — READY FOR DEPLOYMENT'
+};
+
+try {
+  const dbFooter = getModuleConfig('footer');
+  if (dbFooter) footerConfig = { ...footerConfig, ...dbFooter };
+} catch (e) {
+  // Fallback
+}
 ---
 
 <footer class="py-12 bg-[#080808]/90 backdrop-blur-sm border-t border-white/5 technical-mono text-xs text-smoke relative z-10">
@@ -57,7 +72,7 @@ const currentYear = new Date().getFullYear();
         <span>Designed with editorial typography, orbital aesthetics, & verified backend engineering.</span>
       </div>
       <div>
-        <span>© {currentYear} Mrinmoy Borah. All systems operational.</span>
+        <span>© {currentYear} {footerConfig.copyrightText}</span>
       </div>
     </div>
 

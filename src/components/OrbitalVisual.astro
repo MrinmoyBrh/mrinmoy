@@ -1,4 +1,8 @@
 ---
+interface Props {
+  hero?: any;
+}
+const { hero = null } = Astro.props;
 ---
 
 <div class="relative w-full max-w-[500px] lg:max-w-[540px] mx-auto flex flex-col items-center select-none" aria-label="Distributed backend architecture orbital diagram">
@@ -121,14 +125,14 @@
 
     <!-- Core Label -->
     <text x="250" y="295" font-family="'JetBrains Mono', monospace" font-size="10" fill="#F7F5F0" text-anchor="middle" font-weight="700" letter-spacing="1.5">
-      FASTIFY GATEWAY
+      {hero?.orbital_core_label || 'FASTIFY GATEWAY'}
     </text>
 
     <!-- Radar telemetry tags around edge -->
-    <text x="30" y="40" font-family="'JetBrains Mono', monospace" font-size="8" fill="#8C96A3" opacity="0.6">SYS.ORBIT // 26.14°N</text>
-    <text x="470" y="40" font-family="'JetBrains Mono', monospace" font-size="8" fill="#8C96A3" opacity="0.6" text-anchor="end">REDIS.V6.CLUSTER</text>
-    <text x="30" y="465" font-family="'JetBrains Mono', monospace" font-size="8" fill="#8C96A3" opacity="0.6">FAILOVER // 3.3-70B ➔ 1.5-FLASH</text>
-    <text x="470" y="465" font-family="'JetBrains Mono', monospace" font-size="8" fill="#8C96A3" opacity="0.6" text-anchor="end">LATENCY // &lt;5ms HIT</text>
+    <text x="30" y="40" font-family="'JetBrains Mono', monospace" font-size="8" fill="#8C96A3" opacity="0.6">{hero?.orbital_radar_top_left || 'SYS.ORBIT // 26.14°N'}</text>
+    <text x="470" y="40" font-family="'JetBrains Mono', monospace" font-size="8" fill="#8C96A3" opacity="0.6" text-anchor="end">{hero?.orbital_radar_top_right || 'REDIS.V6.CLUSTER'}</text>
+    <text x="30" y="465" font-family="'JetBrains Mono', monospace" font-size="8" fill="#8C96A3" opacity="0.6">{hero?.orbital_radar_bottom_left || 'FAILOVER // 3.3-70B ➔ 1.5-FLASH'}</text>
+    <text x="470" y="465" font-family="'JetBrains Mono', monospace" font-size="8" fill="#8C96A3" opacity="0.6" text-anchor="end">{hero?.orbital_radar_bottom_right || 'LATENCY // <5ms HIT'}</text>
   </svg>
   </div>
 
@@ -136,10 +140,10 @@
   <div class="mt-4 sm:mt-5 bg-ink-800/90 border border-white/10 px-4 py-1.5 rounded-full backdrop-blur-md shadow-surface-elevated flex items-center space-x-3 z-20">
     <div class="flex items-center space-x-1.5">
       <span class="w-2 h-2 rounded-full bg-orbital animate-ping"></span>
-      <span class="technical-mono text-[11px] font-semibold text-pearl">TOPOLOGY: DISTRIBUTED</span>
+      <span class="technical-mono text-[11px] font-semibold text-pearl">{hero?.orbital_status_title || 'TOPOLOGY: DISTRIBUTED'}</span>
     </div>
     <span class="text-white/20">|</span>
-    <span class="technical-mono text-[11px] text-smoke">RELIABILITY: 99.9%</span>
+    <span class="technical-mono text-[11px] text-smoke">{hero?.orbital_status_reliability || 'RELIABILITY: 99.9%'}</span>
   </div>
 
 </div>

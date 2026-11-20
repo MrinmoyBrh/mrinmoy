@@ -4,19 +4,31 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import ArchitectureDiagram from '../../components/ArchitectureDiagram.astro';
 import { projects, type ProjectCaseStudy } from '../../data/projects';
+import { getProjectBySlug } from '../../lib/content';
 
-export function getStaticPaths() {
-  return projects.map((project) => ({
-    params: { slug: project.slug },
-    props: { project },
-  }));
+export const prerender = false;
+
+const { slug } = Astro.params;
+const previewDraft = Astro.url.searchParams.get('preview') === 'draft';
+
+let project: ProjectCaseStudy | null = null;
+if (slug) {
+  try {
+    const dbProject = getProjectBySlug(slug, !previewDraft);
+    if (dbProject) {
+      project = dbProject as unknown as ProjectCaseStudy;
+    }
+  } catch (e) {
+    // Database query fallback
+  }
+  if (!project) {
+    project = projects.find((p) => p.slug === slug) || null;
+  }
 }
 
-interface Props {
-  project: ProjectCaseStudy;
+if (!project) {
+  return Astro.redirect('/404');
 }
-
-const { project } = Astro.props;
 ---
 
 <Layout

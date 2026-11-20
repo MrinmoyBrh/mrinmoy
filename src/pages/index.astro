@@ -9,6 +9,10 @@ import Timeline from '../components/Timeline.astro';
 import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
 import AtmosphericClouds from '../components/AtmosphericClouds.astro';
+
+export const prerender = false;
+
+const previewDraft = Astro.url.searchParams.get('preview') === 'draft';
 ---
 
 <Layout
@@ -20,7 +24,7 @@ import AtmosphericClouds from '../components/AtmosphericClouds.astro';
   <main id="main-content" class="relative">
     
     <!-- Hero Section (Preserved Untouched) -->
-    <Hero />
+    <Hero previewDraft={previewDraft} />
 
     <!-- Continuous Atmospheric Cloud Container for All Sections Below Hero -->
     <div class="relative overflow-hidden">
@@ -28,7 +32,7 @@ import AtmosphericClouds from '../components/AtmosphericClouds.astro';
       <AtmosphericClouds />
 
       <!-- Systems / Projects Section (Cinematic Editorial Showcase with MicroBounty Simulator) -->
-      <EditorialProjectShowcase />
+      <EditorialProjectShowcase previewDraft={previewDraft} />
 
       <!-- Engineering Principles Manifesto -->
       <Principles />

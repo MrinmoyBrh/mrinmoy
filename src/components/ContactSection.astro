@@ -1,5 +1,23 @@
 ---
 import InteractiveTerminal from './InteractiveTerminal.astro';
+import { getModuleConfig } from '../lib/content';
+
+let contact = {
+  heading: "Let's build",
+  subheading: 'resilient systems.',
+  tagline: "Whether you are engineering a high-concurrency microservice cluster, architecting fault-tolerant queues, or seeking a dedicated backend engineer for internships or engineering roles—I'm ready to contribute.",
+  email: 'mrinmoyborah360@gmail.com',
+  githubUrl: 'https://github.com/MrinmoyBrh',
+  linkedinUrl: 'https://www.linkedin.com/in/mrinmoy-borah-7771843b9/',
+  status: 'Open for Backend Engineering Internships, Junior Backend Roles, & Collaborative Systems Engineering.',
+};
+
+try {
+  const dbContact = getModuleConfig('contact');
+  if (dbContact) contact = { ...contact, ...dbContact };
+} catch (e) {
+  // Fallback
+}
 ---
 
 <section id="contact" class="py-24 sm:py-32 border-b border-white/10 relative overflow-hidden">
@@ -24,7 +42,7 @@ import InteractiveTerminal from './InteractiveTerminal.astro';
           </h2>
 
           <p class="text-smoke-light text-base leading-relaxed mb-8 font-normal">
-            Whether you are engineering a high-concurrency microservice cluster, architecting fault-tolerant queues, or seeking a dedicated backend engineer for internships or engineering roles—I'm ready to contribute.
+            {contact.tagline}
           </p>
 
           <!-- Direct Coordinates Grid -->
@@ -41,10 +59,10 @@ import InteractiveTerminal from './InteractiveTerminal.astro';
                 <div>
                   <span class="block text-[10px] technical-mono text-smoke uppercase tracking-wider">DIRECT INBOX</span>
                   <a
-                    href="mailto:mrinmoyborah360@gmail.com"
+                    href={`mailto:${contact.email}`}
                     class="block text-xs sm:text-sm font-semibold technical-mono text-pearl hover:text-cherry transition-colors"
                   >
-                    mrinmoyborah360@gmail.com
+                    {contact.email}
                   </a>
                 </div>
               </div>
@@ -52,6 +70,7 @@ import InteractiveTerminal from './InteractiveTerminal.astro';
               <button
                 id="copy-email-btn"
                 type="button"
+                data-email={contact.email}
                 aria-label="Copy email address to clipboard"
                 class="px-3 py-1.5 bg-[#141414] hover:bg-[#1C1C1C] text-smoke-light hover:text-pearl border border-white/10 technical-mono text-xs transition-colors"
               >
@@ -62,7 +81,7 @@ import InteractiveTerminal from './InteractiveTerminal.astro';
             <!-- Social Links Grid -->
             <div class="grid grid-cols-2 gap-4">
               <a
-                href="https://github.com/MrinmoyBrh"
+                href={contact.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="p-4 bg-[#0A0A0A] border border-white/10 hover:border-white/25 transition-colors flex items-center space-x-3 group shadow-xl"
@@ -79,7 +98,7 @@ import InteractiveTerminal from './InteractiveTerminal.astro';
               </a>
 
               <a
-                href="https://www.linkedin.com/in/mrinmoy-borah-7771843b9/"
+                href={contact.linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="p-4 bg-[#0A0A0A] border border-white/10 hover:border-white/25 transition-colors flex items-center space-x-3 group shadow-xl"
@@ -104,7 +123,7 @@ import InteractiveTerminal from './InteractiveTerminal.astro';
               <span class="text-cherry font-semibold">AVAILABILITY STATUS</span>
             </div>
             <p class="text-xs text-pearl leading-relaxed">
-              Open for Backend Engineering Internships, Junior Backend Roles, & Collaborative Systems Engineering.
+              {contact.status}
             </p>
           </div>
         </div>

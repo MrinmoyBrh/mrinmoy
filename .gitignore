@@ -8,3 +8,8 @@ yarn-debug.log*
 yarn-error.log*
 .DS_Store
 Thumbs.db
+data/*.db
+data/*.db-wal
+data/*.db-shm
+public/uploads/*
+!public/uploads/.gitkeep

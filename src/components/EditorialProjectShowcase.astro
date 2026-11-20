@@ -1,11 +1,32 @@
 ---
-import { projects } from '../data/projects';
+import { projects, type ProjectCaseStudy } from '../data/projects';
+import { getProjects } from '../lib/content';
 import CircuitSimulator from './CircuitSimulator.astro';
 
-const p1 = projects.find((p) => p.id === 'ai-resilient-gateway')!;
-const p2 = projects.find((p) => p.id === 'apgcl-app')!;
-const p3 = projects.find((p) => p.id === 'microbounty')!;
-const additional = projects.filter((p) => !p.featured);
+interface Props {
+  previewDraft?: boolean;
+}
+
+const { previewDraft = false } = Astro.props;
+
+let allProjects: ProjectCaseStudy[] = projects;
+try {
+  const dbProjects = getProjects('all', !previewDraft) as any;
+  if (dbProjects && dbProjects.length > 0) {
+    allProjects = dbProjects;
+  }
+} catch (e) {
+  // Database fallback
+}
+
+const p1: ProjectCaseStudy = allProjects.find((p) => p.id === 'ai-resilient-gateway') || allProjects[0] || projects[0];
+const p2: ProjectCaseStudy = allProjects.find((p) => p.id === 'apgcl-app') || allProjects[1] || projects[1];
+const p3: ProjectCaseStudy = allProjects.find((p) => p.id === 'microbounty') || allProjects[2] || projects[2];
+
+let additional: ProjectCaseStudy[] = allProjects.filter((p: any) => p.placement === 'additional' || (!p.featured && p.id !== p1.id && p.id !== p2.id && p.id !== p3.id));
+if (additional.length === 0) {
+  additional = projects.filter((p) => !p.featured);
+}
 ---
 
 <section id="systems" class="py-24 sm:py-32 relative">
@@ -78,7 +99,7 @@ const additional = projects.filter((p) => !p.featured);
 
             <!-- Tech Tags -->
             <div class="flex flex-wrap gap-2 mb-8 technical-mono text-xs">
-              {p1.badges.map((badge) => (
+              {p1.badges.map((badge: string) => (
                 <span class="px-2.5 py-1 bg-white/5 text-smoke-light border border-white/5 rounded-none">
                   [{badge}]
                 </span>
@@ -312,7 +333,7 @@ const additional = projects.filter((p) => !p.featured);
 
             <!-- Tech Tags -->
             <div class="flex flex-wrap gap-2 mb-8 technical-mono text-xs">
-              {p2.badges.map((badge) => (
+              {p2.badges.map((badge: string) => (
                 <span class="px-2.5 py-1 bg-white/5 text-smoke-light border border-white/5 rounded-none">
                   [{badge}]
                 </span>
@@ -385,7 +406,7 @@ const additional = projects.filter((p) => !p.featured);
 
             <!-- Tech Tags -->
             <div class="flex flex-wrap gap-2 mb-8 technical-mono text-xs">
-              {p3.badges.map((badge) => (
+              {p3.badges.map((badge: string) => (
                 <span class="px-2.5 py-1 bg-white/5 text-smoke-light border border-white/5 rounded-none">
                   [{badge}]
                 </span>
@@ -567,7 +588,7 @@ const additional = projects.filter((p) => !p.featured);
                     <span class="text-[10px] uppercase tracking-wider text-smoke-dark font-semibold block mb-1">
                       Key Implemented Features
                     </span>
-                    {item.keyFeatures.map((feat) => (
+                    {item.keyFeatures.map((feat: any) => (
                       <div class="flex items-start space-x-2 text-smoke-light text-[11px] leading-relaxed">
                         <span class="text-cherry font-bold">›</span>
                         <span>
@@ -584,7 +605,7 @@ const additional = projects.filter((p) => !p.featured);
                     Technologies
                   </span>
                   <div class="flex flex-wrap gap-1.5 technical-mono text-[11px] text-smoke">
-                    {item.badges.map((b) => (
+                    {item.badges.map((b: string) => (
                       <span class="px-2 py-0.5 bg-white/5 text-smoke-light border border-white/10">
                         [{b}]
                       </span>

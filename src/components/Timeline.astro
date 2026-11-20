@@ -1,5 +1,51 @@
 ---
-import { timeline } from '../data/experience';
+import { timeline as defaultTimeline } from '../data/experience';
+import { getExperiences, getEducation } from '../lib/content';
+
+let timeline = defaultTimeline;
+try {
+  const dbExperiences = getExperiences(true);
+  const dbEducation = getEducation();
+
+  if (dbExperiences.length > 0 || dbEducation.length > 0) {
+    const combined: any[] = [];
+    
+    dbExperiences.forEach((exp: any) => {
+      combined.push({
+        period: exp.period,
+        role: exp.role,
+        organization: exp.company,
+        location: exp.location,
+        type: exp.type || 'Work Experience',
+        description: exp.description,
+        points: exp.responsibilities || [],
+        techStack: exp.technologies || [],
+        order: exp.display_order ?? 0,
+      });
+    });
+
+    dbEducation.forEach((edu: any) => {
+      combined.push({
+        period: edu.period,
+        role: `${edu.degree} in ${edu.field}`,
+        organization: edu.institution,
+        location: edu.location,
+        type: 'Education',
+        description: `${edu.status} candidate pursuing comprehensive foundations in software engineering and distributed computing.`,
+        points: edu.details || [],
+        techStack: ['Algorithms', 'Data Structures', 'OS', 'Database Systems', 'Networking'],
+        order: edu.display_order ?? 0,
+      });
+    });
+
+    if (combined.length > 0) {
+      combined.sort((a, b) => a.order - b.order);
+      timeline = combined;
+    }
+  }
+} catch (e) {
+  // Fail-safe database fallback
+}
 ---
 
 <section id="experience" class="py-24 sm:py-32 border-b border-white/10 relative">

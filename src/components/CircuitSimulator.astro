@@ -1,4 +1,21 @@
 ---
+import { getModuleConfig } from '../lib/content';
+
+let simConfig = {
+  title: 'SIMULATION HARNESS // LIVE ORCHESTRATION',
+  subtitle: 'CLIENT-SIDE MODEL',
+  description: "Simulate MicroBounty's sandboxed evaluation workflow: pull request webhook intake, BullMQ queue buffering, and isolated Docker container execution with memory limits (128MB) and timeouts.",
+  defaultTimeout: 5000,
+  memoryCap: '128MB',
+  cpuCeiling: '0.5 Cores'
+};
+
+try {
+  const dbConfig = getModuleConfig('simulation');
+  if (dbConfig) simConfig = { ...simConfig, ...dbConfig };
+} catch (e) {
+  // Fallback
+}
 ---
 
 <div id="architecture" class="mt-16 pt-16 border-t border-white/10 relative">
@@ -8,15 +25,15 @@
     <div class="max-w-3xl">
       <div class="flex items-center space-x-3 technical-mono text-xs text-cherry mb-3">
         <span class="w-2 h-2 rounded-full bg-cherry animate-pulse"></span>
-        <span class="tracking-widest uppercase">SIMULATION HARNESS // LIVE ORCHESTRATION</span>
-        <span class="px-2 py-0.5 text-[10px] bg-white/5 border border-white/10 text-smoke-light">CLIENT-SIDE MODEL</span>
+        <span class="tracking-widest uppercase">{simConfig.title}</span>
+        <span class="px-2 py-0.5 text-[10px] bg-white/5 border border-white/10 text-smoke-light">{simConfig.subtitle}</span>
       </div>
       <h3 class="editorial-title text-3xl sm:text-4xl lg:text-5xl font-bold text-pearl tracking-tight">
         Simulate the <span class="italic font-serif text-smoke-light font-normal">Code Runner.</span>
       </h3>
     </div>
     <p class="text-smoke text-sm sm:text-base max-w-md leading-relaxed font-normal">
-      Simulate MicroBounty's sandboxed evaluation workflow: pull request webhook intake, BullMQ queue buffering, and isolated Docker container execution with memory limits (128MB) and timeouts.
+      {simConfig.description}
     </p>
   </div>
 

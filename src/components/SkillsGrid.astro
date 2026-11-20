@@ -1,5 +1,35 @@
 ---
-import { skillCategories } from '../data/skills';
+import { skillCategories as defaultCategories } from '../data/skills';
+import { getFullSkillsMatrix } from '../lib/content';
+
+let skillCategories = defaultCategories;
+try {
+  const dbMatrix = getFullSkillsMatrix();
+  if (dbMatrix && dbMatrix.length > 0) {
+    // Map with static fallback context
+    const contextMap = new Map<string, string>();
+    defaultCategories.forEach((cat) => {
+      cat.skills.forEach((s) => contextMap.set(s.name, s.context));
+    });
+
+    skillCategories = dbMatrix.map((cat, idx) => {
+      const fallbackCat = defaultCategories[idx] || defaultCategories[0];
+      return {
+        id: cat.id,
+        code: fallbackCat?.code || `MOD_0${idx + 1} // DOMAIN`,
+        title: cat.title || fallbackCat.title,
+        tagline: cat.description || fallbackCat.tagline,
+        skills: cat.skills.map((s: any) => ({
+          name: s.name,
+          context: contextMap.get(s.name) || `${s.proficiency || 'Practiced'} Engineering`,
+          highlight: Boolean(s.is_highlighted),
+        })),
+      };
+    });
+  }
+} catch (e) {
+  // Fail-safe database fallback
+}
 ---
 
 <section id="skills" class="py-24 sm:py-32 border-b border-white/10 relative">

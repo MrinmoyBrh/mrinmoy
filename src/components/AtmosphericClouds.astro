@@ -1,4 +1,24 @@
 ---
+import { getAppearanceSettings } from '../lib/content';
+
+let cloudsConfig = {
+  enabled: true,
+  opacity: 0.14,
+  blurPx: 120,
+  speedMultiplier: 1.0,
+  cloud1Color: '#C72C41',
+  cloud2Color: '#929292',
+  cloud3Color: '#A82436',
+};
+
+try {
+  const app = getAppearanceSettings(true);
+  if (app?.cloudAnimation) {
+    cloudsConfig = { ...cloudsConfig, ...app.cloudAnimation };
+  }
+} catch (e) {
+  // Fallback
+}
 ---
 
 <!-- ==========================================================================
@@ -8,6 +28,7 @@
      Applied continuously behind all sections below the Hero.
      ========================================================================== -->
 
+{cloudsConfig.enabled && (
 <div
   id="atmospheric-clouds-layer"
   class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none -z-10 bg-[#080808]"
@@ -258,3 +279,4 @@
     }, { once: true });
   })();
 </script>
+)}
