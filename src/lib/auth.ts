@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
 import bcrypt from 'bcryptjs';
+import { argon2id, argon2Verify } from 'hash-wasm';
 import { getDb } from './db';
 import type { AstroCookies } from 'astro';
 
@@ -18,11 +19,26 @@ const SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 const MAX_FAILED_ATTEMPTS = 5;
 const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 mins
 
-export function hashPassword(plain: string): Promise<string> {
-  return bcrypt.hash(plain, 12);
+export async function hashPassword(plain: string): Promise<string> {
+  const salt = crypto.randomBytes(16);
+  return argon2id({
+    password: plain,
+    salt,
+    parallelism: 1,
+    iterations: 3,
+    memorySize: 65536,
+    hashLength: 32,
+    outputType: 'encoded',
+  });
 }
 
-export function verifyPassword(plain: string, hash: string): Promise<boolean> {
+export async function verifyPassword(plain: string, hash: string): Promise<boolean> {
+  if (hash.startsWith('$argon2id$') || hash.startsWith('$argon2i$') || hash.startsWith('$argon2d$')) {
+    return argon2Verify({
+      password: plain,
+      hash,
+    });
+  }
   return bcrypt.compare(plain, hash);
 }
 
@@ -52,28 +68,56 @@ export function recordLoginAttempt(ip: string, success: boolean) {
   insert.run(crypto.randomUUID(), ip, Date.now(), success ? 1 : 0);
 }
 
-export async function createAdminUser(username: string, email: string, plainPassword: string, name: string): Promise<AdminUser> {
+export async function createAdminUser(
+  username: string,
+  email: string,
+  plainPassword: string,
+  name: string
+): Promise<AdminUser> {
   const db = getDb();
-  const id = crypto.randomUUID();
-  const passwordHash = await hashPassword(plainPassword);
-  const now = Date.now();
+  const cleanUsername = username.trim().toLowerCase();
+  const cleanEmail = email.trim().toLowerCase();
+  const cleanName = name.trim();
 
-  const insert = db.prepare(`
-    INSERT INTO admin_users (id, username, email, password_hash, name, role, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, 'admin', ?, ?)
-  `);
+  db.exec('BEGIN IMMEDIATE TRANSACTION;');
+  try {
+    const countRow = db.prepare('SELECT COUNT(*) as count FROM admin_users').get() as { count: number };
+    if (countRow && countRow.count > 0) {
+      throw new Error('Initial setup is locked. An administrator account already exists.');
+    }
 
-  insert.run(id, username.trim().toLowerCase(), email.trim().toLowerCase(), passwordHash, name.trim(), now, now);
+    const existingEmail = db.prepare('SELECT id FROM admin_users WHERE email = ?').get(cleanEmail);
+    if (existingEmail) {
+      throw new Error('An administrator account with this email address already exists.');
+    }
 
-  return {
-    id,
-    username: username.trim().toLowerCase(),
-    email: email.trim().toLowerCase(),
-    name: name.trim(),
-    role: 'admin',
-    created_at: now,
-    last_login_at: null,
-  };
+    const id = crypto.randomUUID();
+    const passwordHash = await hashPassword(plainPassword);
+    const now = Date.now();
+
+    const insert = db.prepare(`
+      INSERT INTO admin_users (id, username, email, password_hash, name, role, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, 'admin', ?, ?)
+    `);
+
+    insert.run(id, cleanUsername, cleanEmail, passwordHash, cleanName, now, now);
+    db.exec('COMMIT;');
+
+    return {
+      id,
+      username: cleanUsername,
+      email: cleanEmail,
+      name: cleanName,
+      role: 'admin',
+      created_at: now,
+      last_login_at: null,
+    };
+  } catch (err) {
+    try {
+      db.exec('ROLLBACK;');
+    } catch {}
+    throw err;
+  }
 }
 
 export async function authenticateAdmin(
