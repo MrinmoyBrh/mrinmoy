@@ -4,14 +4,29 @@ import '../../styles/global.css';
 
 export const prerender = false;
 
-const adminCount = await getAdminUserCount();
-if (adminCount === 0) {
-  return Astro.redirect('/admin/setup');
+let dbError = false;
+let dbErrorMessage = '';
+
+try {
+  const adminCount = await getAdminUserCount();
+  if (adminCount === 0) {
+    return Astro.redirect('/admin/setup');
+  }
+
+  const user = await getSessionUser(Astro.cookies);
+  if (user) {
+    return Astro.redirect('/admin');
+  }
+} catch (err: any) {
+  console.error('[Admin Login Page] Error loading session or admin count:', err);
+  dbError = true;
+  dbErrorMessage = err.message || 'Database connection error';
 }
 
-const user = await getSessionUser(Astro.cookies);
-if (user) {
-  return Astro.redirect('/admin');
+const urlError = Astro.url.searchParams.get('error');
+if (urlError === 'db_error' && !dbError) {
+  dbError = true;
+  dbErrorMessage = 'Database connection error. Please verify your DATABASE_URL configuration.';
 }
 ---
 
@@ -46,9 +61,9 @@ if (user) {
         </div>
 
         <!-- Alert Container -->
-        <div id="error-alert" class="hidden mb-6 p-3 rounded-lg bg-[#EF4444]/10 border border-[#EF4444]/30 text-xs text-[#EF4444] font-medium flex items-center space-x-2">
+        <div id="error-alert" class={`${dbError ? '' : 'hidden'} mb-6 p-3 rounded-lg bg-[#EF4444]/10 border border-[#EF4444]/30 text-xs text-[#EF4444] font-medium flex items-center space-x-2`}>
           <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-          <span id="error-message"></span>
+          <span id="error-message">{dbErrorMessage}</span>
         </div>
 
         <!-- Credentials Form -->

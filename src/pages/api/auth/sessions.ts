@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import crypto from 'node:crypto';
-import { getSessionUser } from '../../../lib/auth';
+import { getSessionUser, hashSessionToken } from '../../../lib/auth';
 import { getDb } from '../../../lib/db';
 
 export const prerender = false;
@@ -25,8 +25,9 @@ export const DELETE: APIRoute = async ({ cookies }) => {
 
   try {
     const db = getDb();
-    const currentTokenHash = crypto.createHash('sha256').update(token).digest('hex');
-    const result = await db.prepare('DELETE FROM sessions WHERE user_id = ? AND token_hash != ?').run(user.id, currentTokenHash);
+    const currentTokenHash = hashSessionToken(token);
+    const legacyTokenHash = crypto.createHash('sha256').update(token).digest('hex');
+    const result = await db.prepare('DELETE FROM sessions WHERE user_id = ? AND token_hash != ? AND token_hash != ?').run(user.id, currentTokenHash, legacyTokenHash);
 
     return new Response(
       JSON.stringify({

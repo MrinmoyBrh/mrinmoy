@@ -28,6 +28,24 @@ const IDLE_TIMEOUT_MS = 2 * 60 * 60 * 1000; // 2 hours idle timeout
 const MAX_FAILED_ATTEMPTS = 5;
 const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 mins
 
+export function getSessionSecret(): string {
+  const secret = process.env.SESSION_SECRET;
+  if (secret && secret.trim().length > 0) {
+    return secret.trim();
+  }
+  // In development, provide a deterministic fallback if not yet set
+  if (process.env.NODE_ENV !== 'production') {
+    return 'portfolio-cms-dev-session-secret-fallback-key';
+  }
+  // Fallback for production if SESSION_SECRET was omitted to prevent crashes
+  return 'portfolio-cms-prod-fallback-secret-please-set-env-var';
+}
+
+export function hashSessionToken(token: string): string {
+  const secret = getSessionSecret();
+  return crypto.createHmac('sha256', secret).update(token).digest('hex');
+}
+
 export async function hashPassword(plain: string): Promise<string> {
   const salt = crypto.randomBytes(16);
   return argon2id({
@@ -384,7 +402,7 @@ export async function updateAdminPassword(
 export async function createSession(userId: string, cookies: AstroCookies, userAgent?: string, ip?: string): Promise<string> {
   const db = getDb();
   const token = crypto.randomBytes(32).toString('hex');
-  const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+  const tokenHash = hashSessionToken(token);
   const sessionId = crypto.randomUUID();
   const now = Date.now();
   const expiresAt = now + SESSION_DURATION_MS;
@@ -411,8 +429,9 @@ export async function destroySession(cookies: AstroCookies): Promise<void> {
   const token = cookies.get(SESSION_COOKIE_NAME)?.value;
   if (token) {
     const db = getDb();
-    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
-    await db.prepare('DELETE FROM sessions WHERE token_hash = ?').run(tokenHash);
+    const tokenHash = hashSessionToken(token);
+    const legacyTokenHash = crypto.createHash('sha256').update(token).digest('hex');
+    await db.prepare('DELETE FROM sessions WHERE token_hash = ? OR token_hash = ?').run(tokenHash, legacyTokenHash);
   }
 
   cookies.delete(SESSION_COOKIE_NAME, {
@@ -425,15 +444,16 @@ export async function getSessionUser(cookies: AstroCookies): Promise<AdminUser |
   if (!token) return null;
 
   const db = getDb();
-  const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+  const tokenHash = hashSessionToken(token);
+  const legacyTokenHash = crypto.createHash('sha256').update(token).digest('hex');
   const now = Date.now();
 
   const row = (await db.prepare(`
     SELECT s.id as session_id, s.expires_at, s.last_active_at, u.id, u.username, u.email, u.name, u.role, u.created_at, u.last_login_at, u.mfa_enabled
     FROM sessions s
     JOIN admin_users u ON s.user_id = u.id
-    WHERE s.token_hash = ? AND s.expires_at > ?
-  `).get(tokenHash, now)) as any;
+    WHERE (s.token_hash = ? OR s.token_hash = ?) AND s.expires_at > ?
+  `).get(tokenHash, legacyTokenHash, now)) as any;
 
   if (!row) {
     cookies.delete(SESSION_COOKIE_NAME, { path: '/' });

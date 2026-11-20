@@ -7,15 +7,26 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // 1. Initial Setup Guard
   if (pathname === '/admin/setup' || pathname === '/api/auth/setup') {
-    const adminCount = await getAdminUserCount();
-    if (adminCount > 0) {
+    try {
+      const adminCount = await getAdminUserCount();
+      if (adminCount > 0) {
+        if (pathname.startsWith('/api/')) {
+          return new Response(JSON.stringify({ error: 'Setup is locked. An administrator already exists.' }), {
+            status: 403,
+            headers: { 'Content-Type': 'application/json' },
+          });
+        }
+        return context.redirect('/admin/login');
+      }
+    } catch (err) {
+      console.error('[Middleware Error] Setup guard DB check failed:', err);
       if (pathname.startsWith('/api/')) {
-        return new Response(JSON.stringify({ error: 'Setup is locked. An administrator already exists.' }), {
-          status: 403,
+        return new Response(JSON.stringify({ error: 'Database service unavailable' }), {
+          status: 503,
           headers: { 'Content-Type': 'application/json' },
         });
       }
-      return context.redirect('/admin/login');
+      return context.redirect('/admin/login?error=db_error');
     }
   }
 
@@ -47,10 +58,18 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // 3. Centralized API Guard for all /api/cms/* mutating routes
   if (pathname.startsWith('/api/cms') && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method)) {
-    const user = await getSessionUser(context.cookies);
-    if (!user) {
-      return new Response(JSON.stringify({ error: 'Unauthorized: Administrative authentication required.' }), {
-        status: 401,
+    try {
+      const user = await getSessionUser(context.cookies);
+      if (!user) {
+        return new Response(JSON.stringify({ error: 'Unauthorized: Administrative authentication required.' }), {
+          status: 401,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+    } catch (err) {
+      console.error('[Middleware Error] CMS API guard DB check failed:', err);
+      return new Response(JSON.stringify({ error: 'Database authentication check failed' }), {
+        status: 500,
         headers: { 'Content-Type': 'application/json' },
       });
     }
@@ -58,9 +77,14 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // 4. Centralized Admin Page Guard for /admin/* (except login & setup)
   if (pathname.startsWith('/admin') && pathname !== '/admin/login' && pathname !== '/admin/setup') {
-    const user = await getSessionUser(context.cookies);
-    if (!user) {
-      return context.redirect('/admin/login');
+    try {
+      const user = await getSessionUser(context.cookies);
+      if (!user) {
+        return context.redirect('/admin/login');
+      }
+    } catch (err) {
+      console.error('[Middleware Error] Admin page guard DB check failed:', err);
+      return context.redirect('/admin/login?error=db_error');
     }
   }
 

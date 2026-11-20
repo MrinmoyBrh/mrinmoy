@@ -1,13 +1,6 @@
 import crypto from 'node:crypto';
 import { getDb } from './db';
-import { runInitialSeed } from './seed';
-
-// Ensure seed runs safely in background on module load
-try {
-  runInitialSeed().catch((e) => console.error('Error running initial seed:', e));
-} catch (e) {
-  console.error('Error running initial seed:', e);
-}
+export { runInitialSeed } from './seed';
 
 // Activity logger helper
 export async function logActivity(

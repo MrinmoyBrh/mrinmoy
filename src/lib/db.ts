@@ -1,7 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import pg from 'pg';
-import { DatabaseSync } from 'node:sqlite';
 
 export interface PreparedStatement {
   all(...params: any[]): Promise<any[]>;
@@ -21,31 +20,42 @@ function toPgSql(sql: string): string {
   return sql.replace(/\?/g, () => `$${count++}`);
 }
 
-// Parse PostgreSQL INT8 / BIGINT as JavaScript numbers (matching SQLite behavior)
+// Parse PostgreSQL INT8 / BIGINT as JavaScript numbers
 pg.types.setTypeParser(20, (val: string | null) => (val === null ? null : parseInt(val, 10)));
 
 let globalClient: DatabaseClient | null = null;
 let pgPoolInstance: pg.Pool | null = null;
 
-function resolveDatabaseUrl(): string | null {
-  if (process.env.DATABASE_URL && process.env.DATABASE_URL.trim().length > 0) {
-    return process.env.DATABASE_URL.trim().replace(/^["']|["']$/g, '');
+function resolveDatabaseUrl(): string {
+  const envVar =
+    process.env.DATABASE_URL ||
+    process.env.POSTGRES_URL ||
+    process.env.POSTGRES_PRISMA_URL ||
+    process.env.DATABASE_URL_UNPOOLED ||
+    process.env.POSTGRES_URL_NON_POOLING;
+
+  if (envVar && envVar.trim().length > 0) {
+    return envVar.trim().replace(/^["']|["']$/g, '');
   }
 
-  // Fallback to reading .env.local if running outside Astro Vite runner
-  const envLocalPath = path.resolve(process.cwd(), '.env.local');
-  if (fs.existsSync(envLocalPath)) {
-    try {
+  // Fallback to reading .env.local for local development if running outside Astro Vite runner
+  try {
+    const envLocalPath = path.resolve(process.cwd(), '.env.local');
+    if (fs.existsSync(envLocalPath)) {
       const content = fs.readFileSync(envLocalPath, 'utf8');
-      const match = content.match(/^DATABASE_URL=(.+)$/m);
+      const match = content.match(/^(?:DATABASE_URL|POSTGRES_URL)=(.+)$/m);
       if (match && match[1]) {
         const url = match[1].trim().replace(/^["']|["']$/g, '');
         if (url) return url;
       }
-    } catch {}
-  }
+    }
+  } catch {}
 
-  return null;
+  throw new Error(
+    '[Database Configuration Error] Neither DATABASE_URL nor POSTGRES_URL was found in environment variables. ' +
+    'Please configure DATABASE_URL in your Vercel Project Settings (Settings -> Environment Variables) ' +
+    'with your Neon PostgreSQL connection string.'
+  );
 }
 
 export function getDb(): DatabaseClient {
@@ -55,85 +65,47 @@ export function getDb(): DatabaseClient {
 
   const databaseUrl = resolveDatabaseUrl();
 
-  if (databaseUrl) {
-    if (!pgPoolInstance) {
-      pgPoolInstance = new pg.Pool({
-        connectionString: databaseUrl,
-        ssl: { rejectUnauthorized: false },
-        max: 10,
-        idleTimeoutMillis: 30000,
-        connectionTimeoutMillis: 10000,
-      });
+  if (!pgPoolInstance) {
+    pgPoolInstance = new pg.Pool({
+      connectionString: databaseUrl,
+      ssl: { rejectUnauthorized: false },
+      max: 10,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 10000,
+    });
 
-      pgPoolInstance.on('error', (err) => {
-        console.error('[Neon Postgres] Unexpected client pool error:', err);
-      });
-    }
-
-    const pool = pgPoolInstance;
-
-    globalClient = {
-      isPostgres: true,
-      prepare(sql: string): PreparedStatement {
-        const pgSql = toPgSql(sql);
-        return {
-          async all(...params: any[]) {
-            const res = await pool.query(pgSql, params);
-            return res.rows;
-          },
-          async get(...params: any[]) {
-            const res = await pool.query(pgSql, params);
-            return res.rows[0] || null;
-          },
-          async run(...params: any[]) {
-            const res = await pool.query(pgSql, params);
-            return { changes: res.rowCount ?? 0 };
-          },
-        };
-      },
-      async exec(sql: string) {
-        let cleanSql = sql;
-        if (/BEGIN(\s+IMMEDIATE)?\s+TRANSACTION;?/i.test(sql.trim())) {
-          cleanSql = 'BEGIN;';
-        }
-        await pool.query(cleanSql);
-      },
-    };
-
-    return globalClient;
+    pgPoolInstance.on('error', (err) => {
+      console.error('[Neon Postgres] Unexpected client pool error:', err);
+    });
   }
 
-  // SQLite Fallback for offline local development
-  const DATA_DIR = path.resolve(process.cwd(), 'data');
-  const DB_PATH = path.resolve(DATA_DIR, 'portfolio.db');
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-  }
-
-  const sqlite = new DatabaseSync(DB_PATH);
-  sqlite.exec('PRAGMA journal_mode = WAL;');
-  sqlite.exec('PRAGMA foreign_keys = ON;');
-  sqlite.exec('PRAGMA busy_timeout = 5000;');
+  const pool = pgPoolInstance;
 
   globalClient = {
-    isPostgres: false,
+    isPostgres: true,
     prepare(sql: string): PreparedStatement {
-      const stmt = sqlite.prepare(sql);
+      const pgSql = toPgSql(sql);
       return {
         async all(...params: any[]) {
-          return stmt.all(...params) as any[];
+          const res = await pool.query(pgSql, params);
+          return res.rows;
         },
         async get(...params: any[]) {
-          return (stmt.get(...params) as any) || null;
+          const res = await pool.query(pgSql, params);
+          return res.rows[0] || null;
         },
         async run(...params: any[]) {
-          const res = stmt.run(...params) as any;
-          return { changes: res?.changes ?? 0 };
+          const res = await pool.query(pgSql, params);
+          return { changes: res.rowCount ?? 0 };
         },
       };
     },
     async exec(sql: string) {
-      sqlite.exec(sql);
+      let cleanSql = sql;
+      if (/BEGIN(\s+IMMEDIATE)?\s+TRANSACTION;?/i.test(sql.trim())) {
+        cleanSql = 'BEGIN;';
+      }
+      await pool.query(cleanSql);
     },
   };
 

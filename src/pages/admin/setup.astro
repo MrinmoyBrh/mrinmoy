@@ -5,9 +5,14 @@ import '../../styles/global.css';
 export const prerender = false;
 
 // If an administrator already exists, redirect to login
-const adminCount = await getAdminUserCount();
-if (adminCount > 0) {
-  return Astro.redirect('/admin/login');
+try {
+  const adminCount = await getAdminUserCount();
+  if (adminCount > 0) {
+    return Astro.redirect('/admin/login');
+  }
+} catch (err: any) {
+  console.error('[Admin Setup Error] Database error on setup page load:', err);
+  return Astro.redirect('/admin/login?error=db_error');
 }
 ---
 

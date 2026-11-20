@@ -1,6 +1,6 @@
 ---
 import AdminLayout from '../../layouts/AdminLayout.astro';
-import { getSessionUser } from '../../lib/auth';
+import { getSessionUser, hashSessionToken } from '../../lib/auth';
 import { getDb } from '../../lib/db';
 import crypto from 'node:crypto';
 
@@ -17,7 +17,8 @@ const mfaEnabled = Boolean(adminRecord?.mfa_enabled);
 
 // Current session token hash to highlight current device
 const currentToken = Astro.cookies.get('mb_cms_session')?.value || '';
-const currentTokenHash = crypto.createHash('sha256').update(currentToken).digest('hex');
+const currentTokenHash = currentToken ? hashSessionToken(currentToken) : '';
+const legacyCurrentTokenHash = currentToken ? crypto.createHash('sha256').update(currentToken).digest('hex') : '';
 
 // Query active sessions
 const activeSessions = (await db.prepare(`
@@ -357,7 +358,7 @@ function parseUserAgent(ua: string | null): string {
 
       <div class="space-y-2">
         {activeSessions.map((s) => {
-          const isCurrent = s.token_hash === currentTokenHash;
+          const isCurrent = s.token_hash === currentTokenHash || s.token_hash === legacyCurrentTokenHash;
           return (
             <div class={`p-3 rounded-lg border flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono ${isCurrent ? 'bg-[#191919] border-[#FF5A1F]/30' : 'bg-[#191919]/50 border-[#343434]'}`}>
               <div class="flex items-center space-x-3">

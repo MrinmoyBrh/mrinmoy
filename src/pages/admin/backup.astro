@@ -7,7 +7,7 @@ export const prerender = false;
 const stats = await getDashboardStats();
 ---
 
-<AdminLayout title="Backup & Disaster Recovery" subtitle="Complete SQLite database export, schema migration & JSON import" activeNav="backup">
+<AdminLayout title="Backup & Disaster Recovery" subtitle="Complete PostgreSQL database export, schema migration & JSON import" activeNav="backup">
   
   <div class="space-y-6 max-w-4xl">
     <!-- Header Banner -->
@@ -74,7 +74,7 @@ const stats = await getDashboardStats();
           <div>
             <h3 class="text-sm font-bold text-[#F5F5F5]">Disaster Recovery Restore</h3>
             <p class="text-xs text-[#929292] mt-1 leading-relaxed">
-              Restore portfolio content from a previously exported JSON backup file. Operates in an atomic SQLite transaction.
+              Restore portfolio content from a previously exported JSON backup file. Operates in an atomic PostgreSQL transaction.
             </p>
           </div>
 

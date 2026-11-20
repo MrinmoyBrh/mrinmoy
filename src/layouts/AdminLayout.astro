@@ -11,14 +11,20 @@ interface Props {
 const { title, activeNav = 'dashboard', subtitle } = Astro.props;
 
 // Route Guard
-const adminCount = await getAdminUserCount();
-if (adminCount === 0) {
-  return Astro.redirect('/admin/setup');
-}
+let user = null;
+try {
+  const adminCount = await getAdminUserCount();
+  if (adminCount === 0) {
+    return Astro.redirect('/admin/setup');
+  }
 
-const user = await getSessionUser(Astro.cookies);
-if (!user) {
-  return Astro.redirect('/admin/login');
+  user = await getSessionUser(Astro.cookies);
+  if (!user) {
+    return Astro.redirect('/admin/login');
+  }
+} catch (err: any) {
+  console.error('[AdminLayout Error] Database check failed:', err);
+  return Astro.redirect('/admin/login?error=db_error');
 }
 ---
 
