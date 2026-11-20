@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import profilePic from '../assets/mrinmoy.jpg';
+
 const navLinks = [
   { name: 'Systems', href: '#systems' },
   { name: 'Principles', href: '#principles' },
@@ -20,16 +23,15 @@ const navLinks = [
           <div class="relative flex-shrink-0 w-[38px] h-[38px] sm:w-[44px] sm:h-[44px] rounded-full overflow-hidden border border-[#929292]/40 group-hover:border-[#C72C41]/80 group-hover:shadow-[0_0_12px_rgba(199,44,65,0.45)] transition-all duration-300 bg-ink-800 flex items-center justify-center">
             <!-- Fallback avatar displaying "MB" if the image fails to load -->
             <span class="technical-mono text-xs font-bold text-coral select-none pointer-events-none" aria-hidden="true">MB</span>
-            <img
-              src="/images/profile.jpg"
-              alt="Mrinmoy Borah"
-              width="44"
-              height="44"
+            <Image
+              src={profilePic}
+              alt=""
+              width={88}
+              height={88}
               loading="eager"
               decoding="async"
               class="absolute inset-0 w-full h-full object-cover rounded-full"
               style="object-position: center 30%;"
-              onerror="this.style.display='none'"
             />
           </div>
           <div>
