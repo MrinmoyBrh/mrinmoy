@@ -1,0 +1,232 @@
+---
+---
+
+<!-- ==========================================================================
+     Animated RGB Cloud Aurora Background
+     Soft, organic, multi-layered cloud gradients floating through Jet Black sky (#080808)
+     ========================================================================== -->
+
+<div
+  id="aurora-container"
+  class="fixed inset-0 overflow-hidden pointer-events-none select-none -z-20 bg-[#080808]"
+  aria-hidden="true"
+>
+  <!-- Deep Celestial Vignette Base -->
+  <div class="absolute inset-0 bg-gradient-to-b from-[#080808] via-[#080808]/90 to-[#080808] z-10 pointer-events-none"></div>
+
+  <!-- Parallax Cloud Canvas Wrapper -->
+  <div id="aurora-clouds" class="absolute -inset-[30%] w-[160%] h-[160%] will-change-transform">
+    
+    <!-- CLOUD 1: Soft Cherry Red (Drifts top-left to center-right) -->
+    <div
+      class="aurora-cloud cloud-cherry"
+      style="
+        top: 8%;
+        left: 12%;
+        width: 720px;
+        height: 720px;
+        background: radial-gradient(circle at 45% 45%, rgba(244, 93, 72, 0.24) 0%, rgba(220, 38, 60, 0.12) 35%, rgba(180, 20, 50, 0.04) 60%, transparent 75%);
+        filter: blur(85px);
+        animation: auroraDrift1 38s ease-in-out infinite alternate;
+      "
+    ></div>
+
+    <!-- CLOUD 2: Deep Cosmic Purple (Drifts top-right to bottom-center) -->
+    <div
+      class="aurora-cloud cloud-purple"
+      style="
+        top: 25%;
+        right: 10%;
+        width: 820px;
+        height: 820px;
+        background: radial-gradient(circle at 50% 50%, rgba(126, 34, 206, 0.22) 0%, rgba(88, 28, 135, 0.12) 40%, rgba(59, 7, 100, 0.03) 65%, transparent 75%);
+        filter: blur(95px);
+        animation: auroraDrift2 48s ease-in-out infinite alternate;
+      "
+    ></div>
+
+    <!-- CLOUD 3: Electric Deep Blue (Drifts mid-left across center) -->
+    <div
+      class="aurora-cloud cloud-blue"
+      style="
+        top: 52%;
+        left: 20%;
+        width: 780px;
+        height: 780px;
+        background: radial-gradient(circle at 55% 45%, rgba(37, 99, 235, 0.18) 0%, rgba(30, 64, 175, 0.09) 40%, rgba(15, 23, 42, 0.02) 65%, transparent 75%);
+        filter: blur(100px);
+        animation: auroraDrift3 54s ease-in-out infinite alternate;
+      "
+    ></div>
+
+    <!-- CLOUD 4: Subtle Magenta Nebula (Drifts between cherry red & purple) -->
+    <div
+      class="aurora-cloud cloud-magenta"
+      style="
+        top: 38%;
+        left: 45%;
+        width: 650px;
+        height: 650px;
+        background: radial-gradient(circle at 50% 50%, rgba(192, 38, 211, 0.16) 0%, rgba(147, 51, 234, 0.08) 45%, transparent 70%);
+        filter: blur(90px);
+        animation: auroraDrift4 42s ease-in-out infinite alternate;
+      "
+    ></div>
+
+    <!-- CLOUD 5: Atmospheric Restrained Teal (Anchors lower section) -->
+    <div
+      class="aurora-cloud cloud-teal"
+      style="
+        bottom: 10%;
+        right: 22%;
+        width: 680px;
+        height: 680px;
+        background: radial-gradient(circle at 50% 50%, rgba(22, 184, 176, 0.14) 0%, rgba(13, 148, 136, 0.06) 45%, transparent 70%);
+        filter: blur(90px);
+        animation: auroraDrift5 46s ease-in-out infinite alternate;
+      "
+    ></div>
+
+  </div>
+
+  <!-- Soft Upper Horizon Atmosphere Light -->
+  <div
+    class="absolute top-0 left-1/2 -translate-x-1/2 w-[90vw] h-[340px] pointer-events-none opacity-40"
+    style="
+      background: radial-gradient(ellipse at 50% 0%, rgba(244, 93, 72, 0.15) 0%, rgba(126, 34, 206, 0.08) 40%, transparent 70%);
+      filter: blur(60px);
+    "
+  ></div>
+</div>
+
+<style>
+  .aurora-cloud {
+    position: absolute;
+    border-radius: 9999px;
+    mix-blend-mode: screen;
+    will-change: transform, opacity;
+  }
+
+  /* Seamless, Organic Cloud Drift Keyframes */
+  @keyframes auroraDrift1 {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+      opacity: 0.85;
+    }
+    33% {
+      transform: translate3d(120px, 80px, 0) scale(1.15) rotate(15deg);
+      opacity: 1;
+    }
+    66% {
+      transform: translate3d(60px, 140px, 0) scale(0.92) rotate(8deg);
+      opacity: 0.75;
+    }
+    100% {
+      transform: translate3d(180px, 60px, 0) scale(1.08) rotate(22deg);
+      opacity: 0.9;
+    }
+  }
+
+  @keyframes auroraDrift2 {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1.05) rotate(0deg);
+      opacity: 0.9;
+    }
+    40% {
+      transform: translate3d(-140px, 90px, 0) scale(0.9) rotate(-18deg);
+      opacity: 0.7;
+    }
+    75% {
+      transform: translate3d(-80px, -50px, 0) scale(1.18) rotate(-8deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translate3d(-180px, 40px, 0) scale(1.02) rotate(-25deg);
+      opacity: 0.82;
+    }
+  }
+
+  @keyframes auroraDrift3 {
+    0% {
+      transform: translate3d(0, 0, 0) scale(0.95);
+      opacity: 0.75;
+    }
+    50% {
+      transform: translate3d(140px, -80px, 0) scale(1.16);
+      opacity: 1;
+    }
+    100% {
+      transform: translate3d(70px, 60px, 0) scale(0.88);
+      opacity: 0.7;
+    }
+  }
+
+  @keyframes auroraDrift4 {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1);
+      opacity: 0.7;
+    }
+    35% {
+      transform: translate3d(-90px, 70px, 0) scale(1.12);
+      opacity: 0.95;
+    }
+    70% {
+      transform: translate3d(100px, -50px, 0) scale(0.94);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translate3d(-50px, 100px, 0) scale(1.05);
+      opacity: 0.72;
+    }
+  }
+
+  @keyframes auroraDrift5 {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: translate3d(-110px, -70px, 0) scale(1.14);
+      opacity: 0.95;
+    }
+    100% {
+      transform: translate3d(60px, -40px, 0) scale(0.92);
+      opacity: 0.75;
+    }
+  }
+
+  /* Accessibility: Prefers Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .aurora-cloud {
+      animation: none !important;
+      transform: none !important;
+      opacity: 0.6 !important;
+    }
+  }
+</style>
+
+<script>
+  // Subtle, high-performance parallax scroll effect
+  const cloudsWrapper = document.getElementById('aurora-clouds');
+  let ticking = false;
+
+  function updateParallax() {
+    if (!cloudsWrapper) return;
+    const scrollY = window.scrollY || window.pageYOffset;
+    // Ultra-gentle parallax offset: ~3% of scroll distance
+    const translateY = scrollY * 0.035;
+    cloudsWrapper.style.transform = `translate3d(0, -${translateY}px, 0)`;
+    ticking = false;
+  }
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    },
+    { passive: true }
+  );
+</script>

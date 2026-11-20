@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import AuroraBackground from '../components/AuroraBackground.astro';
 
 interface Props {
   title?: string;
@@ -61,7 +62,7 @@ const personJsonLd = {
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="author" content="Mrinmoy Borah" />
-    <meta name="theme-color" content="#101827" />
+    <meta name="theme-color" content="#080808" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={type} />
@@ -80,20 +81,19 @@ const personJsonLd = {
     <!-- Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
   </head>
-  <body class="bg-ink text-pearl antialiased relative selection:bg-coral selection:text-ink">
+  <body class="bg-[#080808] text-pearl antialiased relative selection:bg-coral selection:text-ink">
     <!-- Accessible Skip to Content -->
     <a href="#main-content" class="skip-to-content">
       Skip to main content [Enter]
     </a>
 
-    <!-- Subtle noise & grid layers -->
+    <!-- Animated RGB Aurora Cloud Gradient Background -->
+    <AuroraBackground />
+
+    <!-- Subtle noise & technical grid layers -->
     <div class="noise-overlay" aria-hidden="true"></div>
-    <div class="fixed inset-0 tech-grid-bg opacity-30 pointer-events-none radial-mask" aria-hidden="true"></div>
+    <div class="fixed inset-0 tech-grid-bg opacity-25 pointer-events-none radial-mask" aria-hidden="true"></div>
 
     <slot />
-
-    <!-- Ambient Orbital Backlight -->
-    <div class="fixed bottom-0 right-0 w-[500px] h-[500px] bg-orbital/5 rounded-full blur-3xl pointer-events-none -z-10" aria-hidden="true"></div>
-    <div class="fixed top-20 left-10 w-[400px] h-[400px] bg-coral/5 rounded-full blur-3xl pointer-events-none -z-10" aria-hidden="true"></div>
   </body>
 </html>

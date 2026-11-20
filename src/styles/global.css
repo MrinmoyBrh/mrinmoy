@@ -5,9 +5,9 @@
 @tailwind utilities;
 
 :root {
-  --color-ink: #101827;
-  --color-ink-deep: #0A0F1A;
-  --color-ink-surface: #141D2E;
+  --color-ink: #080808;
+  --color-ink-deep: #040404;
+  --color-ink-surface: #0D1524;
   --color-pearl: #F7F5F0;
   --color-coral: #F45D48;
   --color-smoke: #8C96A3;
@@ -21,7 +21,7 @@
 
   html {
     scroll-behavior: smooth;
-    background-color: #101827;
+    background-color: #080808;
     color: #F7F5F0;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     text-rendering: optimizeLegibility;
@@ -30,7 +30,7 @@
   }
 
   body {
-    background-color: #101827;
+    background-color: #080808;
     color: #F7F5F0;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     min-height: 100vh;
