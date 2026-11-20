@@ -38,10 +38,10 @@ Every project and technical claim in this portfolio has been verified directly a
   - **Rolling Tenant Quotas:** Sliding 24-hour token consumption validation in PostgreSQL before queue ingestion.
 
 ### 2. APGCL Web Application & Administrative Dashboard
-- **Context:** Assam Power Generation Corporation Limited (APGCL) Internship.
-- **Runtime & Stack:** PHP 8.4, Laravel 13, Laravel Fortify, Livewire 4, Flux UI, MySQL 8.0, Tailwind CSS.
-- **Verified Features:**
-  - **Hardened Administrative Authentication:** WebAuthn / Passkeys authentication alongside Time-based One-Time Password (TOTP) two-factor challenge.
+- **Context:** Assam Power Generation Corporation Limited (APGCL) Internship (2026).
+- **Runtime & Stack:** PHP, Laravel, Livewire, MySQL, Tailwind CSS.
+- **Features:**
+  - **Administrative Authentication:** Secure user login and session management for administrative portal users.
   - **Transactional Notification Engine:** Automated email verification and notification workflows.
   - **Statutory Document Distribution:** Hierarchical document routing for electricity tariffs, Right to Information (RTI) disclosures, executive acts, and annual financial statements.
 

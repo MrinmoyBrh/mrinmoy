@@ -25,19 +25,19 @@ export const timeline: ExperienceItem[] = [
     techStack: ['Data Structures & Algorithms', 'Operating Systems', 'DBMS & SQL', 'Computer Networks', 'Distributed Systems']
   },
   {
-    period: '2024',
+    period: '2026',
     role: 'Software Engineering Intern',
     organization: 'Assam Power Generation Corporation Limited (APGCL)',
     location: 'Assam, India',
     type: 'Work Experience',
     description: 'Engineered an administrative enterprise web application and operations portal for Assam\'s state-owned electricity generation corporation.',
     points: [
-      'Developed administrative dashboard workflows utilizing PHP 8.4, Laravel 13, and Livewire/Flux component architecture.',
-      'Implemented defensive authentication security including Two-Factor Challenge (TOTP) and WebAuthn / Passkeys integration.',
-      'Engineered transactional email verification pipelines and automated administrative notification handlers.',
-      'Architected a structured statutory document archiving subsystem categorizing tariffs, legislative policies, and RTI disclosures.'
+      'Developed administrative dashboard workflows utilizing PHP, Laravel, and Livewire component architecture.',
+      'Implemented secure user authentication and session management for administrative access.',
+      'Engineered transactional email verification pipelines and administrative notification handlers.',
+      'Organized a structured statutory document repository categorizing tariffs, legislative policies, and RTI disclosures.'
     ],
-    techStack: ['PHP 8.4', 'Laravel 13', 'Laravel Fortify', 'Livewire', 'MySQL', 'WebAuthn / Passkeys', 'Tailwind CSS']
+    techStack: ['PHP', 'Laravel', 'MySQL', 'Livewire', 'Tailwind CSS']
   },
   {
     period: '2024',

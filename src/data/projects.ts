@@ -153,43 +153,43 @@ async getState(): Promise<CircuitState> {
     category: 'Enterprise Backend',
     role: 'Software Engineering Intern',
     organization: 'Assam Power Generation Corporation Limited (APGCL)',
-    period: '2024',
+    period: '2026',
     featured: true,
-    badges: ['Laravel 13', 'PHP 8.4', 'Livewire 4', 'Fortify', 'WebAuthn', 'MySQL'],
-    summary: 'An internal web application and administrative portal for Assam Power Generation Corporation Ltd. Features WebAuthn passkeys, two-factor authentication, transactional email notifications, and structured archiving for official state electricity filings.',
-    challenge: 'State power utility operations need dependable access control, strict security for administrative accounts, and organized public disclosure workflows for regulatory filings and notices.',
-    architectureNarrative: 'Built on PHP 8.4 and Laravel 13, using Laravel Fortify for defensive authentication. Administrative users log in using hardware passkeys (WebAuthn) and TOTP two-factor verification. The platform features an automated email verification pipeline and organizes regulatory documents, electricity tariffs, Right to Information (RTI) records, and annual filings into clean scoped routes.',
+    badges: ['Laravel', 'PHP', 'Livewire', 'MySQL', 'Admin Dashboard'],
+    summary: 'An internal web application and administrative portal for Assam Power Generation Corporation Ltd. Features secure user authentication, an administrative dashboard, transactional email notifications, and structured archiving for official state electricity filings.',
+    challenge: 'State power utility operations need dependable access control, administrative dashboards for daily tasks, and organized public disclosure workflows for regulatory filings and notices.',
+    architectureNarrative: 'Built with PHP and Laravel. Administrative workflows are managed through an interactive dashboard with Livewire components. The platform features an automated email verification pipeline and organizes regulatory documents, electricity tariffs, Right to Information (RTI) records, and annual filings into clean scoped routes.',
     architectureSteps: [
       {
         step: '01',
-        name: 'Passkey & 2FA Gate',
-        description: 'Implements WebAuthn passkey registration and TOTP two-factor challenges for admin access.',
-        technology: 'Laravel Fortify + WebAuthn'
+        name: 'User Authentication Gate',
+        description: 'Implements user authentication, login workflows, and session management for administrative access.',
+        technology: 'Laravel Auth'
       },
       {
         step: '02',
         name: 'Admin Dashboard',
-        description: 'Livewire and Flux UI interfaces for viewing system notifications and managing utility updates.',
-        technology: 'Livewire 4 + Flux UI'
+        description: 'Interactive Livewire interfaces for managing utility updates, viewing notifications, and handling administrative tasks.',
+        technology: 'Livewire + Blade'
       },
       {
         step: '03',
         name: 'Email Notifications',
-        description: 'Dispatches authenticated account verification emails and administrative security alerts.',
+        description: 'Dispatches authenticated account verification emails and administrative alert notifications.',
         technology: 'Laravel Mail Pipeline'
       },
       {
         step: '04',
-        name: 'Document Subsystem',
-        description: 'Organized archival system for regulatory tariffs, RTI disclosures, and annual financial statements.',
-        technology: 'MySQL + Storage Engine'
+        name: 'Document Archiving',
+        description: 'Organized archival subsystem for regulatory tariffs, RTI disclosures, and annual financial statements.',
+        technology: 'MySQL + Storage'
       }
     ],
     technicalHighlights: [
       {
-        title: 'WebAuthn Passkeys & 2FA Security',
-        description: 'Integrated FIDO2 / WebAuthn passkeys alongside authenticator app (TOTP) two-factor challenges to safeguard admin accounts.',
-        codeSnippet: `// Fortify Two-Factor Challenge & Passkey verification
+        title: 'Authentication & Session Security',
+        description: 'Integrated secure authentication middleware and session protection to safeguard administrative access.',
+        codeSnippet: `// Authenticated administrative routes
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
 });`
@@ -207,18 +207,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
       }
     ],
     verifiedClaims: [
-      'Built with PHP 8.4 runtime and Laravel 13',
-      'Administrative dashboard with dynamic Livewire and Flux UI components',
-      'Transactional email verification and security notifications via Fortify',
-      'Hardware passkey (WebAuthn) and TOTP two-factor authentication',
+      'Built with PHP and Laravel framework',
+      'Administrative dashboard with dynamic Livewire components',
+      'Transactional email verification and notifications',
+      'Secure administrative authentication and password management',
       'Scoped document management system for electricity tariffs, RTI, and policies'
     ],
     stack: {
-      runtime: ['PHP 8.4', 'Laravel 13'],
-      dataStores: ['MySQL (InnoDB)'],
-      messaging: ['Laravel Queue Workers', 'SMTP / Mail Engine'],
-      protocols: ['HTTPS', 'FIDO2 / WebAuthn', 'TOTP'],
-      tooling: ['Laravel Fortify', 'Livewire 4', 'Flux UI', 'Tailwind CSS']
+      runtime: ['PHP', 'Laravel'],
+      dataStores: ['MySQL'],
+      messaging: ['Mail Notifications'],
+      protocols: ['HTTPS', 'REST'],
+      tooling: ['Livewire', 'Tailwind CSS', 'Blade']
     }
   },
   {

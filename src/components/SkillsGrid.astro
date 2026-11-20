@@ -17,14 +17,14 @@ import { skillCategories } from '../data/skills';
         </h2>
       </div>
       <p class="text-smoke text-sm sm:text-base max-w-md leading-relaxed font-normal">
-        My daily backend toolkit—focused on queue architectures, asynchronous runtimes, relational database design, and container sandboxing.
+        A realistic summary of my technical competencies—spanning backend web development, programming languages, cloud fundamentals, developer tooling, and image processing.
       </p>
     </div>
 
     <!-- Asymmetrical Editorial Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       
-      <!-- Flagship Module: Queues & Distributed Systems (Spans 7 cols) -->
+      <!-- Flagship Module: Backend & Web Development (Spans 7 cols) -->
       {(() => {
         const flagship = skillCategories[0];
         return (
@@ -34,7 +34,7 @@ import { skillCategories } from '../data/skills';
 
             <div class="flex items-center justify-between pb-4 mb-6 border-b border-white/10 technical-mono text-xs">
               <span class="text-cherry font-bold">{flagship.code}</span>
-              <span class="text-smoke-dark uppercase tracking-wider">PRIMARY DISCIPLINE</span>
+              <span class="text-smoke-dark uppercase tracking-wider">CORE FOCUS</span>
             </div>
 
             <h3 class="editorial-title text-2xl sm:text-3xl font-bold text-pearl mb-2">
@@ -74,7 +74,7 @@ import { skillCategories } from '../data/skills';
           <div class="lg:col-span-5 bg-[#0A0A0A] border border-white/10 p-8 sm:p-10 relative shadow-2xl">
             <div class="flex items-center justify-between pb-4 mb-6 border-b border-white/10 technical-mono text-xs">
               <span class="text-cherry font-bold">{mod2.code}</span>
-              <span class="text-smoke-dark uppercase tracking-wider">ENVIRONMENTS</span>
+              <span class="text-smoke-dark uppercase tracking-wider">LANGUAGES</span>
             </div>
 
             <h3 class="editorial-title text-2xl sm:text-3xl font-bold text-pearl mb-2">
@@ -113,7 +113,7 @@ import { skillCategories } from '../data/skills';
           <div>
             <div class="flex items-center justify-between pb-3 mb-5 border-b border-white/10 technical-mono text-xs">
               <span class="text-cherry font-bold">{cat.code}</span>
-              <span class="text-smoke-dark text-[10px]">VERIFIED</span>
+              <span class="text-smoke-dark text-[10px]">TOOLKIT</span>
             </div>
 
             <h3 class="editorial-title text-xl sm:text-2xl font-bold text-pearl mb-2">
@@ -145,8 +145,8 @@ import { skillCategories } from '../data/skills';
           </div>
 
           <div class="mt-6 pt-3 border-t border-white/5 flex items-center justify-between text-[10px] technical-mono text-smoke-dark">
-            <span>DOMAIN // COMPLIANT</span>
-            <span class="text-cherry">● ACTIVE</span>
+            <span>DOMAIN // OVERVIEW</span>
+            <span class="text-smoke-dark">FOUNDATIONS</span>
           </div>
         </div>
       ))}
