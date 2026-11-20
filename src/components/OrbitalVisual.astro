@@ -1,20 +1,22 @@
 ---
 ---
 
-<div class="relative w-full max-w-[540px] aspect-square mx-auto flex items-center justify-center select-none" aria-label="Distributed backend architecture orbital diagram">
+<div class="relative w-full max-w-[500px] lg:max-w-[540px] mx-auto flex flex-col items-center select-none" aria-label="Distributed backend architecture orbital diagram">
   
-  <!-- Outer Glow Backdrop -->
-  <div class="absolute inset-0 rounded-full bg-orbital/5 blur-2xl pointer-events-none"></div>
+  <!-- Orbital Systems Canvas Container -->
+  <div class="relative w-full aspect-square flex items-center justify-center">
+    <!-- Outer Glow Backdrop -->
+    <div class="absolute inset-0 rounded-full bg-orbital/5 blur-2xl pointer-events-none"></div>
 
-  <!-- SVG Orbital Systems Canvas -->
-  <svg
-    class="w-full h-full relative z-10 overflow-visible"
-    viewBox="0 0 500 500"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    role="img"
-    aria-label="Orbital architecture diagram showing API gateway, BullMQ queue, Redis cache, and telemetry"
-  >
+    <!-- SVG Orbital Systems Canvas -->
+    <svg
+      class="w-full h-full relative z-10 overflow-visible"
+      viewBox="0 0 500 500"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label="Orbital architecture diagram showing API gateway, BullMQ queue, Redis cache, and telemetry"
+    >
     <defs>
       <!-- Gradients -->
       <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
@@ -125,12 +127,13 @@
     <!-- Radar telemetry tags around edge -->
     <text x="30" y="40" font-family="'JetBrains Mono', monospace" font-size="8" fill="#8C96A3" opacity="0.6">SYS.ORBIT // 26.14°N</text>
     <text x="470" y="40" font-family="'JetBrains Mono', monospace" font-size="8" fill="#8C96A3" opacity="0.6" text-anchor="end">REDIS.V6.CLUSTER</text>
-    <text x="30" y="480" font-family="'JetBrains Mono', monospace" font-size="8" fill="#8C96A3" opacity="0.6">FAILOVER // 3.3-70B ➔ 1.5-FLASH</text>
-    <text x="470" y="480" font-family="'JetBrains Mono', monospace" font-size="8" fill="#8C96A3" opacity="0.6" text-anchor="end">LATENCY // &lt;5ms HIT</text>
+    <text x="30" y="465" font-family="'JetBrains Mono', monospace" font-size="8" fill="#8C96A3" opacity="0.6">FAILOVER // 3.3-70B ➔ 1.5-FLASH</text>
+    <text x="470" y="465" font-family="'JetBrains Mono', monospace" font-size="8" fill="#8C96A3" opacity="0.6" text-anchor="end">LATENCY // &lt;5ms HIT</text>
   </svg>
+  </div>
 
-  <!-- Interactive status HUD pill below visual -->
-  <div class="absolute -bottom-4 bg-ink-800/90 border border-white/10 px-4 py-1.5 rounded-full backdrop-blur-md shadow-surface-elevated flex items-center space-x-3 z-20">
+  <!-- Interactive status HUD pill below visual with responsive natural spacing -->
+  <div class="mt-4 sm:mt-5 bg-ink-800/90 border border-white/10 px-4 py-1.5 rounded-full backdrop-blur-md shadow-surface-elevated flex items-center space-x-3 z-20">
     <div class="flex items-center space-x-1.5">
       <span class="w-2 h-2 rounded-full bg-orbital animate-ping"></span>
       <span class="technical-mono text-[11px] font-semibold text-pearl">TOPOLOGY: DISTRIBUTED</span>
