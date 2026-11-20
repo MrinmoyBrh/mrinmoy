@@ -495,8 +495,8 @@ const additional = projects.filter((p) => !p.featured);
     </article>
 
     <!-- ====================================================================
-         ADDITIONAL SYSTEMS ARCHIVE (MicroBounty & SecureVault)
-         Clean Editorial Duo Strip with Asymmetric Typography
+         ADDITIONAL SYSTEMS ARCHIVE
+         Clean 3-Column Editorial Grid: Personal-Note-Locker, Crop Disease Detection, auth-system
          ==================================================================== -->
     <div class="pt-16 border-t border-white/10">
       
@@ -507,43 +507,120 @@ const additional = projects.filter((p) => !p.featured);
         <span class="text-smoke-dark text-xs technical-mono">[ENGINEERING ARCHIVES]</span>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-        {additional.map((item, idx) => (
-          <div class="p-8 bg-[#0A0A0A] border border-white/10 relative flex flex-col justify-between hover:border-white/25 transition-colors">
-            
-            <div class="mb-6">
-              <div class="flex items-center justify-between technical-mono text-xs text-smoke-dark mb-4 pb-3 border-b border-white/5">
-                <span class="text-cherry font-bold">ARCHIVE // 0{idx + 4}</span>
-                <span>{item.period}</span>
-              </div>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+        {additional.map((item, idx) => {
+          const isPrimary = idx === 0;
+          return (
+            <div
+              class={`p-6 sm:p-8 relative flex flex-col justify-between transition-all duration-300 ${
+                isPrimary
+                  ? 'bg-[#0D0D0D] border border-cherry/40 hover:border-cherry shadow-[0_4px_30px_rgba(199,44,65,0.08)]'
+                  : 'bg-[#0A0A0A] border border-white/10 hover:border-white/25'
+              }`}
+            >
+              {isPrimary && (
+                <div class="absolute -top-px left-0 right-0 h-[2px] bg-gradient-to-r from-cherry via-cherry/80 to-transparent"></div>
+              )}
 
-              <h4 class="editorial-title text-2xl font-bold text-pearl mb-3 leading-snug">
-                <a href={`/projects/${item.slug}`} class="hover:text-cherry transition-colors">
-                  {item.title}
-                </a>
-              </h4>
+              <div>
+                <!-- Card Header Dossier -->
+                <div class="flex items-center justify-between technical-mono text-xs text-smoke-dark mb-4 pb-3 border-b border-white/5">
+                  <div class="flex items-center space-x-2">
+                    <span class={`w-1.5 h-1.5 rounded-full ${isPrimary ? 'bg-cherry' : 'bg-smoke'}`}></span>
+                    <span class={isPrimary ? 'text-cherry font-bold' : 'text-smoke-light font-bold'}>
+                      PROJECT // 0{idx + 1}
+                    </span>
+                  </div>
+                  {isPrimary ? (
+                    <span class="px-2 py-0.5 bg-cherry/10 text-cherry border border-cherry/30 text-[10px] font-bold">
+                      PRIMARY REPO
+                    </span>
+                  ) : idx === 1 ? (
+                    <span class="px-2 py-0.5 bg-white/5 text-smoke-light border border-white/10 text-[10px]">
+                      NIT SILCHAR INTERNSHIP
+                    </span>
+                  ) : (
+                    <span class="px-2 py-0.5 bg-white/5 text-smoke-light border border-white/10 text-[10px]">
+                      COMPLETED REPO
+                    </span>
+                  )}
+                </div>
 
-              <p class="text-xs sm:text-sm text-smoke-light leading-relaxed mb-6">
-                {item.summary}
-              </p>
+                <!-- Project Title -->
+                <h4 class="editorial-title text-xl sm:text-2xl font-bold text-pearl mb-3 leading-snug">
+                  <a
+                    href={`/projects/${item.slug}`}
+                    class="hover:text-cherry transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cherry"
+                  >
+                    {item.title}
+                  </a>
+                </h4>
 
-              <div class="flex flex-wrap gap-1.5 technical-mono text-[11px] text-smoke">
-                {item.badges.map((b) => (
-                  <span class="px-2 py-0.5 bg-white/5 border border-white/5">
-                    [{b}]
+                <!-- Short Natural Description -->
+                <p class="text-xs sm:text-sm text-smoke-light leading-relaxed mb-6 font-normal">
+                  {item.summary}
+                </p>
+
+                <!-- Key Implemented Features (2-3 items) -->
+                {item.keyFeatures && item.keyFeatures.length > 0 && (
+                  <div class="space-y-2.5 mb-6 pb-6 border-b border-white/5 technical-mono">
+                    <span class="text-[10px] uppercase tracking-wider text-smoke-dark font-semibold block mb-1">
+                      Key Implemented Features
+                    </span>
+                    {item.keyFeatures.map((feat) => (
+                      <div class="flex items-start space-x-2 text-smoke-light text-[11px] leading-relaxed">
+                        <span class="text-cherry font-bold">›</span>
+                        <span>
+                          <strong class="text-pearl font-medium">{feat.label}:</strong> {feat.detail}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <!-- Real Technologies Used -->
+                <div class="mb-6">
+                  <span class="text-[10px] uppercase tracking-wider text-smoke-dark font-semibold block mb-2 technical-mono">
+                    Technologies
                   </span>
-                ))}
+                  <div class="flex flex-wrap gap-1.5 technical-mono text-[11px] text-smoke">
+                    {item.badges.map((b) => (
+                      <span class="px-2 py-0.5 bg-white/5 text-smoke-light border border-white/10">
+                        [{b}]
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
 
-            <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs technical-mono">
-              <a href={`/projects/${item.slug}`} class="text-pearl hover:text-cherry font-semibold transition-colors">
-                Read architecture case study →
-              </a>
-            </div>
+              <!-- Action Links Footer -->
+              <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs technical-mono gap-3">
+                {item.githubUrl ? (
+                  <a
+                    href={item.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center space-x-1.5 text-cherry hover:text-pearl font-semibold transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cherry"
+                    aria-label={`View ${item.title} repository on GitHub (opens in new tab)`}
+                  >
+                    <span>GitHub Repo</span>
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                ) : (
+                  <span class="text-smoke-dark text-[11px]">Academic Research</span>
+                )}
+                <a
+                  href={`/projects/${item.slug}`}
+                  class="text-smoke-light hover:text-cherry font-semibold transition-colors inline-flex items-center space-x-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cherry"
+                >
+                  <span>Case Study</span>
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
 
-          </div>
-        ))}
+            </div>
+          );
+        })}
       </div>
 
     </div>

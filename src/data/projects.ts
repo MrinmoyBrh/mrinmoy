@@ -41,6 +41,10 @@ export interface ProjectCaseStudy {
     protocols: string[];
     tooling: string[];
   };
+  keyFeatures?: {
+    label: string;
+    detail: string;
+  }[];
 }
 
 export const projects: ProjectCaseStudy[] = [
@@ -222,79 +226,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     }
   },
   {
-    id: 'crop-disease-detection',
-    slug: 'crop-disease-detection',
-    title: 'Crop Disease Detection Using Image Processing',
-    tagline: 'Computer vision and deep learning pipeline for plant leaf disease diagnosis, associated with NIT Silchar.',
-    category: 'Computer Vision & AI',
-    role: 'Lead Researcher & CV Engineer',
-    organization: 'Associated with National Institute of Technology Silchar (NIT Silchar)',
-    period: 'Academic Research',
-    featured: false,
-    badges: ['Computer Vision', 'OpenCV', 'TensorFlow', 'Deep Learning', 'Image Processing'],
-    summary: 'An academic research project associated with NIT Silchar that detects and classifies plant leaf diseases from camera captures. It isolates diseased foliage using HSV and LAB color spaces and classifies pathologies using a convolutional neural network.',
-    challenge: 'Delayed detection of crop diseases like rust and chlorosis leads to severe agricultural loss in smallholder farms. Diagnosing infections traditionally requires field agronomists, causing critical delays in intervention.',
-    architectureNarrative: 'The pipeline takes leaf photographs captured under changing outdoor lighting conditions. OpenCV applies bilateral smoothing to remove speckle noise while preserving lesion edges, then converts RGB images into HSV and LAB color spaces to isolate damaged tissue from healthy green chlorophyll. Extracted contours are classified by a convolutional neural network to identify specific infections.',
-    architectureSteps: [
-      {
-        step: '01',
-        name: 'Image Preprocessing',
-        description: 'Applies bilateral filtering to smooth background noise while keeping lesion contours sharp.',
-        technology: 'OpenCV + NumPy'
-      },
-      {
-        step: '02',
-        name: 'Color Space Transformation',
-        description: 'Converts leaf images to HSV and LAB color spaces to isolate chlorotic and necrotic tissue.',
-        technology: 'Digital Image Processing'
-      },
-      {
-        step: '03',
-        name: 'Lesion Segmentation',
-        description: 'Uses Otsu thresholding and contour detection to compute the exact boundaries of infected areas.',
-        technology: 'Mathematical Morphology'
-      },
-      {
-        step: '04',
-        name: 'Neural Classification',
-        description: 'Feeds segmented regions into a trained convolutional network to diagnose fungal and bacterial diseases.',
-        technology: 'TensorFlow / PyTorch'
-      }
-    ],
-    technicalHighlights: [
-      {
-        title: 'Chromatic Leaf Segmentation in HSV Space',
-        description: 'Decouples color information from light intensity by converting RGB images to HSV space, eliminating shadows and false positives.',
-        codeSnippet: `# Chromatic leaf segmentation in HSV space
-hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-lower_green = np.array([25, 40, 40])
-upper_green = np.array([85, 255, 255])
-mask = cv2.inRange(hsv, lower_green, upper_green)
-lesion_mask = cv2.bitwise_not(mask)`
-      },
-      {
-        title: 'Quantitative Lesion Area Ratio',
-        description: 'Calculates the proportion of damaged leaf tissue against total leaf area to assist severity scoring.',
-        codeSnippet: `# Quantitative lesion area ratio calculation
-total_leaf_pixels = np.count_nonzero(leaf_contour)
-infected_pixels = np.count_nonzero(lesion_mask)
-infection_ratio = infected_pixels / max(1, total_leaf_pixels)`
-      }
-    ],
-    verifiedClaims: [
-      'Academic research project associated with NIT Silchar',
-      'OpenCV image processing with HSV/LAB color transformations and morphological filtering',
-      'Automated deep learning classification for early crop disease intervention'
-    ],
-    stack: {
-      runtime: ['Python 3'],
-      dataStores: ['Dataset Repositories'],
-      messaging: [],
-      protocols: ['REST API Inference'],
-      tooling: ['OpenCV', 'TensorFlow', 'NumPy', 'Matplotlib']
-    }
-  },
-  {
     id: 'microbounty',
     slug: 'microbounty',
     title: 'MicroBounty — Sandboxed Code Evaluation & PR Verifier Engine',
@@ -356,61 +287,287 @@ const container = await docker.createContainer({
     }
   },
   {
-    id: 'securevault',
-    slug: 'securevault',
-    title: 'SecureVault — Role-Based Document Management & File Storage Engine',
-    tagline: 'Self-hosted Python storage engine with a 3NF normalized MySQL database and SHA-256 deduplication.',
+    id: 'personal-note-locker',
+    slug: 'personal-note-locker',
+    title: 'Personal-Note-Locker',
+    tagline: 'RESTful personal note management API with JWT authentication and strict per-user document isolation.',
     category: 'Enterprise Backend',
-    role: 'Backend Architect',
+    role: 'Backend Developer',
     period: '2024',
     featured: false,
-    badges: ['Python', 'Flask', 'MySQL 3NF', 'Docker', 'Cryptography'],
-    summary: 'A self-hosted storage backend built with Python, Flask, and a normalized MySQL database. Streams file uploads through cryptographic SHA-256 hashing to deduplicate identical files on disk, keeping storage lean without relying on commercial cloud buckets.',
-    challenge: 'File storage systems frequently store duplicate copies of the same files and lack cryptographic verification to prove that stored files have not been modified or corrupted.',
-    architectureNarrative: 'Files stream through SHA-256 hashers during upload to automatically detect identical files and share storage on disk. A 3NF normalized MySQL database manages access boundaries, storage quotas, and an append-only audit trail.',
+    githubUrl: 'https://github.com/MrinmoyBrh/Personal-Note-Locker',
+    badges: ['Node.js', 'Express', 'MongoDB', 'Mongoose', 'JWT', 'bcryptjs'],
+    summary: 'A secure RESTful note-taking backend built with Node.js, Express, and MongoDB. Enforces strict document-level data isolation so users can only access their own records, protected by stateless JWT authentication middleware and bcrypt password hashing.',
+    challenge: 'Multi-user note and document storage systems must guarantee that one authenticated user cannot query, modify, or delete another user\'s private data through ID tampering or unauthorized API requests.',
+    architectureNarrative: 'The backend uses an Express router structure with separate authentication and resource management pipelines. Incoming requests to /api/notes pass through a custom JWT middleware that validates Bearer tokens and extracts the authenticated user ID. All subsequent MongoDB queries strictly scope reads and mutations using the verified user ID, preventing cross-tenant data leaks.',
     architectureSteps: [
       {
         step: '01',
-        name: 'Streaming Ingestion',
-        description: 'Reads incoming file chunks and calculates a cryptographic SHA-256 digest in real time.',
-        technology: 'Python Stream IO'
+        name: 'Authentication Pipeline',
+        description: 'Registers users with salted bcrypt password hashing and issues signed JSON Web Tokens upon credential verification.',
+        technology: 'Node.js + bcryptjs + JWT'
       },
       {
         step: '02',
-        name: 'Content Deduplication',
-        description: 'Stores files indexed by their hash, saving disk space when identical files are uploaded.',
-        technology: 'Sharded Disk Store'
+        name: 'Bearer Token Middleware',
+        description: 'Intercepts incoming HTTP headers, validates JWT signatures, and attaches decoded user identity to request objects.',
+        technology: 'Express Middleware'
       },
       {
         step: '03',
-        name: 'Relational Audit Log',
-        description: 'Records file uploads, downloads, and link access in normalized MySQL audit tables.',
-        technology: 'MySQL 8.0 (InnoDB)'
+        name: 'Scoped CRUD Operations',
+        description: 'Enforces document ownership verification on note creation, retrieval, updates, and deletion.',
+        technology: 'MongoDB + Mongoose ODM'
       }
     ],
     technicalHighlights: [
       {
-        title: 'Cryptographic Content-Addressable Storage',
-        description: 'Computes SHA-256 digests on streaming uploads to verify integrity and prevent duplicate files on disk.',
-        codeSnippet: `def compute_file_hash(stream):
-    hasher = hashlib.sha256()
-    while chunk := stream.read(65536):
-        hasher.update(chunk)
-    stream.seek(0)
-    return hasher.hexdigest()`
+        title: 'User-Scoped Document Isolation',
+        description: 'Guarantees that database operations always query with the authenticated user ID, blocking horizontal privilege escalation.',
+        codeSnippet: `// Scoped note retrieval strictly filtered by authenticated user
+router.get('/', protect, async (req, res) => {
+  try {
+    const notes = await Note.find({ user: req.user });
+    res.json(notes);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});`
+      },
+      {
+        title: 'Stateless JWT Verification Middleware',
+        description: 'Extracts Bearer tokens from the Authorization header, verifies signature against the secret, and injects user identity into req.user.',
+        codeSnippet: `const protect = (req, res, next) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+  if (!token) return res.status(401).json({ message: 'Access denied. No token provided.' });
+
+  try {
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = verified.id;
+    next();
+  } catch (err) {
+    res.status(400).json({ message: 'Invalid token.' });
+  }
+};`
       }
     ],
     verifiedClaims: [
-      'Layered Flask architecture with repository and service layers',
-      'Normalized 3NF MySQL schema with foreign keys and index optimization',
-      'Content-addressable file deduplication using streaming SHA-256 hashes'
+      'Complete REST API built with Express and MongoDB (Mongoose)',
+      'Stateless JWT authentication with custom authorization middleware',
+      'Document-level user isolation preventing cross-user data access',
+      'Secure password hashing with bcryptjs salt rounds'
     ],
     stack: {
-      runtime: ['Python 3', 'Flask', 'Gunicorn'],
-      dataStores: ['MySQL 8.0 (3NF InnoDB)', 'Isolated File Store'],
+      runtime: ['Node.js', 'Express'],
+      dataStores: ['MongoDB', 'Mongoose ODM'],
       messaging: [],
-      protocols: ['HTTP/1.1', 'WSGI'],
-      tooling: ['Docker Compose', 'Pytest']
-    }
+      protocols: ['REST', 'HTTP/1.1'],
+      tooling: ['dotenv', 'cors', 'Git']
+    },
+    keyFeatures: [
+      {
+        label: 'Scoped Data Isolation',
+        detail: 'Enforces document ownership checks on all CRUD operations to guarantee per-user data privacy.'
+      },
+      {
+        label: 'Stateless JWT Middleware',
+        detail: 'Bearer token middleware protecting endpoints and attaching validated user identity to requests.'
+      },
+      {
+        label: 'Bcrypt Credential Hashing',
+        detail: 'Salts and hashes user passwords before persisting credentials to MongoDB.'
+      }
+    ]
+  },
+  {
+    id: 'crop-disease-detection',
+    slug: 'crop-disease-detection',
+    title: 'Crop Disease Detection Using Image Processing',
+    tagline: 'Academic image-processing pipeline for plant leaf disease analysis, associated with NIT Silchar.',
+    category: 'Computer Vision & AI',
+    role: 'Research Intern (Computer Vision)',
+    organization: 'Associated with National Institute of Technology Silchar (NIT Silchar)',
+    period: 'Academic Internship',
+    featured: false,
+    badges: ['Python', 'OpenCV', 'NumPy', 'Image Processing', 'Color Segmentation'],
+    summary: 'An academic image-processing project developed during my research internship associated with the National Institute of Technology Silchar (NIT Silchar). Implements an automated pipeline using Python and OpenCV to detect and analyze plant leaf diseases through chromatic color space transformations and quantitative lesion segmentation.',
+    challenge: 'Diagnosing plant pathology in early stages is often complicated by unpredictable outdoor illumination, camera noise, and complex leaf surface textures that obscure infected regions.',
+    architectureNarrative: 'The pipeline processes plant leaf captures using digital image processing routines. Bilateral filtering suppresses field speckle noise while preserving sharp lesion boundaries. The image is transformed into HSV and LAB color spaces to segment chlorotic and necrotic tissue from healthy green chlorophyll, followed by morphological contour extraction to calculate quantitative infection ratios.',
+    architectureSteps: [
+      {
+        step: '01',
+        name: 'Noise Suppression',
+        description: 'Applies bilateral filtering to smooth leaf surface noise while maintaining crisp lesion boundaries.',
+        technology: 'OpenCV Bilateral Filter'
+      },
+      {
+        step: '02',
+        name: 'Chromatic Color Segmentation',
+        description: 'Converts RGB leaf images to HSV and LAB color spaces to isolate diseased foliage from chlorophyll.',
+        technology: 'Color Space Transformation'
+      },
+      {
+        step: '03',
+        name: 'Morphological Extraction',
+        description: 'Extracts connected lesion contours and masks infected surface regions using mathematical morphology.',
+        technology: 'Otsu & Morphological Ops'
+      },
+      {
+        step: '04',
+        name: 'Area Ratio Scoring',
+        description: 'Computes infected surface pixels relative to total leaf contour area for quantitative pathology scoring.',
+        technology: 'NumPy Contour Analysis'
+      }
+    ],
+    technicalHighlights: [
+      {
+        title: 'Chromatic Leaf Segmentation in HSV Space',
+        description: 'Decouples color information from light intensity by converting RGB images to HSV space, eliminating shadows and false positives.',
+        codeSnippet: `# Chromatic leaf segmentation in HSV space
+hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+lower_green = np.array([25, 40, 40])
+upper_green = np.array([85, 255, 255])
+mask = cv2.inRange(hsv, lower_green, upper_green)
+lesion_mask = cv2.bitwise_not(mask)`
+      },
+      {
+        title: 'Quantitative Lesion Area Ratio',
+        description: 'Calculates the proportion of damaged leaf tissue against total leaf area to assist severity scoring.',
+        codeSnippet: `# Quantitative lesion area ratio calculation
+total_leaf_pixels = np.count_nonzero(leaf_contour)
+infected_pixels = np.count_nonzero(lesion_mask)
+infection_ratio = infected_pixels / max(1, total_leaf_pixels)`
+      }
+    ],
+    verifiedClaims: [
+      'Academic image-processing project associated with NIT Silchar internship',
+      'Python and OpenCV pipeline using HSV/LAB color transformations and bilateral filtering',
+      'Quantitative lesion area ratio computation for disease severity analysis'
+    ],
+    stack: {
+      runtime: ['Python 3'],
+      dataStores: ['Local Image Repositories'],
+      messaging: [],
+      protocols: ['File I/O'],
+      tooling: ['OpenCV', 'NumPy', 'Matplotlib']
+    },
+    keyFeatures: [
+      {
+        label: 'Color Space Analysis',
+        detail: 'Converts RGB leaf captures to HSV and LAB spaces to isolate chlorotic and necrotic lesions.'
+      },
+      {
+        label: 'Bilateral Filtering',
+        detail: 'Preserves sharp lesion contours while suppressing surface leaf speckle and lighting noise.'
+      },
+      {
+        label: 'Area Ratio Scoring',
+        detail: 'Calculates the ratio of diseased contour pixels against total leaf contour area.'
+      }
+    ]
+  },
+  {
+    id: 'auth-system',
+    slug: 'auth-system',
+    title: 'auth-system',
+    tagline: 'Two-step authentication backend with time-expiring email OTP verification and guarded JWT issuance.',
+    category: 'Enterprise Backend',
+    role: 'Backend Developer',
+    period: '2024',
+    featured: false,
+    githubUrl: 'https://github.com/MrinmoyBrh/auth-system',
+    badges: ['Node.js', 'Express', 'MongoDB', 'Nodemailer', 'JWT', 'bcryptjs'],
+    summary: 'A two-step user authentication backend developed with Node.js, Express, and MongoDB. Enforces email ownership verification by dispatching 6-digit time-expiring OTPs via Nodemailer SMTP, ensuring accounts cannot obtain JWT access tokens until verified.',
+    challenge: 'Preventing fake and disposable email registrations requires verifying inbox ownership through automated OTP dispatch before granting authenticated access to application resources.',
+    architectureNarrative: 'The service implements a registration pipeline where user records are initially created with an unverified status (isVerified: false). A cryptographically generated 6-digit OTP with a 10-minute expiration timestamp is dispatched via Nodemailer. A dedicated /api/verify-otp endpoint validates the code and promotes the account to verified status, after which the login endpoint permits JWT token issuance.',
+    architectureSteps: [
+      {
+        step: '01',
+        name: 'Registration & OTP Generation',
+        description: 'Hashes passwords with bcrypt, generates a 6-digit numerical OTP with a 10-minute expiry, and saves user in unverified state.',
+        technology: 'Node.js + bcryptjs + Crypto'
+      },
+      {
+        step: '02',
+        name: 'SMTP Email Dispatch',
+        description: 'Delivers the one-time verification passcode to the user inbox using Nodemailer SMTP transport.',
+        technology: 'Nodemailer + SMTP'
+      },
+      {
+        step: '03',
+        name: 'OTP Validation & Account Gating',
+        description: 'Validates code and timestamp, activates verified status, and authorizes JWT token generation upon login.',
+        technology: 'Express + MongoDB + JWT'
+      }
+    ],
+    technicalHighlights: [
+      {
+        title: 'Time-Limited OTP Verification Flow',
+        description: 'Checks that the submitted OTP matches the database record and that the current timestamp is within the 10-minute validity window.',
+        codeSnippet: `// Verify OTP endpoint logic
+app.post('/api/verify-otp', async (req, res) => {
+  const { email, otp } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user || user.otp !== otp || user.otpExpires < Date.now()) {
+    return res.status(400).json({ message: 'Invalid or expired OTP' });
+  }
+
+  user.isVerified = true;
+  user.otp = undefined;
+  user.otpExpires = undefined;
+  await user.save();
+
+  res.json({ message: 'Email verified successfully!' });
+});`
+      },
+      {
+        title: 'Verification-Gated Login & JWT Generation',
+        description: 'Enforces that only accounts marked with isVerified: true can authenticate and receive JWT access tokens.',
+        codeSnippet: `// Guarded login checking verification status
+app.post('/api/login', async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return res.status(400).json({ message: 'Invalid credentials' });
+  }
+
+  if (!user.isVerified) {
+    return res.status(403).json({ message: 'Please verify your email before logging in.' });
+  }
+
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  res.json({ token, message: 'Login successful' });
+});`
+      }
+    ],
+    verifiedClaims: [
+      'Two-step registration flow with time-expiring email OTP verification',
+      'SMTP email delivery pipeline using Nodemailer',
+      'Account gating preventing unverified users from acquiring JWT access tokens',
+      'Bcrypt password hashing and MongoDB user schema persistence'
+    ],
+    stack: {
+      runtime: ['Node.js', 'Express'],
+      dataStores: ['MongoDB', 'Mongoose ODM'],
+      messaging: ['Nodemailer SMTP'],
+      protocols: ['REST', 'HTTP/1.1'],
+      tooling: ['dotenv', 'Git']
+    },
+    keyFeatures: [
+      {
+        label: 'Two-Step Verification',
+        detail: 'Delivers 6-digit one-time passcodes via Nodemailer SMTP to verify email ownership.'
+      },
+      {
+        label: 'Time-Expiring OTPs',
+        detail: 'Automatically invalidates verification codes after a 10-minute validity window.'
+      },
+      {
+        label: 'Access-Guarded Login',
+        detail: 'Prevents unverified users from authenticating or acquiring JWT access tokens.'
+      }
+    ]
   }
 ];
