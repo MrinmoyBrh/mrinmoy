@@ -5,13 +5,15 @@
 @tailwind utilities;
 
 :root {
-  --color-ink: #101827;
-  --color-ink-deep: #0A0F1A;
-  --color-ink-surface: #172236;
-  --color-pearl: #F7F5F0;
-  --color-coral: #F45D48;
-  --color-smoke: #8C96A3;
-  --color-orbital: #16B8B0;
+  --color-jet: #0A0A0B;
+  --color-charcoal: #171719;
+  --color-smoke: #929297;
+  --color-softwhite: #F4F2EF;
+  --color-cherry: #C72C41;
+  --color-ink: #0A0A0B;
+  --color-pearl: #F4F2EF;
+  --color-coral: #C72C41;
+  --color-orbital: #C72C41;
 }
 
 @layer base {
@@ -21,8 +23,8 @@
 
   html {
     scroll-behavior: smooth;
-    background-color: #101827;
-    color: #F7F5F0;
+    background-color: #0A0A0B;
+    color: #F4F2EF;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -30,8 +32,8 @@
   }
 
   body {
-    background-color: #101827;
-    color: #F7F5F0;
+    background-color: #0A0A0B;
+    color: #F4F2EF;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
@@ -40,13 +42,13 @@
 
   /* Custom selection */
   ::selection {
-    background-color: #F45D48;
-    color: #0A0F1A;
+    background-color: #C72C41;
+    color: #F4F2EF;
   }
 
   /* Accessible focus indicators */
   :focus-visible {
-    outline: 2px solid #F45D48;
+    outline: 2px solid #C72C41;
     outline-offset: 3px;
     border-radius: 2px;
   }
@@ -58,13 +60,13 @@
     left: 1rem;
     z-index: 1000;
     padding: 0.75rem 1.5rem;
-    background-color: #F45D48;
-    color: #0A0F1A;
+    background-color: #C72C41;
+    color: #F4F2EF;
     font-family: 'JetBrains Mono', monospace;
     font-weight: 700;
     text-decoration: none;
     border-radius: 0.25rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     transition: top 0.2s ease-in-out;
   }
 
@@ -73,20 +75,20 @@
   }
 }
 
-/* Background system grid */
+/* Background system grid - subtle & minimalist */
 .tech-grid-bg {
   background-image: 
-    linear-gradient(to right, rgba(140, 150, 163, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(140, 150, 163, 0.04) 1px, transparent 1px);
-  background-size: 48px 48px;
+    linear-gradient(to right, rgba(146, 146, 151, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(146, 146, 151, 0.03) 1px, transparent 1px);
+  background-size: 56px 56px;
 }
 
 .radial-mask {
-  mask-image: radial-gradient(circle at 50% 50%, black 50%, transparent 100%);
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 50%, transparent 100%);
+  mask-image: radial-gradient(circle at 50% 50%, black 60%, transparent 100%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 60%, transparent 100%);
 }
 
-/* Noise overlay */
+/* Subtle texture overlay */
 .noise-overlay {
   position: fixed;
   top: 0;
@@ -94,7 +96,7 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  opacity: 0.025;
+  opacity: 0.015;
   z-index: 99;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
@@ -123,8 +125,7 @@
   .animate-orbit-slow,
   .animate-orbit-mid,
   .animate-orbit-fast,
-  .animate-pulse-subtle,
-  .animate-scanline {
+  .animate-pulse-subtle {
     animation: none !important;
   }
 }
