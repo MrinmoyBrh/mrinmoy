@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import profilePic from '../assets/mrinmoy.jpg';
+
 const navLinks = [
   { name: 'Systems', href: '#systems' },
   { name: 'Principles', href: '#principles' },
@@ -17,9 +20,17 @@ const navLinks = [
       <!-- Brand & Status Identity -->
       <div class="flex items-center space-x-4">
         <a href="/" class="group flex items-center space-x-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral">
-          <div class="w-9 h-9 rounded-lg bg-ink-800 border border-white/10 flex items-center justify-center relative overflow-hidden group-hover:border-coral/50 transition-colors">
-            <span class="technical-mono text-xs font-bold text-coral">MB</span>
-            <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-orbital/40 rounded-full blur-xs"></div>
+          <div class="relative flex-shrink-0 w-[38px] h-[38px] sm:w-[44px] sm:h-[44px] rounded-full overflow-hidden border border-[#929292]/40 group-hover:border-[#C72C41]/80 group-hover:shadow-[0_0_12px_rgba(199,44,65,0.45)] transition-all duration-300 bg-ink-800">
+            <Image
+              src={profilePic}
+              alt="Mrinmoy Borah"
+              width={88}
+              height={88}
+              loading="eager"
+              decoding="async"
+              class="w-full h-full object-cover rounded-full"
+              style="object-position: center 30%;"
+            />
           </div>
           <div>
             <span class="font-display font-semibold text-pearl text-sm sm:text-base tracking-tight block">
