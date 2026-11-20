@@ -4,17 +4,24 @@ import { getProjects, getProjectById, saveProject, deleteProject } from '../../.
 
 export const prerender = false;
 
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ url, cookies }) => {
+  const user = getSessionUser(cookies);
   const id = url.searchParams.get('id');
   const placement = url.searchParams.get('placement') || 'all';
+
+  // Security: Unauthenticated callers must only ever receive published projects
+  const publishedOnly = !user;
 
   if (id) {
     const project = getProjectById(id);
     if (!project) return new Response(JSON.stringify({ error: 'Project not found' }), { status: 404 });
+    if (publishedOnly && !project.is_published) {
+      return new Response(JSON.stringify({ error: 'Project not found' }), { status: 404 });
+    }
     return new Response(JSON.stringify(project), { status: 200, headers: { 'Content-Type': 'application/json' } });
   }
 
-  const projects = getProjects(placement, false);
+  const projects = getProjects(placement, publishedOnly);
   return new Response(JSON.stringify(projects), { status: 200, headers: { 'Content-Type': 'application/json' } });
 };
 

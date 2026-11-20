@@ -15,11 +15,33 @@ export const POST: APIRoute = async ({ request, cookies, clientAddress }) => {
       });
     }
 
-    const ip = clientAddress || request.headers.get('x-forwarded-for') || '127.0.0.1';
+    const ip = clientAddress || request.headers.get('x-forwarded-for')?.split(',')[0].trim() || '127.0.0.1';
     const result = await authenticateAdmin(identifier, password, ip);
 
-    if (result.error || !result.user) {
-      return new Response(JSON.stringify({ error: result.error || 'Authentication failed' }), {
+    if (result.error) {
+      return new Response(JSON.stringify({ error: result.error }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    if (result.requiresMfa) {
+      return new Response(
+        JSON.stringify({
+          success: true,
+          requiresMfa: true,
+          mfaToken: result.mfaToken,
+          message: 'Two-factor authentication required.',
+        }),
+        {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
+    if (!result.user) {
+      return new Response(JSON.stringify({ error: 'Authentication failed' }), {
         status: 401,
         headers: { 'Content-Type': 'application/json' },
       });

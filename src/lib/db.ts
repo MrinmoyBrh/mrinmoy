@@ -37,9 +37,32 @@ function initSchema(db: DatabaseSync) {
       role TEXT NOT NULL DEFAULT 'admin',
       created_at INTEGER NOT NULL,
       updated_at INTEGER NOT NULL,
-      last_login_at INTEGER
+      last_login_at INTEGER,
+      mfa_enabled INTEGER NOT NULL DEFAULT 0,
+      mfa_secret TEXT,
+      mfa_recovery_codes TEXT,
+      mfa_pending_secret TEXT
     );
   `);
+
+  // Safe migration for existing databases
+  try {
+    const adminCols = (db.prepare('PRAGMA table_info(admin_users)').all() as any[]).map((c) => c.name);
+    if (!adminCols.includes('mfa_enabled')) {
+      db.exec('ALTER TABLE admin_users ADD COLUMN mfa_enabled INTEGER NOT NULL DEFAULT 0;');
+    }
+    if (!adminCols.includes('mfa_secret')) {
+      db.exec('ALTER TABLE admin_users ADD COLUMN mfa_secret TEXT;');
+    }
+    if (!adminCols.includes('mfa_recovery_codes')) {
+      db.exec('ALTER TABLE admin_users ADD COLUMN mfa_recovery_codes TEXT;');
+    }
+    if (!adminCols.includes('mfa_pending_secret')) {
+      db.exec('ALTER TABLE admin_users ADD COLUMN mfa_pending_secret TEXT;');
+    }
+  } catch (e) {
+    console.warn('Migration warning for admin_users:', e);
+  }
 
   // 2. Active Sessions
   db.exec(`
@@ -49,6 +72,7 @@ function initSchema(db: DatabaseSync) {
       user_id TEXT NOT NULL,
       created_at INTEGER NOT NULL,
       expires_at INTEGER NOT NULL,
+      last_active_at INTEGER,
       user_agent TEXT,
       ip_address TEXT,
       FOREIGN KEY (user_id) REFERENCES admin_users (id) ON DELETE CASCADE
@@ -56,6 +80,15 @@ function initSchema(db: DatabaseSync) {
     CREATE INDEX IF NOT EXISTS idx_sessions_token ON sessions(token_hash);
     CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions(expires_at);
   `);
+
+  try {
+    const sessionCols = (db.prepare('PRAGMA table_info(sessions)').all() as any[]).map((c) => c.name);
+    if (!sessionCols.includes('last_active_at')) {
+      db.exec('ALTER TABLE sessions ADD COLUMN last_active_at INTEGER;');
+    }
+  } catch (e) {
+    console.warn('Migration warning for sessions:', e);
+  }
 
   // 3. Login Rate Limiting
   db.exec(`
@@ -66,6 +99,17 @@ function initSchema(db: DatabaseSync) {
       success INTEGER NOT NULL
     );
     CREATE INDEX IF NOT EXISTS idx_login_attempts_ip ON login_attempts(ip_address, attempted_at);
+  `);
+
+  // 3b. MFA Login Challenges (5-minute expiration)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS mfa_challenges (
+      token TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      expires_at INTEGER NOT NULL,
+      ip_address TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_mfa_challenges_expires ON mfa_challenges(expires_at);
   `);
 
   // 4. Hero Content (Draft & Published)
