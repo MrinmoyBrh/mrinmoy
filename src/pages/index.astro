@@ -1,0 +1,96 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import CircuitSimulator from '../components/CircuitSimulator.astro';
+import Principles from '../components/Principles.astro';
+import SkillsGrid from '../components/SkillsGrid.astro';
+import Timeline from '../components/Timeline.astro';
+import ContactSection from '../components/ContactSection.astro';
+import Footer from '../components/Footer.astro';
+import { projects } from '../data/projects';
+
+const featuredProjects = projects.filter((p) => p.featured);
+const additionalProjects = projects.filter((p) => !p.featured);
+---
+
+<Layout
+  title="Mrinmoy Borah | Backend Software Engineer — Distributed Systems & Resilient Architectures"
+  description="Personal portfolio of Mrinmoy Borah, Backend Software Engineer and B.Tech CSE student at Dhemaji Engineering College (2027). Specializing in BullMQ queues, Redis state machines, deterministic caching, and fault-tolerant gateways."
+>
+  <Header />
+
+  <main id="main-content" class="relative">
+    
+    <!-- Hero Section -->
+    <Hero />
+
+    <!-- Systems / Projects Section -->
+    <section id="systems" class="py-24 border-b border-white/5 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+          <div class="max-w-3xl">
+            <div class="flex items-center space-x-2 technical-mono text-xs text-coral mb-3">
+              <span class="w-2 h-2 rounded-full bg-coral"></span>
+              <span>VERIFIED PRODUCTION & RESEARCH WORK</span>
+            </div>
+            <h2 class="editorial-title text-4xl sm:text-5xl lg:text-6xl font-bold text-pearl mb-4">
+              Featured Systems.
+            </h2>
+            <p class="text-smoke-light text-base sm:text-lg leading-relaxed">
+              In-depth case studies of distributed AI gateways, state-owned utility administration platforms, and pathological computer vision research. Every technical claim is verified against runnable source code.
+            </p>
+          </div>
+
+          <div class="technical-mono text-xs text-smoke-light shrink-0">
+            SHOWING 03 PRIMARY ARCHITECTURES
+          </div>
+        </div>
+
+        <!-- Featured Projects Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+          {featuredProjects.map((project, idx) => (
+            <ProjectCard project={project} index={idx} />
+          ))}
+        </div>
+
+        <!-- Additional Engineering Repositories -->
+        <div class="pt-12 border-t border-white/5">
+          <div class="flex items-center justify-between mb-8">
+            <h3 class="technical-mono text-sm uppercase tracking-wider text-smoke-light font-bold">
+              ADDITIONAL VERIFIED ENGINEERING SYSTEMS
+            </h3>
+            <span class="text-[11px] technical-mono text-smoke">DOCKER SANDBOXING & 3NF SQL</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {additionalProjects.map((project, idx) => (
+              <ProjectCard project={project} index={idx + featuredProjects.length} />
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Interactive Circuit Breaker & Queue Simulator -->
+    <CircuitSimulator />
+
+    <!-- Engineering Principles Manifesto -->
+    <Principles />
+
+    <!-- Curated Skills Matrix -->
+    <SkillsGrid />
+
+    <!-- Timeline / Education & Experience -->
+    <Timeline />
+
+    <!-- Contact & Interactive Terminal -->
+    <ContactSection />
+
+  </main>
+
+  <Footer />
+</Layout>

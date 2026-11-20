@@ -1,0 +1,227 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ArchitectureDiagram from '../../components/ArchitectureDiagram.astro';
+import { projects, type ProjectCaseStudy } from '../../data/projects';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: ProjectCaseStudy;
+}
+
+const { project } = Astro.props;
+---
+
+<Layout
+  title={`${project.title} — Verified Case Study | Mrinmoy Borah`}
+  description={project.summary}
+>
+  <Header />
+
+  <main id="main-content" class="py-16 sm:py-20 relative">
+    
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Back Navigation Link -->
+      <div class="mb-10">
+        <a
+          href="/#systems"
+          class="inline-flex items-center space-x-2 text-xs font-semibold technical-mono text-smoke hover:text-coral transition-colors"
+        >
+          <span>←</span>
+          <span>Return to Systems Index</span>
+        </a>
+      </div>
+
+      <!-- Case Study Header Dossier -->
+      <header class="mb-14 pb-8 border-b border-white/10">
+        <div class="flex flex-wrap items-center gap-3 mb-4">
+          <span class="px-3 py-1 rounded-full text-xs font-semibold technical-mono bg-coral/10 text-coral border border-coral/25">
+            {project.category}
+          </span>
+          <span class="text-white/20" aria-hidden="true">•</span>
+          <span class="technical-mono text-xs text-smoke-light">
+            {project.role}
+          </span>
+          {project.organization && (
+            <>
+              <span class="text-white/20" aria-hidden="true">•</span>
+              <span class="technical-mono text-xs text-orbital">
+                {project.organization}
+              </span>
+            </>
+          )}
+          <span class="text-white/20" aria-hidden="true">•</span>
+          <span class="technical-mono text-xs text-smoke">
+            {project.period}
+          </span>
+        </div>
+
+        <h1 class="editorial-title text-4xl sm:text-5xl lg:text-6xl font-black text-pearl leading-[1.05] mb-6">
+          {project.title}
+        </h1>
+
+        <p class="text-lg sm:text-xl text-smoke-light leading-relaxed max-w-3xl mb-8">
+          {project.tagline}
+        </p>
+
+        <!-- Action Links -->
+        <div class="flex flex-wrap items-center gap-4">
+          {project.githubUrl && (
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="px-5 py-2.5 rounded-lg bg-coral hover:bg-coral-hover text-ink-950 font-bold technical-mono text-xs transition-colors flex items-center space-x-2 shadow-glow-coral"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+              </svg>
+              <span>Explore GitHub Repository</span>
+            </a>
+          )}
+          
+          <a
+            href="/#architecture"
+            class="px-5 py-2.5 rounded-lg bg-ink-900 hover:bg-ink-800 text-pearl border border-white/10 technical-mono text-xs transition-colors flex items-center space-x-2"
+          >
+            <span>Launch Live Architecture Simulator</span>
+            <span>→</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- Verified Claims Banner -->
+      <section class="mb-14 p-6 sm:p-8 rounded-2xl bg-ink-900 border border-white/10 shadow-surface-elevated">
+        <div class="flex items-center space-x-2 technical-mono text-xs text-orbital font-bold uppercase tracking-wider mb-4">
+          <svg class="w-4 h-4 text-orbital" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>Verified Technical Implementation Claims</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {project.verifiedClaims.map((claim) => (
+            <div class="flex items-start space-x-2 text-xs sm:text-sm text-smoke-light">
+              <span class="text-orbital font-bold mt-0.5">✓</span>
+              <span>{claim}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Section: The Engineering Challenge -->
+      <section class="mb-14">
+        <h2 class="editorial-title text-2xl sm:text-3xl font-bold text-pearl mb-4">
+          The Engineering Problem & Threat Model
+        </h2>
+        <div class="p-6 rounded-2xl bg-ink-900/60 border border-white/10 text-smoke-light text-sm sm:text-base leading-relaxed">
+          {project.challenge}
+        </div>
+      </section>
+
+      <!-- Section: Architecture Flow Diagram -->
+      {project.architectureSteps.length > 0 && (
+        <section class="mb-14">
+          <h2 class="editorial-title text-2xl sm:text-3xl font-bold text-pearl mb-2">
+            Execution Flow & System Decoupling
+          </h2>
+          <p class="text-sm text-smoke mb-6">
+            Detailed walkthrough of request lifecycle, data mutations, and asynchronous transitions.
+          </p>
+          <ArchitectureDiagram steps={project.architectureSteps} title={`${project.title} Lifecycle`} />
+          <p class="text-sm sm:text-base text-smoke-light leading-relaxed mt-6">
+            {project.architectureNarrative}
+          </p>
+        </section>
+      )}
+
+      <!-- Section: Verified Code Snippets & Implementation Details -->
+      <section class="mb-14 space-y-8">
+        <h2 class="editorial-title text-2xl sm:text-3xl font-bold text-pearl">
+          Verified Implementation Patterns
+        </h2>
+
+        {project.technicalHighlights.map((highlight) => (
+          <div class="rounded-2xl bg-ink-900 border border-white/10 p-6 sm:p-8 shadow-surface-elevated">
+            <h3 class="font-display font-bold text-lg text-pearl mb-3">
+              {highlight.title}
+            </h3>
+            <p class="text-xs sm:text-sm text-smoke-light leading-relaxed mb-4">
+              {highlight.description}
+            </p>
+            {highlight.codeSnippet && (
+              <div class="rounded-xl bg-ink-950 p-4 border border-white/5 overflow-x-auto">
+                <pre class="technical-mono text-xs text-smoke-light leading-relaxed"><code>{highlight.codeSnippet}</code></pre>
+              </div>
+            )}
+          </div>
+        ))}
+      </section>
+
+      <!-- Section: Technical Stack Topology -->
+      <section class="mb-16 p-6 sm:p-8 rounded-2xl bg-ink-900 border border-white/10">
+        <h2 class="editorial-title text-2xl font-bold text-pearl mb-6">
+          Component Stack & Tooling Matrix
+        </h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+          <div>
+            <span class="block text-xs technical-mono text-smoke mb-2">RUNTIMES</span>
+            <ul class="space-y-1 text-xs text-pearl font-medium">
+              {project.stack.runtime.map((item) => <li>• {item}</li>)}
+            </ul>
+          </div>
+          <div>
+            <span class="block text-xs technical-mono text-smoke mb-2">DATA STORES</span>
+            <ul class="space-y-1 text-xs text-pearl font-medium">
+              {project.stack.dataStores.map((item) => <li>• {item}</li>)}
+            </ul>
+          </div>
+          <div>
+            <span class="block text-xs technical-mono text-smoke mb-2">MESSAGING / QUEUES</span>
+            <ul class="space-y-1 text-xs text-pearl font-medium">
+              {project.stack.messaging.length > 0 ? (
+                project.stack.messaging.map((item) => <li>• {item}</li>)
+              ) : (
+                <li class="text-smoke-dark">None / Embedded</li>
+              )}
+            </ul>
+          </div>
+          <div>
+            <span class="block text-xs technical-mono text-smoke mb-2">PROTOCOLS & TOOLING</span>
+            <ul class="space-y-1 text-xs text-pearl font-medium">
+              {project.stack.tooling.map((item) => <li>• {item}</li>)}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Next System Footer Link -->
+      <div class="pt-8 border-t border-white/10 flex items-center justify-between">
+        <a
+          href="/#systems"
+          class="text-xs technical-mono font-semibold text-smoke hover:text-pearl transition-colors"
+        >
+          ← Back to All Systems
+        </a>
+
+        <a
+          href="/#contact"
+          class="px-4 py-2 rounded-lg bg-coral/10 hover:bg-coral text-coral hover:text-ink-950 border border-coral/30 technical-mono text-xs font-bold transition-all"
+        >
+          Discuss Architecture With Mrinmoy →
+        </a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <Footer />
+</Layout>

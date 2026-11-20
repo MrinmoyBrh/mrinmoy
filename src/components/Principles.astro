@@ -1,0 +1,77 @@
+---
+import { principles } from '../data/principles';
+---
+
+<section id="principles" class="py-24 border-b border-white/5 relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Section Header Dossier -->
+    <div class="max-w-3xl mb-16">
+      <div class="flex items-center space-x-2 technical-mono text-xs text-coral mb-3">
+        <span class="w-2 h-2 rounded-full bg-coral"></span>
+        <span>ARCHITECTURAL MANIFESTO</span>
+      </div>
+      <h2 class="editorial-title text-4xl sm:text-5xl lg:text-6xl font-bold text-pearl mb-6">
+        Principles of Resilience.
+      </h2>
+      <p class="text-smoke-light text-base sm:text-lg leading-relaxed">
+        Reliable backend systems aren't built on wishful optimism; they are forged by assuming networks drop, processes crash, and upstream APIs degrade. These axioms dictate how I design every service layer, queue, and database schema.
+      </p>
+    </div>
+
+    <!-- Principles Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      {principles.map((principle) => (
+        <div class="rounded-2xl bg-ink-900 border border-white/10 p-7 flex flex-col justify-between hover:border-coral/40 transition-colors shadow-surface-elevated group">
+          <div>
+            <div class="flex items-baseline justify-between mb-4">
+              <span class="technical-mono text-2xl font-black text-coral/80 group-hover:text-coral transition-colors">
+                {principle.number}
+              </span>
+              <span class="technical-mono text-[11px] text-smoke uppercase tracking-wider">
+                {principle.subtitle}
+              </span>
+            </div>
+
+            <h3 class="font-display font-bold text-xl text-pearl mb-3 group-hover:text-pearl transition-colors">
+              {principle.title}
+            </h3>
+
+            <p class="text-xs sm:text-sm text-smoke-light leading-relaxed mb-6">
+              {principle.description}
+            </p>
+          </div>
+
+          <div class="pt-4 border-t border-white/5">
+            <code class="block technical-mono text-[11px] text-orbital bg-ink-950 p-2.5 rounded-lg border border-white/5 overflow-x-auto">
+              {principle.codeAccent}
+            </code>
+          </div>
+        </div>
+      ))}
+
+      <!-- Summary Callout Block -->
+      <div class="rounded-2xl bg-gradient-to-br from-ink-800 to-ink-900 border border-coral/20 p-7 flex flex-col justify-between">
+        <div>
+          <span class="technical-mono text-xs font-bold text-coral block mb-2">SYSTEM INTEGRITY GUARANTEE</span>
+          <h3 class="editorial-title text-2xl font-bold text-pearl mb-3">Zero Invented Metrics.</h3>
+          <p class="text-xs sm:text-sm text-smoke-light leading-relaxed mb-4">
+            Every technical claim in this portfolio is backed by runnable, verified source code—from Fastify queue orchestrators and Redis state machines to Laravel passkeys and OpenCV digital image pipelines.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/10">
+          <a
+            href="https://github.com/MrinmoyBrh"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center space-x-2 text-xs font-bold technical-mono text-coral hover:text-coral-light transition-colors"
+          >
+            <span>Review Source Code on GitHub</span>
+            <span>→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

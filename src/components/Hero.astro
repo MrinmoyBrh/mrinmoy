@@ -1,0 +1,111 @@
+---
+import OrbitalVisual from './OrbitalVisual.astro';
+---
+
+<section class="relative min-h-[92vh] flex items-center pt-8 pb-20 overflow-hidden border-b border-white/5">
+  
+  <!-- Subtle background ambient grid -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      
+      <!-- Asymmetric Editorial Content Column (7 cols) -->
+      <div class="lg:col-span-7 flex flex-col justify-center">
+        
+        <!-- Metadata Dossier Eyebrow -->
+        <div class="flex flex-wrap items-center gap-3 mb-6">
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold technical-mono bg-coral/10 text-coral border border-coral/25">
+            BACKEND SOFTWARE ENGINEER
+          </span>
+          <span class="text-white/20 hidden sm:inline" aria-hidden="true">•</span>
+          <span class="technical-mono text-xs text-smoke-light">
+            B.TECH CSE (2023 — 2027)
+          </span>
+          <span class="text-white/20 hidden sm:inline" aria-hidden="true">•</span>
+          <span class="technical-mono text-xs text-smoke">
+            DHEMAJI ENG. COLLEGE
+          </span>
+        </div>
+
+        <!-- Massive Editorial Headline -->
+        <h1 class="editorial-title text-5xl sm:text-7xl lg:text-8xl font-black text-pearl tracking-tight leading-[0.98] mb-6">
+          Architecting <br />
+          <span class="italic font-serif text-pearl font-normal">fault-tolerant</span> <br />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-coral via-coral-light to-orbital">
+            backends.
+          </span>
+        </h1>
+
+        <!-- High-Impact Technical Mission Statement -->
+        <p class="text-lg sm:text-xl text-smoke-light font-normal leading-relaxed max-w-2xl mb-8">
+          I design distributed backend infrastructure where failure is treated as a first-class state. Specializing in <strong class="text-pearl font-medium">asynchronous task queueing (BullMQ & Redis)</strong>, <strong class="text-pearl font-medium">sub-5ms deterministic caching</strong>, <strong class="text-pearl font-medium">stateful circuit breakers</strong>, and <strong class="text-pearl font-medium">air-gapped compute sandboxing</strong>.
+        </p>
+
+        <!-- Engineering Badges / Proof Strip -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 rounded-xl bg-ink-800/60 border border-white/5 backdrop-blur-sm max-w-xl mb-8">
+          <div class="border-l-2 border-coral pl-3">
+            <span class="block text-xs technical-mono text-smoke">PRIMARY ARCHITECTURE</span>
+            <span class="block text-sm font-semibold text-pearl font-display mt-0.5">Asynchronous Queues</span>
+            <span class="block text-[11px] text-smoke-dark technical-mono">BullMQ + Redis Clusters</span>
+          </div>
+
+          <div class="border-l-2 border-orbital pl-3">
+            <span class="block text-xs technical-mono text-smoke">FAILOVER DEFENSE</span>
+            <span class="block text-sm font-semibold text-pearl font-display mt-0.5">Circuit Breakers</span>
+            <span class="block text-[11px] text-smoke-dark technical-mono">Redis State Machines</span>
+          </div>
+
+          <div class="border-l-2 border-smoke pl-3 col-span-2 sm:col-span-1">
+            <span class="block text-xs technical-mono text-smoke">VERIFIED CODE</span>
+            <span class="block text-sm font-semibold text-pearl font-display mt-0.5">Open Source Systems</span>
+            <span class="block text-[11px] text-smoke-dark technical-mono">Fastify, Laravel, Python</span>
+          </div>
+        </div>
+
+        <!-- Action CTAs -->
+        <div class="flex flex-wrap items-center gap-4">
+          <a
+            href="#systems"
+            class="px-6 py-3.5 rounded-lg bg-coral text-ink-950 font-bold font-display text-sm hover:bg-coral-hover transition-all duration-200 shadow-glow-coral flex items-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral"
+          >
+            <span>Explore Verified Systems</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </a>
+
+          <a
+            href="#architecture"
+            class="px-6 py-3.5 rounded-lg bg-ink-800 hover:bg-ink-700 text-pearl font-medium font-display text-sm border border-white/10 hover:border-white/20 transition-all duration-200 flex items-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral"
+          >
+            <span class="w-2 h-2 rounded-full bg-orbital"></span>
+            <span>Interactive Architecture</span>
+          </a>
+
+          <a
+            href="#terminal"
+            class="px-4 py-3.5 rounded-lg bg-transparent hover:bg-white/5 text-smoke-light hover:text-pearl technical-mono text-xs border border-transparent hover:border-white/10 transition-colors flex items-center space-x-2"
+          >
+            <span class="text-coral">$</span>
+            <span>launch --terminal</span>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Orbital Systems Illustration Column (5 cols) -->
+      <div class="lg:col-span-5 flex items-center justify-center relative">
+        <OrbitalVisual />
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Editorial bottom coordinate marker -->
+  <div class="absolute bottom-3 left-8 hidden lg:flex items-center space-x-6 technical-mono text-[11px] text-smoke/50" aria-hidden="true">
+    <span>LOC // ASSAM, INDIA (IST / UTC+5:30)</span>
+    <span>•</span>
+    <span>SYS // RESILIENT-GATEWAY-V1</span>
+    <span>•</span>
+    <span>STATUS // ALL SYSTEMS FUNCTIONAL</span>
+  </div>
+</section>

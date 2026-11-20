@@ -1,0 +1,65 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="py-12 bg-ink-950 border-t border-white/5 technical-mono text-xs text-smoke relative z-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-6 pb-8 border-b border-white/5">
+      
+      <!-- Brand & Mission statement -->
+      <div class="flex items-center space-x-3">
+        <div class="w-7 h-7 rounded bg-ink-900 border border-white/10 flex items-center justify-center text-coral font-bold text-xs">
+          MB
+        </div>
+        <div>
+          <span class="text-pearl font-bold font-display text-sm block">Mrinmoy Borah</span>
+          <span class="text-[11px] text-smoke block">Backend Software Engineer • Dhemaji Engineering College</span>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="flex items-center space-x-6">
+        <a href="#systems" class="hover:text-pearl transition-colors">Systems</a>
+        <a href="#principles" class="hover:text-pearl transition-colors">Principles</a>
+        <a href="#architecture" class="hover:text-pearl transition-colors">Architecture</a>
+        <a href="#experience" class="hover:text-pearl transition-colors">Timeline</a>
+        <a href="#terminal" class="hover:text-pearl transition-colors">Terminal</a>
+      </div>
+
+      <!-- Social coordinates -->
+      <div class="flex items-center space-x-4">
+        <a
+          href="https://github.com/MrinmoyBrh"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-pearl transition-colors"
+          aria-label="GitHub Profile"
+        >
+          GitHub ↗
+        </a>
+        <a
+          href="https://www.linkedin.com/in/mrinmoy-borah-7771843b9/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-pearl transition-colors"
+          aria-label="LinkedIn Profile"
+        >
+          LinkedIn ↗
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Bottom Colophon -->
+    <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-smoke-dark">
+      <div>
+        <span>Designed with editorial typography, orbital aesthetics, & verified backend engineering.</span>
+      </div>
+      <div>
+        <span>© {currentYear} Mrinmoy Borah. All systems operational.</span>
+      </div>
+    </div>
+
+  </div>
+</footer>
