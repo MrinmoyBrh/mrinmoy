@@ -4,13 +4,44 @@ import { getDashboardStats } from '../../lib/content';
 
 export const prerender = false;
 
-const stats = getDashboardStats();
+let stats;
+let dbError: string | null = null;
+try {
+  stats = getDashboardStats();
+} catch (err: any) {
+  console.error('[Admin Dashboard] Error loading dashboard statistics:', err);
+  dbError = err?.message || 'Database error occurred while retrieving dashboard statistics.';
+  stats = {
+    totalProjects: 0,
+    publishedProjects: 0,
+    showcaseProjects: 0,
+    additionalProjects: 0,
+    totalSkills: 0,
+    pendingDrafts: 0,
+    lastPublishedAt: Date.now(),
+    activityDays: [],
+    recentActivities: [],
+  };
+}
+
 const maxActivity = Math.max(...stats.activityDays.map((d) => d.count), 1);
 ---
 
 <AdminLayout title="Overview" subtitle="Manage your portfolio, projects, and website content from one place." activeNav="dashboard">
   
   <div class="space-y-8">
+    
+    {dbError && (
+      <div class="bg-[#EF4444]/10 border border-[#EF4444]/40 rounded-2xl p-5 text-[#EF4444] flex items-start gap-3 shadow-lg">
+        <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+        <div>
+          <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-[#EF4444]">Database Operation Warning</h3>
+          <p class="text-xs text-[#EF4444]/90 mt-1 font-mono">{dbError}</p>
+        </div>
+      </div>
+    )}
     
     <!-- ============================================================
          FINTRIXITY SUMMARY METRIC CARDS

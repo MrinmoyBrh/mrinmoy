@@ -421,7 +421,7 @@ export function getAppearanceSettings(publishedOnly = true) {
     const draft = getDraft('appearance');
     if (draft) return draft;
   }
-  const row = db.prepare('SELECT data FROM appearance_settings WHERE id = "app_default"').get() as any;
+  const row = db.prepare('SELECT data FROM appearance_settings WHERE id = ?').get('app_default') as any;
   return row ? safeJson(row.data, {}) : {};
 }
 
@@ -449,7 +449,7 @@ export function publishAppearance(userId: string) {
 // ==========================================
 export function getSeoSettings() {
   const db = getDb();
-  const row = db.prepare('SELECT * FROM seo_settings WHERE id = "seo_default"').get() as any;
+  const row = db.prepare('SELECT * FROM seo_settings WHERE id = ?').get('seo_default') as any;
   return row || {};
 }
 
@@ -552,52 +552,57 @@ export function restoreRevision(revisionId: string, userId: string): boolean {
 export function getDashboardStats() {
   const db = getDb();
 
-  const totalProjects = (db.prepare('SELECT COUNT(*) as count FROM projects').get() as any)?.count || 0;
-  const publishedProjects = (db.prepare('SELECT COUNT(*) as count FROM projects WHERE is_published = 1').get() as any)?.count || 0;
-  const showcaseProjects = (db.prepare('SELECT COUNT(*) as count FROM projects WHERE placement = "showcase"').get() as any)?.count || 0;
-  const additionalProjects = (db.prepare('SELECT COUNT(*) as count FROM projects WHERE placement = "additional"').get() as any)?.count || 0;
-  const totalSkills = (db.prepare('SELECT COUNT(*) as count FROM skills').get() as any)?.count || 0;
-  const pendingDrafts = (db.prepare('SELECT COUNT(*) as count FROM draft_store').get() as any)?.count || 0;
+  try {
+    const totalProjects = (db.prepare('SELECT COUNT(*) as count FROM projects').get() as any)?.count || 0;
+    const publishedProjects = (db.prepare('SELECT COUNT(*) as count FROM projects WHERE is_published = 1').get() as any)?.count || 0;
+    const showcaseProjects = (db.prepare('SELECT COUNT(*) as count FROM projects WHERE placement = ?').get('showcase') as any)?.count || 0;
+    const additionalProjects = (db.prepare('SELECT COUNT(*) as count FROM projects WHERE placement = ?').get('additional') as any)?.count || 0;
+    const totalSkills = (db.prepare('SELECT COUNT(*) as count FROM skills').get() as any)?.count || 0;
+    const pendingDrafts = (db.prepare('SELECT COUNT(*) as count FROM draft_store').get() as any)?.count || 0;
 
-  const lastPubRow = db.prepare('SELECT published_at FROM revisions ORDER BY published_at DESC LIMIT 1').get() as any;
-  const lastPublishedAt = lastPubRow ? lastPubRow.published_at : Date.now();
+    const lastPubRow = db.prepare('SELECT published_at FROM revisions ORDER BY published_at DESC LIMIT 1').get() as any;
+    const lastPublishedAt = lastPubRow ? lastPubRow.published_at : Date.now();
 
-  // Activity distribution for Fintrixity Chart (last 7 days activity)
-  const oneDay = 24 * 60 * 60 * 1000;
-  const now = Date.now();
-  const activityDays: { day: string; count: number; date: string }[] = [];
+    // Activity distribution for Fintrixity Chart (last 7 days activity)
+    const oneDay = 24 * 60 * 60 * 1000;
+    const now = Date.now();
+    const activityDays: { day: string; count: number; date: string }[] = [];
 
-  for (let i = 6; i >= 0; i--) {
-    const dayStart = now - (i * oneDay);
-    const dayEnd = dayStart + oneDay;
-    const dateObj = new Date(dayStart);
-    const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
-    const countRow = db.prepare(`
-      SELECT COUNT(*) as c FROM activity_logs WHERE created_at >= ? AND created_at < ?
-    `).get(dayStart, dayEnd) as any;
+    for (let i = 6; i >= 0; i--) {
+      const dayStart = now - (i * oneDay);
+      const dayEnd = dayStart + oneDay;
+      const dateObj = new Date(dayStart);
+      const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
+      const countRow = db.prepare(`
+        SELECT COUNT(*) as c FROM activity_logs WHERE created_at >= ? AND created_at < ?
+      `).get(dayStart, dayEnd) as any;
 
-    activityDays.push({
-      day: dayName,
-      date: dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      count: (countRow?.c || 0) + (i === 0 ? 3 : 0), // Base activity
-    });
+      activityDays.push({
+        day: dayName,
+        date: dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        count: (countRow?.c || 0) + (i === 0 ? 3 : 0), // Base activity
+      });
+    }
+
+    const recentActivities = db.prepare(`
+      SELECT * FROM activity_logs ORDER BY created_at DESC LIMIT 10
+    `).all() as any[];
+
+    return {
+      totalProjects,
+      publishedProjects,
+      showcaseProjects,
+      additionalProjects,
+      totalSkills,
+      pendingDrafts,
+      lastPublishedAt,
+      activityDays,
+      recentActivities,
+    };
+  } catch (error) {
+    console.error('[CMS Content] Error retrieving dashboard statistics from database:', error);
+    throw new Error(`Database error in getDashboardStats: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
   }
-
-  const recentActivities = db.prepare(`
-    SELECT * FROM activity_logs ORDER BY created_at DESC LIMIT 10
-  `).all() as any[];
-
-  return {
-    totalProjects,
-    publishedProjects,
-    showcaseProjects,
-    additionalProjects,
-    totalSkills,
-    pendingDrafts,
-    lastPublishedAt,
-    activityDays,
-    recentActivities,
-  };
 }
 
 // Utility JSON parser
