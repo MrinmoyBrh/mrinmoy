@@ -48,52 +48,52 @@ export const projects: ProjectCaseStudy[] = [
     id: 'ai-resilient-gateway',
     slug: 'ai-resilient-gateway',
     title: 'Adaptive AI Gateway & Resilient Workflow Engine',
-    tagline: 'High-throughput Fastify API gateway with Redis-backed BullMQ task queueing, stateful multi-provider circuit breakers, and deterministic SHA-256 prompt caching.',
+    tagline: 'Fastify API gateway with BullMQ task queues, stateful Redis circuit breakers, and deterministic SHA-256 prompt caching.',
     category: 'Distributed Systems',
     role: 'Lead Backend Engineer',
     period: '2024',
     featured: true,
     githubUrl: 'https://github.com/MrinmoyBrh/ai-resilient-gateway',
     badges: ['Fastify', 'BullMQ', 'Redis', 'PostgreSQL', 'Circuit Breakers', 'TypeScript'],
-    summary: 'An asynchronous, fault-tolerant AI orchestration gateway designed to shield upstream LLM providers from burst traffic, automate multi-provider failover, and eliminate redundant inference expenses through sub-5ms cryptographic caching.',
-    challenge: 'Direct client-to-LLM connections suffer from three fatal flaws in production: upstream rate limiting (HTTP 429/503), unpredictable tail latencies exceeding several seconds, and runaway billing costs from identical repetitive queries. The system required guaranteed asynchronous delivery, zero-cost cache hits, and instant failover without human intervention.',
-    architectureNarrative: 'The gateway decouples ingestion from compute using Fastify and BullMQ. Inbound requests pass through a 24-hour sliding token quota check before querying a Redis SHA-256 cache. Upon a cache hit, the gateway responds instantaneously (<5ms). On cache misses, the request is recorded in PostgreSQL and dispatched to a BullMQ worker queue with exponential backoff. A stateful Redis circuit breaker monitors upstream health across Groq and Gemini, executing immediate failovers if error thresholds are reached.',
+    summary: 'A custom API gateway built to keep AI features reliable when upstream providers lag or fail. It queues inference requests in BullMQ, serves identical prompts instantly from a Redis SHA-256 cache in under 5ms, and trips a circuit breaker to switch from Groq to Gemini if errors spike.',
+    challenge: 'Direct connections to external AI APIs fail easily in production: sudden rate limits cause HTTP 429 errors, responses occasionally take several seconds, and repetitive queries inflate API bills. I needed an asynchronous gateway that guarantees request delivery, caches answers instantly, and fails over cleanly without manual intervention.',
+    architectureNarrative: 'The gateway decouples incoming HTTP requests from AI compute using Fastify and BullMQ. Inbound requests first check tenant quotas, then query a Redis SHA-256 cache. If there is a cache hit, the gateway answers in under 5ms. On a cache miss, the task is saved in PostgreSQL and queued in BullMQ. A Redis circuit breaker monitors provider status, failing over from Groq (Llama 3.3 70B) to Gemini (1.5 Flash) when failure thresholds are crossed.',
     architectureSteps: [
       {
         step: '01',
-        name: 'Ingress & Quota Gate',
-        description: 'Validates payload schemas with Zod and enforces rolling 24-hour tenant token consumption boundaries.',
+        name: 'Ingress & Quotas',
+        description: 'Validates request bodies with Zod and checks rolling 24-hour token usage per tenant.',
         technology: 'Fastify + PostgreSQL'
       },
       {
         step: '02',
-        name: 'Deterministic Prompt Caching',
-        description: 'Normalizes prompt whitespace and case; computes SHA-256 hash to query Redis cache with 1-hour TTL.',
+        name: 'Deterministic Cache',
+        description: 'Normalizes prompt casing and whitespace, hashes with SHA-256, and queries Redis (<5ms response).',
         technology: 'Node.js Crypto + Redis'
       },
       {
         step: '03',
-        name: 'Asynchronous Task Ingestion',
-        description: 'Initializes a pending job row in PostgreSQL and buffers the inference payload into an isolated BullMQ queue.',
+        name: 'Task Ingestion',
+        description: 'Creates a pending job record in PostgreSQL and enqueues the payload into BullMQ with retry backoff.',
         technology: 'BullMQ + Redis Streams'
       },
       {
         step: '04',
-        name: 'Circuit-Breaker Orchestrator',
-        description: 'Queries Redis state machine (CLOSED, OPEN, HALF_OPEN). Routes to primary provider (Groq Llama 3.3 70B) or falls back to Gemini.',
-        technology: 'Custom Redis State Machine'
+        name: 'Circuit Failover',
+        description: 'Checks provider state (CLOSED, OPEN, HALF_OPEN) in Redis. Routes to Groq primary or switches to Gemini.',
+        technology: 'Redis State Machine'
       },
       {
         step: '05',
-        name: 'Telemetry & Event Dispatch',
-        description: 'Records token expenditure and latency metrics into usage_logs; broadcasts completion events over Redis Pub/Sub & SSE.',
+        name: 'Telemetry & Events',
+        description: 'Logs token usage and latency into PostgreSQL; pushes completion events over Redis Pub/Sub & SSE.',
         technology: 'PostgreSQL + Redis Pub/Sub'
       }
     ],
     technicalHighlights: [
       {
-        title: 'Redis Stateful Circuit Breaker Pattern',
-        description: 'Maintains state machine in Redis with failure counting and cooldown timestamps. When failures exceed 3, circuit trips to OPEN, fast-failing traffic directly to fallback providers without waiting for network timeouts.',
+        title: 'Redis Stateful Circuit Breaker',
+        description: 'Tracks consecutive upstream errors in Redis. After 3 failures, the circuit trips to OPEN and immediately redirects requests to Gemini without waiting on stalled network connections.',
         codeSnippet: `// Redis-backed Circuit Breaker state query
 async getState(): Promise<CircuitState> {
   const state = await redisConnection.get(this.getKey('state'));
@@ -110,8 +110,8 @@ async getState(): Promise<CircuitState> {
 }`
       },
       {
-        title: 'Sub-5ms SHA-256 Cache Resolution',
-        description: 'Prevents redundant billing costs by computing a deterministic cryptographic hash over normalized prompt text, serving cached responses instantly.',
+        title: 'Sub-5ms SHA-256 Prompt Caching',
+        description: 'Eliminates repetitive inference expenses by computing a deterministic cryptographic hash of the prompt and returning stored results from memory.',
         codeSnippet: `static getCacheKey(prompt: string): string {
   const normalized = prompt.trim().toLowerCase();
   const hash = crypto.createHash('sha256').update(normalized).digest('hex');
@@ -119,8 +119,8 @@ async getState(): Promise<CircuitState> {
 }`
       },
       {
-        title: 'Asynchronous Backpressure & Retry Orchestration',
-        description: 'Decouples client timeouts from variable LLM response times using BullMQ with exponential backoff and concurrency control.',
+        title: 'Asynchronous Task Queueing',
+        description: 'Buffers spikes in client traffic using BullMQ, decoupling client timeout limits from upstream model processing times.',
         codeSnippet: `await aiQueue.add('triage-job', payload, {
   attempts: 3,
   backoff: { type: 'exponential', delay: 1000 },
@@ -130,12 +130,12 @@ async getState(): Promise<CircuitState> {
       }
     ],
     verifiedClaims: [
-      'Verified: Fastify 5 HTTP server with custom job submission and analytics routes',
-      'Verified: Redis-backed BullMQ queue with concurrency: 5 and exponential backoff retry policies',
-      'Verified: Deterministic SHA-256 prompt caching in Redis with 3600-second TTL',
-      'Verified: Multi-state Circuit Breaker (CLOSED / OPEN / HALF_OPEN) stored in Redis',
-      'Verified: Multi-tier LLM failover architecture (Groq primary -> Gemini secondary)',
-      'Verified: 24-hour rolling token quota validation per tenant in PostgreSQL telemetry'
+      'Fastify 5 server with dedicated /jobs and /analytics routes',
+      'BullMQ queue running with 5 concurrent workers and exponential backoff retry',
+      'Deterministic SHA-256 prompt caching in Redis with 1-hour expiration',
+      'Three-state circuit breaker (CLOSED / OPEN / HALF_OPEN) stored in Redis',
+      'Automated failover between Groq (Llama 3.3 70B) and Gemini (1.5 Flash)',
+      '24-hour rolling token consumption tracking per tenant in PostgreSQL'
     ],
     stack: {
       runtime: ['Node.js', 'TypeScript', 'Fastify v5'],
@@ -149,54 +149,54 @@ async getState(): Promise<CircuitState> {
     id: 'apgcl-app',
     slug: 'apgcl-app',
     title: 'APGCL Web Application & Administrative Dashboard',
-    tagline: 'Enterprise public utility operations portal with multi-factor authentication, passkey support, and transactional notification workflows.',
+    tagline: 'Operations portal developed during my internship at Assam Power Generation Corporation Limited.',
     category: 'Enterprise Backend',
     role: 'Software Engineering Intern',
     organization: 'Assam Power Generation Corporation Limited (APGCL)',
     period: '2024',
     featured: true,
     badges: ['Laravel 13', 'PHP 8.4', 'Livewire 4', 'Fortify', 'WebAuthn', 'MySQL'],
-    summary: 'A secure, high-integrity operations portal and document administration system engineered for Assam Power Generation Corporation Limited, providing hardened authentication and centralized regulatory distribution.',
-    challenge: 'State-owned power generation infrastructure requires absolute integrity, rigorous role-based access control, strict compliance with statutory disclosure mandates, and zero-trust administrative authentication to defend critical utility data.',
-    architectureNarrative: 'Built on PHP 8.4 and Laravel 13, the platform implements Laravel Fortify for security foundations. Administrative users authenticate with multi-factor challenge protocols (TOTP) and hardware-backed WebAuthn / Passkeys. The architecture incorporates an automated transactional email verification engine and a structured document distribution subsystem handling regulatory tariffs, Right to Information (RTI) records, annual statements, and executive policies.',
+    summary: 'An internal web application and administrative portal for Assam Power Generation Corporation Ltd. Features WebAuthn passkeys, two-factor authentication, transactional email notifications, and structured archiving for official state electricity filings.',
+    challenge: 'State power utility operations need dependable access control, strict security for administrative accounts, and organized public disclosure workflows for regulatory filings and notices.',
+    architectureNarrative: 'Built on PHP 8.4 and Laravel 13, using Laravel Fortify for defensive authentication. Administrative users log in using hardware passkeys (WebAuthn) and TOTP two-factor verification. The platform features an automated email verification pipeline and organizes regulatory documents, electricity tariffs, Right to Information (RTI) records, and annual filings into clean scoped routes.',
     architectureSteps: [
       {
         step: '01',
         name: 'Passkey & 2FA Gate',
-        description: 'Implements WebAuthn passkey registration and TOTP two-factor challenge before granting administrative clearance.',
+        description: 'Implements WebAuthn passkey registration and TOTP two-factor challenges for admin access.',
         technology: 'Laravel Fortify + WebAuthn'
       },
       {
         step: '02',
-        name: 'Administrative Control Center',
-        description: 'Livewire and Flux UI dynamic interfaces allowing authenticated operators to manage utility directives with zero full-page reloads.',
+        name: 'Admin Dashboard',
+        description: 'Livewire and Flux UI interfaces for viewing system notifications and managing utility updates.',
         technology: 'Livewire 4 + Flux UI'
       },
       {
         step: '03',
-        name: 'Transactional Email Engine',
-        description: 'Dispatches authenticated verification emails, password recovery events, and administrative security alerts.',
+        name: 'Email Notifications',
+        description: 'Dispatches authenticated account verification emails and administrative security alerts.',
         technology: 'Laravel Mail Pipeline'
       },
       {
         step: '04',
-        name: 'Statutory Document Subsystem',
-        description: 'Compartmentalized archival system serving regulatory tariffs, RTI disclosures, acts, and annual financial returns.',
+        name: 'Document Subsystem',
+        description: 'Organized archival system for regulatory tariffs, RTI disclosures, and annual financial statements.',
         technology: 'MySQL + Storage Engine'
       }
     ],
     technicalHighlights: [
       {
-        title: 'Multi-Factor & WebAuthn Passkey Security',
-        description: 'Engineered hardware-backed FIDO2 / WebAuthn passkey verification alongside time-based one-time password (TOTP) two-factor challenges to ensure zero-trust access control.',
+        title: 'WebAuthn Passkeys & 2FA Security',
+        description: 'Integrated FIDO2 / WebAuthn passkeys alongside authenticator app (TOTP) two-factor challenges to safeguard admin accounts.',
         codeSnippet: `// Fortify Two-Factor Challenge & Passkey verification
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
 });`
       },
       {
-        title: 'Statutory Public Document Routing Subsystem',
-        description: 'Cleanly scoped prefix routing architecture organizing legislative mandates, electricity tariff filings, and RTI disclosures.',
+        title: 'Statutory Document Routing',
+        description: 'Clean prefix routing architecture to manage public electricity tariffs, RTI disclosures, and state policy documents.',
         codeSnippet: `Route::prefix('documents')->name('documents.')->group(function () {
     Route::view('acts-policies', 'pages.documents.acts-policies')->name('acts-policies');
     Route::view('certificates', 'pages.documents.certificates')->name('certificates');
@@ -207,11 +207,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
       }
     ],
     verifiedClaims: [
-      'Verified: Production codebase configured with Laravel 13 and PHP 8.4 runtime',
-      'Verified: Full administrative dashboard with Livewire and Flux UI component architecture',
-      'Verified: Transactional email verification and security alerts via Laravel Fortify',
-      'Verified: Passkey / WebAuthn registration and TOTP two-factor challenge implementation',
-      'Verified: Scoped statutory document subsystem for tariffs, RTI, acts, and annual statements'
+      'Built with PHP 8.4 runtime and Laravel 13',
+      'Administrative dashboard with dynamic Livewire and Flux UI components',
+      'Transactional email verification and security notifications via Fortify',
+      'Hardware passkey (WebAuthn) and TOTP two-factor authentication',
+      'Scoped document management system for electricity tariffs, RTI, and policies'
     ],
     stack: {
       runtime: ['PHP 8.4', 'Laravel 13'],
@@ -225,46 +225,46 @@ Route::middleware(['auth', 'verified'])->group(function () {
     id: 'crop-disease-detection',
     slug: 'crop-disease-detection',
     title: 'Crop Disease Detection Using Image Processing',
-    tagline: 'Pathological computer vision pipeline for automated foliar lesion diagnosis and early agricultural risk mitigation.',
+    tagline: 'Computer vision and deep learning pipeline for plant leaf disease diagnosis, associated with NIT Silchar.',
     category: 'Computer Vision & AI',
     role: 'Lead Researcher & CV Engineer',
     organization: 'Associated with National Institute of Technology Silchar (NIT Silchar)',
     period: 'Academic Research',
     featured: true,
     badges: ['Computer Vision', 'OpenCV', 'TensorFlow', 'Deep Learning', 'Image Processing'],
-    summary: 'An academic research and machine learning initiative associated with NIT Silchar, engineering a digital image processing pipeline to autonomously recognize, isolate, and classify foliage diseases across staple agricultural crops.',
-    challenge: 'Agricultural producers suffer substantial crop loss due to delayed detection of foliar pathologies such as blight, rust, and chlorosis. Traditional diagnosis requires trained agronomists in the field, leading to severe intervention delays in rural communities.',
-    architectureNarrative: 'The system ingests leaf photographs captured in diverse environmental lighting conditions. A digital image processing pipeline applies adaptive histogram equalization, bilateral noise filtering, and color space transformations (RGB to HSV/LAB) to isolate pathological regions from background foliage. Extracted features are processed through a trained convolutional neural network classifier that generates diagnostic disease classifications with associated confidence scores.',
+    summary: 'An academic research project associated with NIT Silchar that detects and classifies plant leaf diseases from camera captures. It isolates diseased foliage using HSV and LAB color spaces and classifies pathologies using a convolutional neural network.',
+    challenge: 'Delayed detection of crop diseases like rust and chlorosis leads to severe agricultural loss in smallholder farms. Diagnosing infections traditionally requires field agronomists, causing critical delays in intervention.',
+    architectureNarrative: 'The pipeline takes leaf photographs captured under changing outdoor lighting conditions. OpenCV applies bilateral smoothing to remove speckle noise while preserving lesion edges, then converts RGB images into HSV and LAB color spaces to isolate damaged tissue from healthy green chlorophyll. Extracted contours are classified by a convolutional neural network to identify specific infections.',
     architectureSteps: [
       {
         step: '01',
-        name: 'Digital Image Acquisition & Filtering',
-        description: 'Applies bilateral smoothing to preserve lesion edges while removing environmental speckle noise.',
+        name: 'Image Preprocessing',
+        description: 'Applies bilateral filtering to smooth background noise while keeping lesion contours sharp.',
         technology: 'OpenCV + NumPy'
       },
       {
         step: '02',
         name: 'Color Space Transformation',
-        description: 'Converts RGB leaf images to HSV and LAB color spaces to segment chlorotic patches and necrotic tissue from healthy chlorophyll.',
+        description: 'Converts leaf images to HSV and LAB color spaces to isolate chlorotic and necrotic tissue.',
         technology: 'Digital Image Processing'
       },
       {
         step: '03',
-        name: 'Morphological Segmentation',
-        description: 'Executes Otsu thresholding and contour extraction to delineate the exact boundaries of infection areas.',
+        name: 'Lesion Segmentation',
+        description: 'Uses Otsu thresholding and contour detection to compute the exact boundaries of infected areas.',
         technology: 'Mathematical Morphology'
       },
       {
         step: '04',
-        name: 'Convolutional Deep Classification',
-        description: 'Feeds segmented regions into a trained deep network to distinguish between fungal, bacterial, and viral pathologies.',
+        name: 'Neural Classification',
+        description: 'Feeds segmented regions into a trained convolutional network to diagnose fungal and bacterial diseases.',
         technology: 'TensorFlow / PyTorch'
       }
     ],
     technicalHighlights: [
       {
-        title: 'Multi-Stage Chromatic Segmentation Pipeline',
-        description: 'Isolates foliar degradation by transforming raw camera captures into color spaces where luminescence is decoupled from chromaticity, eliminating shadows and false positives.',
+        title: 'Chromatic Leaf Segmentation in HSV Space',
+        description: 'Decouples color information from light intensity by converting RGB images to HSV space, eliminating shadows and false positives.',
         codeSnippet: `# Chromatic leaf segmentation in HSV space
 hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 lower_green = np.array([25, 40, 40])
@@ -273,8 +273,8 @@ mask = cv2.inRange(hsv, lower_green, upper_green)
 lesion_mask = cv2.bitwise_not(mask)`
       },
       {
-        title: 'Feature Extraction & Pathological Diagnostics',
-        description: 'Extracts spatial texture and color variance metrics alongside deep convolutional representations to achieve robust classification despite field variance.',
+        title: 'Quantitative Lesion Area Ratio',
+        description: 'Calculates the proportion of damaged leaf tissue against total leaf area to assist severity scoring.',
         codeSnippet: `# Quantitative lesion area ratio calculation
 total_leaf_pixels = np.count_nonzero(leaf_contour)
 infected_pixels = np.count_nonzero(lesion_mask)
@@ -282,9 +282,9 @@ infection_ratio = infected_pixels / max(1, total_leaf_pixels)`
       }
     ],
     verifiedClaims: [
-      'Verified: Academic research project conducted in association with NIT Silchar',
-      'Verified: Focus on digital image processing, color space transformations, and lesion segmentation',
-      'Verified: Automated classification pipeline addressing rural agricultural pathology diagnostics'
+      'Academic research project associated with NIT Silchar',
+      'OpenCV image processing with HSV/LAB color transformations and morphological filtering',
+      'Automated deep learning classification for early crop disease intervention'
     ],
     stack: {
       runtime: ['Python 3'],
@@ -298,39 +298,39 @@ infection_ratio = infected_pixels / max(1, total_leaf_pixels)`
     id: 'microbounty',
     slug: 'microbounty',
     title: 'MicroBounty — Sandboxed Code Evaluation & PR Verifier Engine',
-    tagline: 'Asynchronous distributed code execution engine running untrusted programs in ephemeral, resource-capped Docker sandboxes with Redis BullMQ backpressure.',
+    tagline: 'Asynchronous code runner that executes untrusted programs in disposable Docker sandboxes.',
     category: 'Distributed Systems',
     role: 'Backend Architect',
     period: '2024',
     featured: false,
     badges: ['Node.js', 'Docker API', 'BullMQ', 'Redis', 'MongoDB Atlas'],
-    summary: 'A resilient code evaluation platform that ingests untrusted code submissions and GitHub pull requests, isolating execution inside disposable Docker containers with zero network access and strict CPU/memory caps.',
-    challenge: 'Executing untrusted arbitrary code submitted by external users introduces catastrophic host compromise risks: fork bombs, crypto miners, and remote socket connections.',
-    architectureNarrative: 'MicroBounty mitigates these threats through multi-layered defense. An Express API gateway buffers submissions into Redis BullMQ queues with sliding-window rate limiting. Dedicated worker processes spawn ephemeral Docker containers with --network=none, 128MB RAM limits, 0.5 core CPU constraints, and 5-second hard timeouts, preventing escape.',
+    summary: 'A code evaluation runner that tests untrusted code submissions and pull requests inside disposable Docker containers. Strips network access (`--network=none`), limits RAM to 128MB, and buffers incoming GitHub webhooks through BullMQ queues to keep the API server fast and responsive.',
+    challenge: 'Running untrusted code submitted over the web creates security risks like container breakouts, network abuse, and memory exhaustion from infinite loops.',
+    architectureNarrative: 'An Express gateway buffers submissions into Redis BullMQ queues with sliding-window rate limiting. Dedicated worker processes spawn temporary Docker containers with network access disabled, memory capped at 128MB, CPU throttled to 0.5 cores, and a strict 5-second timeout.',
     architectureSteps: [
       {
         step: '01',
-        name: 'Webhook Ingestion & Idempotency',
-        description: 'Locks GitHub delivery IDs in Redis with 10-minute TTL to prevent duplicate test runs from webhooks.',
+        name: 'Webhook Ingestion',
+        description: 'Deduplicates GitHub delivery IDs in Redis with a 10-minute lock to prevent duplicate test runs.',
         technology: 'Redis Key Locks'
       },
       {
         step: '02',
-        name: 'Asynchronous Backpressure',
-        description: 'Buffers submissions into BullMQ to decouple compute execution from incoming web traffic spikes.',
+        name: 'Queue Buffering',
+        description: 'Buffers submissions into BullMQ so sudden waves of tests never overwhelm worker memory.',
         technology: 'BullMQ + Redis'
       },
       {
         step: '03',
-        name: 'Air-Gapped Container Sandbox',
-        description: 'Spawns temporary Docker container with NetworkDisabled=true, Memory=128MB, and non-root execution.',
+        name: 'Air-Gapped Container',
+        description: 'Spawns an ephemeral Docker container with NetworkDisabled=true, Memory=128MB, and non-root execution.',
         technology: 'Docker Engine API'
       }
     ],
     technicalHighlights: [
       {
-        title: 'Air-Gapped Disposable Container Isolation',
-        description: 'Guarantees execution safety by stripping networking and capping memory.',
+        title: 'Disposable Air-Gapped Docker Containers',
+        description: 'Enforces container safety by stripping network access and setting strict memory and CPU caps.',
         codeSnippet: `// Ephemeral container configuration
 const container = await docker.createContainer({
   Image: 'sandbox-runner:node',
@@ -344,9 +344,9 @@ const container = await docker.createContainer({
       }
     ],
     verifiedClaims: [
-      'Verified: Full working repository in local development environment',
-      'Verified: BullMQ and Redis backpressure decoupled from compute workers',
-      'Verified: Strict Docker container sandboxing with NetworkDisabled and memory limits'
+      'Working local codebase with Express, BullMQ, and Docker Engine API',
+      'Asynchronous task buffering via BullMQ and Redis',
+      'Air-gapped Docker execution with NetworkDisabled and memory limits'
     ],
     stack: {
       runtime: ['Node.js', 'Express'],
@@ -360,39 +360,39 @@ const container = await docker.createContainer({
     id: 'securevault',
     slug: 'securevault',
     title: 'SecureVault — Role-Based Document Management & File Storage Engine',
-    tagline: 'Self-hosted Python storage engine with 3NF relational schema, SHA-256 data integrity verification, and content-addressable deduplication.',
+    tagline: 'Self-hosted Python storage engine with a 3NF normalized MySQL database and SHA-256 deduplication.',
     category: 'Enterprise Backend',
     role: 'Backend Architect',
     period: '2024',
     featured: false,
     badges: ['Python', 'Flask', 'MySQL 3NF', 'Docker', 'Cryptography'],
-    summary: 'An enterprise-grade document management and storage engine built on clean layered architecture (Presentation, Middleware, Service Layer, Repository Pattern) with zero cloud lock-in.',
-    challenge: 'Enterprise document workflows often leak data through unvalidated direct file paths, cloud vendor lock-in, and lack of verifiable content integrity over time.',
-    architectureNarrative: 'SecureVault solves this through cryptographic content-addressable storage. Files are streamed through SHA-256 hashers to deduplicate identical payloads automatically on disk. A 3NF normalized MySQL database maintains relational access boundaries, storage quotas, and an append-only audit trail.',
+    summary: 'A self-hosted storage backend built with Python, Flask, and a normalized MySQL database. Streams file uploads through cryptographic SHA-256 hashing to deduplicate identical files on disk, keeping storage lean without relying on commercial cloud buckets.',
+    challenge: 'File storage systems frequently store duplicate copies of the same files and lack cryptographic verification to prove that stored files have not been modified or corrupted.',
+    architectureNarrative: 'Files stream through SHA-256 hashers during upload to automatically detect identical files and share storage on disk. A 3NF normalized MySQL database manages access boundaries, storage quotas, and an append-only audit trail.',
     architectureSteps: [
       {
         step: '01',
-        name: 'Streaming File Ingestion',
-        description: 'Streams chunks into memory while simultaneously generating cryptographic SHA-256 digests.',
+        name: 'Streaming Ingestion',
+        description: 'Reads incoming file chunks and calculates a cryptographic SHA-256 digest in real time.',
         technology: 'Python Stream IO'
       },
       {
         step: '02',
-        name: 'Content-Addressable Deduplication',
-        description: 'Stores file payloads keyed by their hash, eliminating duplicate storage consumption.',
+        name: 'Content Deduplication',
+        description: 'Stores files indexed by their hash, saving disk space when identical files are uploaded.',
         technology: 'Sharded Disk Store'
       },
       {
         step: '03',
-        name: 'Immutable Audit Trail',
-        description: 'Logs all file access, sharing, and modifications in normalized relational audit tables.',
+        name: 'Relational Audit Log',
+        description: 'Records file uploads, downloads, and link access in normalized MySQL audit tables.',
         technology: 'MySQL 8.0 (InnoDB)'
       }
     ],
     technicalHighlights: [
       {
         title: 'Cryptographic Content-Addressable Storage',
-        description: 'Generates SHA-256 digests during streaming upload to ensure end-to-end data integrity.',
+        description: 'Computes SHA-256 digests on streaming uploads to verify integrity and prevent duplicate files on disk.',
         codeSnippet: `def compute_file_hash(stream):
     hasher = hashlib.sha256()
     while chunk := stream.read(65536):
@@ -402,9 +402,9 @@ const container = await docker.createContainer({
       }
     ],
     verifiedClaims: [
-      'Verified: Complete local codebase with layered Flask architecture',
-      'Verified: 3NF normalized MySQL database schema with foreign key constraints',
-      'Verified: Content-addressable storage deduplication and cryptographic verification'
+      'Layered Flask architecture with repository and service layers',
+      'Normalized 3NF MySQL schema with foreign keys and index optimization',
+      'Content-addressable file deduplication using streaming SHA-256 hashes'
     ],
     stack: {
       runtime: ['Python 3', 'Flask', 'Gunicorn'],

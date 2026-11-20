@@ -27,45 +27,45 @@ const additionalProjects = projects.filter((p) => !p.featured);
     <Hero />
 
     <!-- Systems / Projects Section -->
-    <section id="systems" class="py-24 border-b border-white/[0.04] relative">
+    <section id="systems" class="py-24 border-b border-white/5 relative">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
           <div class="max-w-3xl">
-            <div class="flex items-center space-x-2 technical-mono text-xs text-cherry mb-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-cherry"></span>
-              <span>VERIFIED PRODUCTION & RESEARCH WORK</span>
+            <div class="flex items-center space-x-2 technical-mono text-xs text-coral mb-3">
+              <span class="w-1.5 h-1.5 bg-coral inline-block"></span>
+              <span class="tracking-widest uppercase">PROJECT SHOWCASE // CODE & RESEARCH</span>
             </div>
-            <h2 class="editorial-title text-4xl sm:text-5xl lg:text-6xl font-bold text-softwhite mb-4">
-              Featured Systems.
+            <h2 class="editorial-title text-4xl sm:text-5xl lg:text-6xl font-bold text-pearl mb-4">
+              Systems I've built.
             </h2>
-            <p class="text-smokegrey text-base sm:text-lg leading-relaxed">
-              In-depth case studies of distributed AI gateways, state-owned utility administration platforms, and pathological computer vision research. Every technical claim is verified against runnable source code.
+            <p class="text-smoke-light text-base leading-relaxed">
+              A breakdown of projects I have engineered across distributed task queues, state utility administration, and academic computer vision research.
             </p>
           </div>
 
-          <div class="technical-mono text-xs text-smokegrey shrink-0">
-            SHOWING 03 PRIMARY ARCHITECTURES
+          <div class="technical-mono text-xs text-smoke-dark shrink-0">
+            [SYS_REGISTRY // 05 ACTIVE]
           </div>
         </div>
 
-        <!-- Featured Projects Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+        <!-- Featured Projects Grid (Custom HUD Panels) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 mb-14">
           {featuredProjects.map((project, idx) => (
             <ProjectCard project={project} index={idx} />
           ))}
         </div>
 
         <!-- Additional Engineering Repositories -->
-        <div class="pt-12 border-t border-white/[0.04]">
-          <div class="flex items-center justify-between mb-8">
-            <h3 class="technical-mono text-sm uppercase tracking-wider text-smokegrey font-bold">
-              ADDITIONAL VERIFIED ENGINEERING SYSTEMS
+        <div class="pt-10 border-t border-white/5">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="technical-mono text-xs uppercase tracking-wider text-smoke-light font-bold">
+              ADDITIONAL REPOSITORIES // SANDBOXING & 3NF STORAGE
             </h3>
-            <span class="text-[11px] technical-mono text-smokegrey/70">DOCKER SANDBOXING & 3NF SQL</span>
+            <span class="text-[10px] technical-mono text-smoke-dark">LOCAL REPOS</span>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7">
             {additionalProjects.map((project, idx) => (
               <ProjectCard project={project} index={idx + featuredProjects.length} />
             ))}
@@ -78,10 +78,10 @@ const additionalProjects = projects.filter((p) => !p.featured);
     <!-- Interactive Circuit Breaker & Queue Simulator -->
     <CircuitSimulator />
 
-    <!-- Engineering Principles: Building for the Unexpected -->
+    <!-- Engineering Principles Manifesto -->
     <Principles />
 
-    <!-- Curated Skills Matrix: How I Build -->
+    <!-- Curated Skills Matrix -->
     <SkillsGrid />
 
     <!-- Timeline / Education & Experience -->

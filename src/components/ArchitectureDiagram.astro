@@ -9,47 +9,47 @@ interface Props {
 const { steps, title = 'System Architecture Flow' } = Astro.props;
 ---
 
-<div class="my-8 rounded-2xl bg-charcoal/80 border border-white/[0.06] p-6 sm:p-8">
-  <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/[0.04]">
+<div class="my-8 rounded-2xl bg-ink-900 border border-white/10 p-6 sm:p-8">
+  <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
     <div class="flex items-center space-x-2">
-      <span class="w-1.5 h-1.5 rounded-full bg-cherry"></span>
-      <h3 class="technical-mono text-sm uppercase tracking-wider text-softwhite font-bold">{title}</h3>
+      <span class="w-2.5 h-2.5 rounded-full bg-orbital"></span>
+      <h3 class="technical-mono text-sm uppercase tracking-wider text-pearl font-bold">{title}</h3>
     </div>
-    <span class="technical-mono text-xs text-smokegrey">END-TO-END VERIFIED PIPELINE</span>
+    <span class="technical-mono text-xs text-smoke">END-TO-END VERIFIED PIPELINE</span>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
     {steps.map((step, idx) => (
-      <div class="relative flex flex-col justify-between p-4 rounded-xl bg-jet border border-white/[0.04] hover:border-white/10 transition-colors group">
+      <div class="relative flex flex-col justify-between p-4 rounded-xl bg-ink-950 border border-white/5 hover:border-coral/40 transition-colors group">
         
         <div>
           <div class="flex items-center justify-between mb-3">
-            <span class="technical-mono text-xs font-bold text-cherry">
+            <span class="technical-mono text-xs font-bold text-coral group-hover:text-coral-light transition-colors">
               STEP {step.step}
             </span>
-            <span class="text-[10px] technical-mono text-smokegrey/60 px-1.5 py-0.5 rounded bg-white/[0.03]">
+            <span class="text-[10px] technical-mono text-smoke-dark px-1.5 py-0.5 rounded bg-white/5">
               FLOW #{idx + 1}
             </span>
           </div>
 
-          <h4 class="font-display font-semibold text-sm text-softwhite mb-2">
+          <h4 class="font-display font-semibold text-sm text-pearl mb-2">
             {step.name}
           </h4>
 
-          <p class="text-xs text-smokegrey leading-relaxed mb-4">
+          <p class="text-xs text-smoke-light leading-relaxed mb-4">
             {step.description}
           </p>
         </div>
 
-        <div class="pt-3 border-t border-white/[0.04]">
-          <span class="text-[10px] technical-mono text-softwhite/80 font-medium block">
+        <div class="pt-3 border-t border-white/5">
+          <span class="text-[10px] technical-mono text-orbital font-medium block">
             {step.technology}
           </span>
         </div>
 
         <!-- Connection Arrow for Desktop -->
         {idx < steps.length - 1 && (
-          <div class="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 z-20 text-smokegrey/30 pointer-events-none" aria-hidden="true">
+          <div class="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 z-20 text-smoke/30 pointer-events-none" aria-hidden="true">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>

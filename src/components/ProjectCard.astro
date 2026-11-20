@@ -8,81 +8,114 @@ interface Props {
 
 const { project, index } = Astro.props;
 const displayIndex = String(index + 1).padStart(2, '0');
+const variant = index % 3; // 0: Chamfered Top-Right, 1: Stepped Crosshair, 2: Chamfered Bottom-Left
+
+const tagLabel = project.organization
+  ? (project.organization.includes('Assam') ? 'APGCL_INTERN' : 'NIT_SILCHAR')
+  : (project.githubUrl ? 'OPEN_SRC' : 'SYSTEM_NODE');
 ---
 
-<article class="group relative rounded-2xl bg-charcoal/60 border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300 p-6 sm:p-8 flex flex-col justify-between shadow-surface-elevated">
-  
-  <div>
-    <!-- Card Header Dossier -->
-    <div class="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-white/[0.04]">
-      <div class="flex items-center space-x-3">
-        <span class="technical-mono text-xs font-bold text-cherry">
-          SYS // {displayIndex}
-        </span>
-        <span class="text-white/20" aria-hidden="true">•</span>
-        <span class="text-xs technical-mono text-smokegrey font-medium">
-          {project.category}
-        </span>
-      </div>
+<article
+  class:list={[
+    "group relative bg-[#0D1524] border border-white/10 hover:border-coral/50 transition-all duration-300 p-6 sm:p-7 flex flex-col justify-between hud-scan-line shadow-surface-elevated",
+    variant === 0 && "hud-cut-tr",
+    variant === 1 && "hud-cut-diagonal",
+    variant === 2 && "hud-cut-bl"
+  ]}
+>
+  {/* Variant 0 Accent: Top-Right Notch */}
+  {variant === 0 && (
+    <>
+      <div class="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-coral pointer-events-none" aria-hidden="true"></div>
+      <div class="absolute -top-px left-8 w-12 h-px bg-coral pointer-events-none" aria-hidden="true"></div>
+    </>
+  )}
 
+  {/* Variant 1 Accent: Corner Crosshairs */}
+  {variant === 1 && (
+    <>
+      <span class="absolute top-1 left-1.5 text-[9px] technical-mono text-smoke/40 select-none pointer-events-none" aria-hidden="true">+</span>
+      <span class="absolute top-1 right-1.5 text-[9px] technical-mono text-smoke/40 select-none pointer-events-none" aria-hidden="true">+</span>
+      <span class="absolute bottom-1 left-1.5 text-[9px] technical-mono text-smoke/40 select-none pointer-events-none" aria-hidden="true">+</span>
+      <span class="absolute bottom-1 right-1.5 text-[9px] technical-mono text-coral select-none pointer-events-none" aria-hidden="true">+</span>
+      <div class="absolute -top-px right-16 w-8 h-px bg-white/20 pointer-events-none" aria-hidden="true"></div>
+    </>
+  )}
+
+  {/* Variant 2 Accent: Bottom-Left Notch */}
+  {variant === 2 && (
+    <>
+      <div class="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-coral pointer-events-none" aria-hidden="true"></div>
+      <div class="absolute -top-px right-10 w-12 h-px bg-smoke/40 pointer-events-none" aria-hidden="true"></div>
+      <span class="absolute top-1 left-1.5 text-[9px] technical-mono text-smoke/40 select-none pointer-events-none" aria-hidden="true">+</span>
+    </>
+  )}
+
+  <div>
+    {/* Technical HUD Header Bar */}
+    <div class="flex items-center justify-between pb-3 mb-5 border-b border-white/5 technical-mono text-[11px]">
       <div class="flex items-center space-x-2">
-        {project.organization && (
-          <span class="text-[11px] technical-mono text-smokegrey px-2.5 py-1 rounded bg-white/[0.03] border border-white/[0.04]">
-            {project.organization}
-          </span>
-        )}
-        <span class="text-[11px] technical-mono text-smokegrey px-2 py-1 rounded bg-jet/80">
-          {project.period}
+        <span class:list={[
+          "w-1.5 h-1.5 inline-block",
+          variant === 0 ? "bg-coral" : variant === 1 ? "bg-orbital" : "bg-smoke"
+        ]}></span>
+        <span class="text-coral font-bold tracking-wider">SYS_{displayIndex}</span>
+        <span class="text-white/20">//</span>
+        <span class="text-smoke uppercase">{project.category}</span>
+      </div>
+      <div class="flex items-center space-x-2 text-smoke-dark">
+        <span class="border border-white/10 px-1.5 py-0.5 bg-black/40 text-[10px] text-smoke-light">
+          {tagLabel}
         </span>
       </div>
     </div>
 
-    <!-- Title & Tagline -->
-    <h3 class="editorial-title text-2xl sm:text-3xl font-bold text-softwhite group-hover:text-cherry-light transition-colors mb-3">
-      <a href={`/projects/${project.slug}`} class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cherry rounded">
+    {/* Title & Headline */}
+    <h3 class="font-display text-xl sm:text-2xl font-bold text-pearl group-hover:text-coral-light transition-colors mb-3 leading-snug">
+      <a href={`/projects/${project.slug}`} class="focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-coral">
         {project.title}
       </a>
     </h3>
 
-    <p class="text-sm sm:text-base text-smokegrey font-normal leading-relaxed mb-6">
+    {/* Human-written Summary */}
+    <p class="text-xs sm:text-sm text-smoke-light leading-relaxed mb-6 font-normal">
       {project.summary}
     </p>
 
-    <!-- Verified Technical Highlights -->
-    <div class="space-y-2 mb-6 p-4 rounded-xl bg-jet/80 border border-white/[0.04]">
-      <span class="block text-[11px] technical-mono font-bold text-softwhite/80 uppercase tracking-wider mb-2">
-        VERIFIED IMPLEMENTATION
-      </span>
+    {/* Technical Architecture Highlights */}
+    <div class="mb-6 p-3.5 bg-[#090E1A] border-l-2 border-y border-r border-white/5 space-y-2"
+         class:list={[
+           variant === 0 ? "border-l-coral" : variant === 1 ? "border-l-orbital" : "border-l-smoke"
+         ]}>
+      <div class="text-[10px] technical-mono uppercase tracking-wider text-smoke font-semibold mb-1">
+        Key implementation details:
+      </div>
       {project.verifiedClaims.slice(0, 3).map((claim) => (
-        <div class="flex items-start space-x-2 text-xs text-smokegrey">
-          <svg class="w-3.5 h-3.5 text-cherry shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-          </svg>
-          <span class="technical-mono text-[11px] leading-tight text-smokegrey">{claim}</span>
+        <div class="flex items-start space-x-2 text-xs text-smoke-light">
+          <span class="text-coral technical-mono text-[11px] shrink-0 font-bold">&gt;</span>
+          <span class="leading-tight text-[11px] technical-mono">{claim}</span>
         </div>
       ))}
     </div>
 
-    <!-- Stack Badges -->
-    <div class="flex flex-wrap gap-1.5 mb-8">
+    {/* Bracketed Tech Tags */}
+    <div class="flex flex-wrap gap-1.5 mb-6 technical-mono text-[11px]">
       {project.badges.map((badge) => (
-        <span class="px-2.5 py-1 rounded text-[11px] technical-mono bg-white/[0.03] hover:bg-white/[0.06] text-smokegrey border border-white/[0.04] transition-colors">
-          {badge}
+        <span class="px-2 py-0.5 bg-white/5 hover:bg-white/10 text-smoke-light hover:text-pearl transition-colors border border-white/5">
+          [{badge}]
         </span>
       ))}
     </div>
   </div>
 
-  <!-- Bottom CTA Actions -->
-  <div class="flex items-center justify-between pt-5 border-t border-white/[0.04]">
+  {/* HUD Action Footer */}
+  <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs technical-mono">
     <a
       href={`/projects/${project.slug}`}
-      class="inline-flex items-center space-x-2 text-xs sm:text-sm font-semibold technical-mono text-softwhite hover:text-cherry transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cherry"
+      class="inline-flex items-center space-x-1.5 text-pearl hover:text-coral font-medium transition-colors"
     >
-      <span>Read Architecture Case Study</span>
-      <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-      </svg>
+      <span>Case study</span>
+      <span class="transform group-hover:translate-x-1 transition-transform">&rarr;</span>
     </a>
 
     {project.githubUrl && (
@@ -90,13 +123,10 @@ const displayIndex = String(index + 1).padStart(2, '0');
         href={project.githubUrl}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={`GitHub Repository for ${project.title}`}
-        class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs technical-mono text-smokegrey hover:text-softwhite bg-jet border border-white/[0.04] hover:border-white/10 transition-colors"
+        class="text-smoke hover:text-pearl transition-colors flex items-center space-x-1 text-[11px]"
       >
-        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-        </svg>
-        <span>Source</span>
+        <span>source</span>
+        <span>&nearr;</span>
       </a>
     )}
   </div>

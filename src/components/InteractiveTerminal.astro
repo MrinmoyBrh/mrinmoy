@@ -1,17 +1,17 @@
 ---
 ---
 
-<div id="terminal" class="rounded-2xl bg-jet border border-white/[0.06] p-4 sm:p-6 shadow-surface-elevated font-mono">
+<div id="terminal" class="rounded-2xl bg-ink-950 border border-white/10 p-4 sm:p-6 shadow-surface-elevated font-mono">
   
   <!-- Terminal Titlebar -->
-  <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/[0.06] text-xs">
+  <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/10 text-xs">
     <div class="flex items-center space-x-2">
-      <span class="w-2.5 h-2.5 rounded-full bg-cherry inline-block"></span>
-      <span class="w-2.5 h-2.5 rounded-full bg-white/20 inline-block"></span>
-      <span class="w-2.5 h-2.5 rounded-full bg-white/10 inline-block"></span>
-      <span class="text-smokegrey text-[11px] ml-2">mrinmoy@terminal:~</span>
+      <span class="w-3 h-3 rounded-full bg-coral/80 inline-block"></span>
+      <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+      <span class="w-3 h-3 rounded-full bg-orbital/80 inline-block"></span>
+      <span class="text-smoke text-[11px] ml-2">mrinmoy@resilient-node:~</span>
     </div>
-    <div class="flex items-center space-x-3 text-[10px] text-smokegrey">
+    <div class="flex items-center space-x-3 text-[10px] text-smoke-dark">
       <span>SHELL: zsh</span>
       <span>•</span>
       <span>ENV: PRODUCTION</span>
@@ -19,21 +19,21 @@
   </div>
 
   <!-- Terminal Output Buffer -->
-  <div id="term-output" class="text-xs sm:text-sm text-smokegrey space-y-2 min-h-[200px] max-h-[340px] overflow-y-auto pr-2">
+  <div id="term-output" class="text-xs sm:text-sm text-smoke-light space-y-2 min-h-[200px] max-h-[340px] overflow-y-auto pr-2">
     <div>
-      <span class="text-softwhite font-semibold">Mrinmoy Borah</span> <span class="text-cherry">[Backend Software Engineer / B.Tech CSE 2027]</span>
+      <span class="text-coral">Mrinmoy Borah</span> [Backend Software Engineer / B.Tech CSE 2027]
     </div>
-    <div class="text-smokegrey">
-      Type <span class="text-softwhite font-bold">help</span> to view available system commands, or execute <span class="text-cherry font-bold">contact</span> to dispatch an email.
+    <div class="text-smoke">
+      Type <span class="text-pearl font-bold">help</span> to view available system commands, or execute <span class="text-pearl font-bold">contact</span> to dispatch an email.
     </div>
-    <div class="text-smokegrey text-xs">
+    <div class="text-orbital text-xs">
       Session connected to live node at 26.14°N, 91.73°E.
     </div>
   </div>
 
   <!-- Terminal Input Line -->
-  <form id="term-form" class="mt-4 pt-3 border-t border-white/[0.06] flex items-center space-x-2">
-    <label for="term-input" class="text-cherry font-bold text-sm shrink-0">
+  <form id="term-form" class="mt-4 pt-3 border-t border-white/10 flex items-center space-x-2">
+    <label for="term-input" class="text-coral font-bold text-sm shrink-0">
       mrinmoy&gt;
     </label>
     <input
@@ -42,7 +42,7 @@
       autocomplete="off"
       spellcheck="false"
       placeholder="Type 'help', 'status', 'projects', or 'contact'..."
-      class="w-full bg-transparent text-softwhite text-xs sm:text-sm font-mono border-none outline-none focus:ring-0 p-0 placeholder:text-white/20"
+      class="w-full bg-transparent text-pearl text-xs sm:text-sm font-mono border-none outline-none focus:ring-0 p-0 placeholder:text-smoke-dark"
     />
   </form>
 
@@ -59,15 +59,15 @@
   - status     : Check system runtime, Redis health & BullMQ telemetry
   - projects   : List verified architecture case studies
   - stack      : Display verified backend technologies
-  - principles : Print the "Building for the Unexpected" perspective
+  - principles : Print the 5 core resilience axioms
   - contact    : View direct contact coordinates & mailto link
   - clear      : Clear terminal screen`,
     whoami: `Mrinmoy Borah
 Role: Backend Software Engineer
 Education: B.Tech Computer Science & Engineering, Dhemaji Engineering College (2023 - 2027)
-Focus: Backend Development, Databases, Resilient Queues, Container Sandboxing.`,
+Specialization: Distributed Systems, BullMQ Task Queues, Redis Circuit Breakers, 3NF SQL, Container Sandboxing.`,
     status: `[SYS STATUS: NOMINAL]
-Node: worker-01.production
+Node: worker-01.fastify.production
 Redis Cluster: Connected (State: OK, CB: CLOSED)
 BullMQ Queues: ai-tasks [Concurrency: 5, Active: 0, Failed: 0]
 Cache Hit Latency: <5ms (Deterministic SHA-256)
@@ -78,14 +78,17 @@ Uptime: 99.98%`,
   3. crop-disease-detection: Academic Research with NIT Silchar, OpenCV, Deep Learning
   4. microbounty: Ephemeral Docker sandboxing, network-disabled, memory-capped
   5. securevault: Self-hosted Python storage engine with 3NF MySQL deduplication`,
-    stack: `Backend Development: Node.js, TypeScript, Express.js, Fastify, Python, Laravel, PHP, REST APIs
-Databases: PostgreSQL, MySQL, MongoDB, Redis
-Cloud & Infrastructure: Docker, Linux, Nginx, Git & GitHub
-Developer Tools: Postman, VS Code, npm, Vite`,
-    principles: `Building for the Unexpected:
-  01. Expect Things to Go Wrong — Think about failure scenarios early to save trouble later.
-  02. Keep Things Simple — Choose solutions that are practical, clear, and easy to maintain.
-  03. Learn from What Breaks — Approach debugging as a learning experience.`,
+    stack: `Runtime: Node.js, TypeScript, Python 3, PHP 8.4
+Frameworks: Fastify v5, Express, Laravel 13, Flask
+Databases: PostgreSQL, MySQL 8.0 (3NF), MongoDB Atlas
+Distributed: Redis (ioredis, sliding-window rate limiting), BullMQ
+Security: Docker Sandboxing (--network=none), WebAuthn / Passkeys, TOTP 2FA`,
+    principles: `Resilience Axioms:
+  01. Failure as a First-Class State (Circuit Breakers & Exponential Backoff)
+  02. Asynchronous Backpressure (BullMQ Queuing Over Synchronous Spikes)
+  03. Idempotency & Cryptographic Verifiability (SHA-256 Hashes & Redis Locks)
+  04. Zero-Trust Sandboxing (Ephemeral Disposable Containers)
+  05. Observability Over Guesswork (Structured Telemetry & Quotas)`,
     contact: `Contact Coordinates:
   - Email: mrinmoyborah360@gmail.com
   - GitHub: https://github.com/MrinmoyBrh
@@ -97,12 +100,12 @@ Developer Tools: Postman, VS Code, npm, Vite`,
     if (!termOutput) return;
 
     const cmdLine = document.createElement('div');
-    cmdLine.className = 'text-cherry mt-2';
+    cmdLine.className = 'text-coral mt-2';
     cmdLine.textContent = `mrinmoy> ${cmd}`;
     termOutput.appendChild(cmdLine);
 
     const respLine = document.createElement('div');
-    respLine.className = 'whitespace-pre-wrap text-smokegrey leading-relaxed';
+    respLine.className = 'whitespace-pre-wrap text-smoke-light leading-relaxed';
     respLine.textContent = response;
     termOutput.appendChild(respLine);
 

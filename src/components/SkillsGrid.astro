@@ -1,45 +1,207 @@
 ---
-import { skillGroups } from '../data/skills';
+import { skillCategories } from '../data/skills';
+
+const mod1 = skillCategories.find((c) => c.id === 'queues-async')!;
+const mod2 = skillCategories.find((c) => c.id === 'runtimes')!;
+const mod3 = skillCategories.find((c) => c.id === 'databases')!;
+const mod4 = skillCategories.find((c) => c.id === 'security')!;
+const mod5 = skillCategories.find((c) => c.id === 'vision-ai')!;
 ---
 
-<section id="skills" class="py-24 sm:py-28 border-b border-white/5 relative">
+<section id="skills" class="py-24 border-b border-white/5 relative">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
-    <!-- Section Header -->
-    <div class="max-w-3xl mb-16 sm:mb-20">
-      <div class="flex items-center space-x-2 technical-mono text-xs text-cherry mb-3">
-        <span class="w-1.5 h-1.5 rounded-full bg-cherry"></span>
-        <span>EXPERTISE & TOOLS</span>
+    <!-- Section Header Dossier -->
+    <div class="max-w-3xl mb-14">
+      <div class="flex items-center space-x-2 technical-mono text-xs text-coral mb-3">
+        <span class="w-1.5 h-1.5 bg-coral inline-block"></span>
+        <span class="tracking-widest uppercase">TECHNICAL COMPETENCIES</span>
       </div>
-      <h2 class="editorial-title text-4xl sm:text-5xl lg:text-6xl font-bold text-softwhite mb-6">
-        How I Build.
+      <h2 class="editorial-title text-4xl sm:text-5xl lg:text-6xl font-bold text-pearl mb-4">
+        What I work with.
       </h2>
-      <p class="text-smokegrey text-base sm:text-lg leading-relaxed">
-        I enjoy working on the parts of an application that people don't always see. From handling requests to managing data and connecting different services, I'm interested in understanding how everything works together. I'm constantly learning new technologies and finding better ways to build applications that are reliable, efficient, and easy to maintain.
+      <p class="text-smoke-light text-base leading-relaxed">
+        My daily backend toolkit—focused on queue architectures, asynchronous runtimes, relational database design, and container sandboxing.
       </p>
     </div>
 
-    <!-- Clean Modern Editorial Layout -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
-      {skillGroups.map((group) => (
-        <div class="group p-6 sm:p-8 rounded-2xl bg-charcoal/50 border border-white/[0.04] hover:border-white/[0.08] transition-all duration-300">
-          <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/[0.04]">
-            <h3 class="font-display font-semibold text-lg sm:text-xl text-softwhite tracking-tight">
-              {group.category}
-            </h3>
-            <span class="w-2 h-2 rounded-full bg-white/10 group-hover:bg-cherry/60 transition-colors"></span>
-          </div>
+    <!-- Asymmetrical HUD Matrix Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+      
+      <!-- MODULE 01: Flagship Asynchronous & Queues (Spans 2 cols on desktop) -->
+      <div class="lg:col-span-2 bg-[#0D1524] border border-white/10 hover:border-coral/40 transition-colors p-6 sm:p-7 hud-cut-tr relative hud-scan-line shadow-surface-elevated">
+        
+        <!-- Angular corner accent -->
+        <div class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-coral pointer-events-none" aria-hidden="true"></div>
+        <div class="absolute -top-px left-10 w-16 h-px bg-coral pointer-events-none" aria-hidden="true"></div>
 
-          <!-- Skills List -->
-          <div class="flex flex-wrap gap-2 sm:gap-2.5">
-            {group.skills.map((skill) => (
-              <span class="px-3 py-1.5 rounded-lg text-xs sm:text-sm technical-mono text-smokegrey hover:text-softwhite bg-jet/60 border border-white/[0.04] hover:border-white/10 transition-colors">
-                {skill}
-              </span>
-            ))}
+        <!-- Header -->
+        <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-5 border-b border-white/5 technical-mono text-[11px]">
+          <div class="flex items-center space-x-2">
+            <span class="text-coral font-bold">{mod1.code}</span>
+            <span class="text-white/20">//</span>
+            <span class="text-smoke">PRIMARY FOCUS</span>
           </div>
+          <span class="text-[10px] text-smoke-dark">
+            5 CORE MECHANICS
+          </span>
         </div>
-      ))}
+
+        <h3 class="font-display font-bold text-xl sm:text-2xl text-pearl mb-2">
+          {mod1.title}
+        </h3>
+        <p class="text-xs sm:text-sm text-smoke-light mb-6">
+          {mod1.tagline}
+        </p>
+
+        <!-- 2-Column Responsive Chip Grid inside Flagship Module -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {mod1.skills.map((skill) => (
+            <div class="p-3 bg-[#090E1A] border border-white/5 hover:border-coral/30 transition-colors flex flex-col justify-between">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="technical-mono text-xs font-semibold text-pearl">
+                  {skill.name}
+                </span>
+                {skill.highlight && (
+                  <span class="w-1.5 h-1.5 rounded-full bg-coral"></span>
+                )}
+              </div>
+              <p class="text-[11px] text-smoke-light leading-snug">
+                {skill.context}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- MODULE 02: Backend Runtimes & Frameworks (1 col) -->
+      <div class="bg-[#0D1524] border border-white/10 hover:border-white/20 transition-colors p-6 sm:p-7 relative hud-cut-bl shadow-surface-elevated">
+        
+        <!-- Corner tick marks -->
+        <span class="absolute top-1 left-1.5 text-[9px] technical-mono text-smoke/30 select-none pointer-events-none">+</span>
+        <span class="absolute top-1 right-1.5 text-[9px] technical-mono text-smoke/30 select-none pointer-events-none">+</span>
+        <div class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-smoke/40 pointer-events-none" aria-hidden="true"></div>
+
+        <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/5 technical-mono text-[11px]">
+          <span class="text-smoke-light font-bold">{mod2.code}</span>
+          <span class="text-[10px] text-smoke-dark">5 RUNTIMES</span>
+        </div>
+
+        <h3 class="font-display font-bold text-lg text-pearl mb-1">
+          {mod2.title}
+        </h3>
+        <p class="text-xs text-smoke-light mb-5">
+          {mod2.tagline}
+        </p>
+
+        <div class="space-y-2.5">
+          {mod2.skills.map((skill) => (
+            <div class="p-2.5 bg-[#090E1A] border-l border-white/10 hover:border-l-coral transition-colors">
+              <span class="technical-mono text-xs font-semibold text-pearl block mb-0.5">
+                {skill.name}
+              </span>
+              <span class="text-[11px] text-smoke-light block leading-tight">
+                {skill.context}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- MODULE 03: Databases & Storage (1 col) -->
+      <div class="bg-[#0D1524] border border-white/10 hover:border-orbital/40 transition-colors p-6 sm:p-7 relative shadow-surface-elevated">
+        
+        <span class="absolute top-1 left-1.5 text-[9px] technical-mono text-smoke/30 select-none pointer-events-none">+</span>
+        <span class="absolute bottom-1 right-1.5 text-[9px] technical-mono text-orbital select-none pointer-events-none">+</span>
+
+        <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/5 technical-mono text-[11px]">
+          <span class="text-orbital font-bold">{mod3.code}</span>
+          <span class="text-[10px] text-smoke-dark">SQL & STORES</span>
+        </div>
+
+        <h3 class="font-display font-bold text-lg text-pearl mb-1">
+          {mod3.title}
+        </h3>
+        <p class="text-xs text-smoke-light mb-5">
+          {mod3.tagline}
+        </p>
+
+        <div class="space-y-2.5">
+          {mod3.skills.map((skill) => (
+            <div class="p-2.5 bg-[#090E1A] border border-white/5 hover:border-orbital/25 transition-colors">
+              <span class="technical-mono text-xs font-semibold text-pearl block mb-0.5">
+                {skill.name}
+              </span>
+              <span class="text-[11px] text-smoke-light block leading-tight">
+                {skill.context}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- MODULE 04: Security & Sandboxing (1 col) -->
+      <div class="bg-[#0D1524] border border-white/10 hover:border-coral/40 transition-colors p-6 sm:p-7 relative hud-cut-tr shadow-surface-elevated">
+        
+        <div class="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-coral pointer-events-none" aria-hidden="true"></div>
+
+        <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/5 technical-mono text-[11px]">
+          <span class="text-coral font-bold">{mod4.code}</span>
+          <span class="text-[10px] text-smoke-dark">CONTAINMENT</span>
+        </div>
+
+        <h3 class="font-display font-bold text-lg text-pearl mb-1">
+          {mod4.title}
+        </h3>
+        <p class="text-xs text-smoke-light mb-5">
+          {mod4.tagline}
+        </p>
+
+        <div class="space-y-2.5">
+          {mod4.skills.map((skill) => (
+            <div class="p-2.5 bg-[#090E1A] border-l border-white/10 hover:border-l-coral transition-colors">
+              <span class="technical-mono text-xs font-semibold text-pearl block mb-0.5">
+                {skill.name}
+              </span>
+              <span class="text-[11px] text-smoke-light block leading-tight">
+                {skill.context}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- MODULE 05: Computer Vision & AI Integration (1 col) -->
+      <div class="bg-[#0D1524] border border-white/10 hover:border-white/20 transition-colors p-6 sm:p-7 relative hud-cut-bl shadow-surface-elevated">
+        
+        <div class="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-white/30 pointer-events-none" aria-hidden="true"></div>
+
+        <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/5 technical-mono text-[11px]">
+          <span class="text-smoke-light font-bold">{mod5.code}</span>
+          <span class="text-[10px] text-smoke-dark">CV & MODELS</span>
+        </div>
+
+        <h3 class="font-display font-bold text-lg text-pearl mb-1">
+          {mod5.title}
+        </h3>
+        <p class="text-xs text-smoke-light mb-5">
+          {mod5.tagline}
+        </p>
+
+        <div class="space-y-2.5">
+          {mod5.skills.map((skill) => (
+            <div class="p-2.5 bg-[#090E1A] border border-white/5 hover:border-white/15 transition-colors">
+              <span class="technical-mono text-xs font-semibold text-pearl block mb-0.5">
+                {skill.name}
+              </span>
+              <span class="text-[11px] text-smoke-light block leading-tight">
+                {skill.context}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
     </div>
 
   </div>

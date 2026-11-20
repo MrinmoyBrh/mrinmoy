@@ -1,21 +1,21 @@
 ---
 ---
 
-<div id="architecture" class="py-16 bg-jet border-y border-white/[0.04] relative overflow-hidden">
+<div id="architecture" class="py-16 bg-ink-950/80 border-y border-white/5 relative overflow-hidden">
   
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
     <!-- Section Header -->
     <div class="max-w-3xl mb-12">
-      <div class="flex items-center space-x-2 technical-mono text-xs text-cherry mb-3">
-        <span class="w-1.5 h-1.5 rounded-full bg-cherry animate-pulse"></span>
-        <span>INTERACTIVE SIMULATOR</span>
+      <div class="flex items-center space-x-2 technical-mono text-xs text-orbital mb-3">
+        <span class="w-2 h-2 rounded-full bg-orbital animate-pulse"></span>
+        <span>INTERACTIVE VERIFICATION HARNESS</span>
       </div>
-      <h2 class="editorial-title text-3xl sm:text-4xl lg:text-5xl font-bold text-softwhite mb-4">
+      <h2 class="editorial-title text-3xl sm:text-4xl lg:text-5xl font-bold text-pearl mb-4">
         Simulate the Resilient Gateway.
       </h2>
-      <p class="text-smokegrey text-base leading-relaxed">
-        Experience the exact logic powering <strong class="text-softwhite">Adaptive AI Gateway & Resilient Workflow Engine</strong>. Test deterministic SHA-256 caching (<5ms hits), BullMQ asynchronous task queueing, and Redis-backed Circuit Breaker trippoints.
+      <p class="text-smoke-light text-base leading-relaxed">
+        Experience the exact logic powering <strong class="text-pearl">Adaptive AI Gateway & Resilient Workflow Engine</strong>. Test deterministic SHA-256 caching (<5ms hits), BullMQ asynchronous task queueing, and Redis-backed Circuit Breaker trippoints.
       </p>
     </div>
 
@@ -23,18 +23,18 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       
       <!-- Left Panel: Interactive Controller -->
-      <div class="lg:col-span-5 bg-charcoal/80 border border-white/[0.06] rounded-2xl p-6 shadow-surface-elevated">
-        <div class="flex items-center justify-between pb-4 border-b border-white/[0.04] mb-6">
+      <div class="lg:col-span-5 bg-ink-900 border border-white/10 rounded-2xl p-6 shadow-surface-elevated">
+        <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
           <div class="flex items-center space-x-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-cherry"></span>
-            <span class="technical-mono text-xs text-smokegrey font-semibold uppercase tracking-wider">Gateway Client Console</span>
+            <span class="w-3 h-3 rounded-full bg-coral/80"></span>
+            <span class="technical-mono text-xs text-smoke font-semibold uppercase tracking-wider">Gateway Client Console</span>
           </div>
-          <span class="technical-mono text-[11px] text-smokegrey/70">ENDPOINT: /v1/jobs/submit</span>
+          <span class="technical-mono text-[11px] text-smoke-dark">ENDPOINT: /v1/jobs/submit</span>
         </div>
 
         <!-- Prompt input -->
         <div class="mb-5">
-          <label for="sim-prompt" class="block text-xs technical-mono text-smokegrey mb-2">
+          <label for="sim-prompt" class="block text-xs technical-mono text-smoke-light mb-2">
             AI INFERENCE PROMPT
           </label>
           <div class="relative">
@@ -42,24 +42,24 @@
               id="sim-prompt"
               type="text"
               value="Synthesize PostgreSQL connection pool configuration"
-              class="w-full bg-jet border border-white/[0.06] rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-softwhite technical-mono focus:border-cherry focus:outline-none focus:ring-1 focus:ring-cherry transition-colors"
+              class="w-full bg-ink-950 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-pearl technical-mono focus:border-coral focus:outline-none focus:ring-1 focus:ring-coral transition-colors"
             />
           </div>
-          <p class="text-[11px] text-smokegrey/80 mt-1.5 technical-mono">
+          <p class="text-[11px] text-smoke mt-1.5 technical-mono">
             *Tip: Send identical prompt twice to verify the SHA-256 cache hit.
           </p>
         </div>
 
         <!-- Toggle failure injection -->
-        <div class="p-3.5 rounded-lg bg-jet/60 border border-white/[0.04] mb-6 space-y-3">
+        <div class="p-3.5 rounded-lg bg-ink-800/80 border border-white/5 mb-6 space-y-3">
           <div class="flex items-center justify-between">
             <div>
-              <span class="text-xs font-medium text-softwhite block">Simulate Upstream Outage</span>
-              <span class="text-[11px] text-smokegrey block">Inject HTTP 503 errors into Primary Provider (Groq)</span>
+              <span class="text-xs font-medium text-pearl block">Simulate Upstream Outage</span>
+              <span class="text-[11px] text-smoke block">Inject HTTP 503 errors into Primary Provider (Groq)</span>
             </div>
             <label class="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" id="sim-fail-toggle" class="sr-only peer">
-              <div class="w-9 h-5 bg-charcoal peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-softwhite after:border-smokegrey after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-cherry"></div>
+              <div class="w-9 h-5 bg-ink-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-pearl after:border-smoke after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-coral"></div>
             </label>
           </div>
         </div>
@@ -69,10 +69,10 @@
           <button
             id="sim-submit-btn"
             type="button"
-            class="flex-1 py-3 px-4 rounded-lg bg-cherry hover:bg-cherry-hover text-softwhite font-bold technical-mono text-xs transition-all duration-200 flex items-center justify-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cherry"
+            class="flex-1 py-3 px-4 rounded-lg bg-coral hover:bg-coral-hover text-ink-950 font-bold technical-mono text-xs transition-all duration-200 flex items-center justify-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral"
           >
             <span id="sim-btn-text">DISPATCH INGESTION REQUEST</span>
-            <svg id="sim-spinner" class="hidden w-4 h-4 animate-spin text-softwhite" fill="none" viewBox="0 0 24 24">
+            <svg id="sim-spinner" class="hidden w-4 h-4 animate-spin text-ink-950" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
@@ -82,7 +82,7 @@
             id="sim-reset-btn"
             type="button"
             title="Reset Redis Circuit & Cache State"
-            class="py-3 px-3.5 rounded-lg bg-jet hover:bg-white/[0.06] text-smokegrey hover:text-softwhite border border-white/[0.06] technical-mono text-xs transition-colors"
+            class="py-3 px-3.5 rounded-lg bg-ink-800 hover:bg-ink-700 text-smoke-light hover:text-pearl border border-white/10 technical-mono text-xs transition-colors"
           >
             ↺ RESET
           </button>
@@ -91,51 +91,51 @@
       </div>
 
       <!-- Right Panel: Live System State Telemetry -->
-      <div class="lg:col-span-7 bg-charcoal/80 border border-white/[0.06] rounded-2xl p-6 shadow-surface-elevated flex flex-col justify-between">
+      <div class="lg:col-span-7 bg-ink-900 border border-white/10 rounded-2xl p-6 shadow-surface-elevated flex flex-col justify-between">
         
         <!-- Live State Badges -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
           
-          <div class="p-3 rounded-lg bg-jet border border-white/[0.04]">
-            <span class="block text-[10px] technical-mono text-smokegrey">GROQ BREAKER</span>
-            <span id="sim-groq-state" class="block text-xs font-bold technical-mono text-softwhite mt-0.5">CLOSED (HEALTHY)</span>
-            <span id="sim-groq-fails" class="block text-[10px] text-smokegrey/70 technical-mono">Failures: 0/3</span>
+          <div class="p-3 rounded-lg bg-ink-950 border border-white/5">
+            <span class="block text-[10px] technical-mono text-smoke">GROQ BREAKER</span>
+            <span id="sim-groq-state" class="block text-xs font-bold technical-mono text-orbital mt-0.5">CLOSED (HEALTHY)</span>
+            <span id="sim-groq-fails" class="block text-[10px] text-smoke-dark technical-mono">Failures: 0/3</span>
           </div>
 
-          <div class="p-3 rounded-lg bg-jet border border-white/[0.04]">
-            <span class="block text-[10px] technical-mono text-smokegrey">FALLBACK BREAKER</span>
-            <span id="sim-gemini-state" class="block text-xs font-bold technical-mono text-smokegrey mt-0.5">STANDBY</span>
-            <span class="block text-[10px] text-smokegrey/70 technical-mono">Gemini 1.5-Flash</span>
+          <div class="p-3 rounded-lg bg-ink-950 border border-white/5">
+            <span class="block text-[10px] technical-mono text-smoke">FALLBACK BREAKER</span>
+            <span id="sim-gemini-state" class="block text-xs font-bold technical-mono text-smoke-light mt-0.5">STANDBY</span>
+            <span class="block text-[10px] text-smoke-dark technical-mono">Gemini 1.5-Flash</span>
           </div>
 
-          <div class="p-3 rounded-lg bg-jet border border-white/[0.04]">
-            <span class="block text-[10px] technical-mono text-smokegrey">REDIS CACHE</span>
-            <span id="sim-cache-status" class="block text-xs font-bold technical-mono text-smokegrey mt-0.5">0 KEYS (COLD)</span>
-            <span class="block text-[10px] text-smokegrey/70 technical-mono">TTL: 3600s</span>
+          <div class="p-3 rounded-lg bg-ink-950 border border-white/5">
+            <span class="block text-[10px] technical-mono text-smoke">REDIS CACHE</span>
+            <span id="sim-cache-status" class="block text-xs font-bold technical-mono text-smoke mt-0.5">0 KEYS (COLD)</span>
+            <span class="block text-[10px] text-smoke-dark technical-mono">TTL: 3600s</span>
           </div>
 
-          <div class="p-3 rounded-lg bg-jet border border-white/[0.04]">
-            <span class="block text-[10px] technical-mono text-smokegrey">EXECUTION LATENCY</span>
-            <span id="sim-latency" class="block text-xs font-bold technical-mono text-softwhite mt-0.5">-- ms</span>
-            <span id="sim-source" class="block text-[10px] text-smokegrey/70 technical-mono">SOURCE: --</span>
+          <div class="p-3 rounded-lg bg-ink-950 border border-white/5">
+            <span class="block text-[10px] technical-mono text-smoke">EXECUTION LATENCY</span>
+            <span id="sim-latency" class="block text-xs font-bold technical-mono text-pearl mt-0.5">-- ms</span>
+            <span id="sim-source" class="block text-[10px] text-smoke-dark technical-mono">SOURCE: --</span>
           </div>
 
         </div>
 
         <!-- Terminal Output Stream -->
-        <div class="rounded-xl bg-jet border border-white/[0.04] p-4 font-mono text-[11px] sm:text-xs leading-relaxed overflow-x-auto min-h-[220px] max-h-[260px] flex flex-col justify-end">
-          <div id="sim-log-stream" class="space-y-1.5 text-smokegrey overflow-y-auto">
-            <div class="text-smokegrey/60">[SYSTEM BOOT] Fastify HTTP Server listening on port 3000...</div>
-            <div class="text-smokegrey/60">[REDIS] Connected to Redis cluster at 127.0.0.1:6379</div>
-            <div class="text-smokegrey/60">[BULLMQ] Worker initialized with concurrency: 5</div>
-            <div class="text-softwhite">[READY] Waiting for job submission request...</div>
+        <div class="rounded-xl bg-ink-950 border border-white/10 p-4 font-mono text-[11px] sm:text-xs leading-relaxed overflow-x-auto min-h-[220px] max-h-[260px] flex flex-col justify-end">
+          <div id="sim-log-stream" class="space-y-1.5 text-smoke-light overflow-y-auto">
+            <div class="text-smoke">[SYSTEM BOOT] Fastify HTTP Server listening on port 3000...</div>
+            <div class="text-smoke">[REDIS] Connected to Redis cluster at 127.0.0.1:6379</div>
+            <div class="text-smoke">[BULLMQ] Worker initialized with concurrency: 5</div>
+            <div class="text-orbital">[READY] Waiting for job submission request...</div>
           </div>
         </div>
 
         <!-- Explanatory note -->
-        <div class="mt-4 pt-3 border-t border-white/[0.04] flex items-center justify-between text-[11px] text-smokegrey technical-mono">
+        <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-[11px] text-smoke technical-mono">
           <span>*Verified Against: src/workers/circuitBreaker.ts</span>
-          <a href="https://github.com/MrinmoyBrh/ai-resilient-gateway" target="_blank" rel="noopener noreferrer" class="text-cherry hover:underline">
+          <a href="https://github.com/MrinmoyBrh/ai-resilient-gateway" target="_blank" rel="noopener noreferrer" class="text-coral hover:underline">
             View Source on GitHub →
           </a>
         </div>
@@ -148,8 +148,9 @@
 </div>
 
 <script>
+  // Client-side simulation of the verified AI Gateway architecture
   let groqFailures = 0;
-  let groqState = 'CLOSED';
+  let groqState = 'CLOSED'; // 'CLOSED' | 'OPEN' | 'HALF_OPEN'
   let cacheStore: Record<string, { result: string; timestamp: number }> = {};
   
   const promptInput = document.getElementById('sim-prompt') as HTMLInputElement;
@@ -166,7 +167,7 @@
   const sourceEl = document.getElementById('sim-source');
   const logStream = document.getElementById('sim-log-stream');
 
-  function appendLog(text: string, colorClass = 'text-smokegrey') {
+  function appendLog(text: string, colorClass = 'text-smoke-light') {
     if (!logStream) return;
     const time = new Date().toISOString().substring(11, 19);
     const line = document.createElement('div');
@@ -190,13 +191,13 @@
     if (groqStateEl) {
       if (groqState === 'CLOSED') {
         groqStateEl.textContent = 'CLOSED (HEALTHY)';
-        groqStateEl.className = 'block text-xs font-bold technical-mono text-softwhite mt-0.5';
+        groqStateEl.className = 'block text-xs font-bold technical-mono text-orbital mt-0.5';
       } else if (groqState === 'OPEN') {
         groqStateEl.textContent = 'TRIPPED (OPEN)';
-        groqStateEl.className = 'block text-xs font-bold technical-mono text-cherry mt-0.5';
+        groqStateEl.className = 'block text-xs font-bold technical-mono text-coral mt-0.5';
       } else {
         groqStateEl.textContent = 'HALF_OPEN (PROBING)';
-        groqStateEl.className = 'block text-xs font-bold technical-mono text-smokegrey mt-0.5';
+        groqStateEl.className = 'block text-xs font-bold technical-mono text-yellow-400 mt-0.5';
       }
     }
 
@@ -208,8 +209,8 @@
       const keysCount = Object.keys(cacheStore).length;
       cacheStatusEl.textContent = `${keysCount} KEYS IN REDIS`;
       cacheStatusEl.className = keysCount > 0 
-        ? 'block text-xs font-bold technical-mono text-softwhite mt-0.5' 
-        : 'block text-xs font-bold technical-mono text-smokegrey mt-0.5';
+        ? 'block text-xs font-bold technical-mono text-orbital mt-0.5' 
+        : 'block text-xs font-bold technical-mono text-smoke mt-0.5';
     }
   }
 
@@ -217,19 +218,21 @@
     const prompt = promptInput?.value || '';
     if (!prompt.trim()) return;
 
+    // UI loading state
     submitBtn.disabled = true;
     if (spinner) spinner.classList.remove('hidden');
     if (btnText) btnText.textContent = 'PROCESSING INGESTION...';
 
     const hash = hashPrompt(prompt);
-    appendLog(`POST /v1/jobs/submit {"prompt": "${prompt.substring(0, 32)}..."}`, 'text-softwhite font-semibold');
-    appendLog(`Checking 24h rolling tenant token quota... [PASS]`, 'text-smokegrey');
+    appendLog(`POST /v1/jobs/submit {"prompt": "${prompt.substring(0, 32)}..."}`, 'text-pearl font-semibold');
+    appendLog(`Checking 24h rolling tenant token quota... [PASS]`, 'text-smoke');
 
     // 1. Check Redis Cache
     if (cacheStore[hash]) {
-      await new Promise(r => setTimeout(r, 60));
-      appendLog(`[REDIS CACHE HIT] Key: cache:prompt:${hash}`, 'text-cherry font-bold');
-      appendLog(`Bypassing BullMQ queue & LLM inference entirely (<5ms execution).`, 'text-smokegrey');
+      // CACHE HIT (<5ms)
+      await new Promise(r => setTimeout(r, 60)); // Small visual delay
+      appendLog(`[REDIS CACHE HIT] Key: cache:prompt:${hash}`, 'text-orbital font-bold');
+      appendLog(`Bypassing BullMQ queue & LLM inference entirely (<5ms execution).`, 'text-smoke-light');
 
       if (latencyEl) latencyEl.textContent = '3 ms';
       if (sourceEl) sourceEl.textContent = 'SOURCE: REDIS CACHE';
@@ -239,50 +242,53 @@
     }
 
     // CACHE MISS
-    appendLog(`[CACHE MISS] Key: cache:prompt:${hash} -> Enqueueing BullMQ task...`, 'text-smokegrey');
-    appendLog(`BullMQ worker assigned job [jobId: ${Math.random().toString(36).substring(2, 9)}]`, 'text-smokegrey');
+    appendLog(`[CACHE MISS] Key: cache:prompt:${hash} -> Enqueueing BullMQ task...`, 'text-smoke');
+    appendLog(`BullMQ worker assigned job [jobId: ${Math.random().toString(36).substring(2, 9)}]`, 'text-smoke');
 
     const shouldFailPrimary = failToggle?.checked;
 
     if (shouldFailPrimary) {
+      // Simulate primary failure
       await new Promise(r => setTimeout(r, 450));
       groqFailures++;
-      appendLog(`[ERROR] Upstream Groq returned 503 Service Unavailable (Attempt ${groqFailures}/3)`, 'text-cherry');
+      appendLog(`[ERROR] Upstream Groq returned 503 Service Unavailable (Attempt ${groqFailures}/3)`, 'text-coral');
 
       if (groqFailures >= 3) {
         groqState = 'OPEN';
-        appendLog(`[CIRCUIT BREAKER TRIPPED] Groq breaker is now OPEN. Cooldown: 20000ms.`, 'text-cherry font-bold');
+        appendLog(`[CIRCUIT BREAKER TRIPPED] Groq breaker is now OPEN. Cooldown: 20000ms.`, 'text-coral font-bold');
       }
 
-      appendLog(`[FAILOVER ACTIVATED] Executing secondary provider: Gemini 1.5-Flash...`, 'text-softwhite');
+      // Fast-failover to Gemini
+      appendLog(`[FAILOVER ACTIVATED] Executing secondary provider: Gemini 1.5-Flash...`, 'text-yellow-400');
       await new Promise(r => setTimeout(r, 380));
 
       const synthesizedResult = `[Gemini Fallback Response] Optimized pool max=20, idleTimeoutMillis=30000`;
       cacheStore[hash] = { result: synthesizedResult, timestamp: Date.now() };
 
-      appendLog(`[SUCCESS] Gemini fallback completed inference.`, 'text-softwhite');
-      appendLog(`[TELEMETRY] Usage logged to PostgreSQL: usage_logs (provider: gemini, latency: 830ms)`, 'text-smokegrey');
-      appendLog(`[CACHE SET] Cached response to Redis (TTL: 3600s)`, 'text-smokegrey');
+      appendLog(`[SUCCESS] Gemini fallback completed inference.`, 'text-orbital');
+      appendLog(`[TELEMETRY] Usage logged to PostgreSQL: usage_logs (provider: gemini, latency: 830ms)`, 'text-smoke');
+      appendLog(`[CACHE SET] Cached response to Redis (TTL: 3600s)`, 'text-smoke-light');
 
       if (latencyEl) latencyEl.textContent = '830 ms';
       if (sourceEl) sourceEl.textContent = 'PROVIDER: GEMINI (FALLBACK)';
 
     } else {
+      // Primary succeeds
       await new Promise(r => setTimeout(r, 350));
       
       if (groqState === 'OPEN') {
-        appendLog(`[CIRCUIT OPEN] Groq bypassed immediately without network overhead -> Fallback to Gemini`, 'text-softwhite');
+        appendLog(`[CIRCUIT OPEN] Groq bypassed immediately without network overhead -> Fallback to Gemini`, 'text-yellow-400');
         await new Promise(r => setTimeout(r, 300));
         if (latencyEl) latencyEl.textContent = '340 ms';
         if (sourceEl) sourceEl.textContent = 'PROVIDER: GEMINI (FAST-FAILOVER)';
       } else {
-        groqFailures = 0;
+        groqFailures = 0; // Reset upon successful primary call
         const synthesizedResult = `[Groq Llama 3.3-70B] PostgreSQL connection pool tuned for high concurrency.`;
         cacheStore[hash] = { result: synthesizedResult, timestamp: Date.now() };
 
-        appendLog(`[ORCHESTRATOR] Groq primary responded with model: llama-3.3-70b-versatile`, 'text-softwhite');
-        appendLog(`[CACHE SET] Result stored in Redis key: cache:prompt:${hash}`, 'text-smokegrey');
-        appendLog(`[TELEMETRY] Recorded usage into PostgreSQL: tokens: { prompt: 15, completion: 45 }`, 'text-smokegrey');
+        appendLog(`[ORCHESTRATOR] Groq primary responded with model: llama-3.3-70b-versatile`, 'text-orbital');
+        appendLog(`[CACHE SET] Result stored in Redis key: cache:prompt:${hash}`, 'text-smoke-light');
+        appendLog(`[TELEMETRY] Recorded usage into PostgreSQL: tokens: { prompt: 15, completion: 45 }`, 'text-smoke');
 
         if (latencyEl) latencyEl.textContent = '350 ms';
         if (sourceEl) sourceEl.textContent = 'PROVIDER: GROQ (PRIMARY)';
@@ -307,7 +313,7 @@
     if (failToggle) failToggle.checked = false;
     if (latencyEl) latencyEl.textContent = '-- ms';
     if (sourceEl) sourceEl.textContent = 'SOURCE: --';
-    appendLog(`[RESET] Redis cache cleared. Groq Circuit Breaker restored to CLOSED.`, 'text-softwhite');
+    appendLog(`[RESET] Redis cache cleared. Groq Circuit Breaker restored to CLOSED.`, 'text-pearl');
     updateHUD();
   });
 </script>

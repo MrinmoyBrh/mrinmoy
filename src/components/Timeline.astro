@@ -2,77 +2,77 @@
 import { timeline } from '../data/experience';
 ---
 
-<section id="experience" class="py-24 border-b border-white/[0.04] relative">
+<section id="experience" class="py-24 border-b border-white/5 relative">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
     <!-- Section Header -->
     <div class="max-w-3xl mb-16">
-      <div class="flex items-center space-x-2 technical-mono text-xs text-cherry mb-3">
-        <span class="w-1.5 h-1.5 rounded-full bg-cherry"></span>
+      <div class="flex items-center space-x-2 technical-mono text-xs text-coral mb-3">
+        <span class="w-2 h-2 rounded-full bg-coral"></span>
         <span>ACADEMIC & INDUSTRY DOSSIER</span>
       </div>
-      <h2 class="editorial-title text-4xl sm:text-5xl lg:text-6xl font-bold text-softwhite mb-6">
+      <h2 class="editorial-title text-4xl sm:text-5xl lg:text-6xl font-bold text-pearl mb-6">
         Education & Engagements.
       </h2>
-      <p class="text-smokegrey text-base sm:text-lg leading-relaxed">
+      <p class="text-smoke-light text-base sm:text-lg leading-relaxed">
         My formal foundation at Dhemaji Engineering College alongside enterprise utility engineering at APGCL and collaborative research associated with NIT Silchar.
       </p>
     </div>
 
     <!-- Timeline Layout -->
-    <div class="relative border-l-2 border-white/[0.06] ml-4 sm:ml-8 pl-6 sm:pl-10 space-y-12">
+    <div class="relative border-l-2 border-white/10 ml-4 sm:ml-8 pl-6 sm:pl-10 space-y-12">
       {timeline.map((item) => (
         <div class="relative group">
           
           <!-- Timeline Node Marker -->
-          <div class="absolute -left-[31px] sm:-left-[47px] top-1.5 w-3.5 h-3.5 rounded-full bg-jet border-2 border-cherry group-hover:bg-cherry transition-colors flex items-center justify-center">
-            <div class="w-1 h-1 rounded-full bg-softwhite opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div class="absolute -left-[31px] sm:-left-[47px] top-1.5 w-4 h-4 rounded-full bg-ink border-2 border-coral group-hover:bg-coral transition-colors flex items-center justify-center">
+            <div class="w-1.5 h-1.5 rounded-full bg-pearl opacity-0 group-hover:opacity-100 transition-opacity"></div>
           </div>
 
           <!-- Dossier Card -->
-          <div class="rounded-2xl bg-charcoal/60 border border-white/[0.06] p-6 sm:p-8 shadow-surface-elevated hover:border-white/[0.12] transition-all duration-300">
+          <div class="rounded-2xl bg-ink-900 border border-white/10 p-6 sm:p-8 shadow-surface-elevated hover:border-white/20 transition-all duration-300">
             
-            <div class="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-white/[0.04]">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-white/5">
               <div class="flex items-center space-x-3">
-                <span class="text-xs technical-mono font-bold text-cherry uppercase tracking-wider">
+                <span class="text-xs technical-mono font-bold text-coral uppercase tracking-wider">
                   {item.type}
                 </span>
                 <span class="text-white/20" aria-hidden="true">•</span>
-                <span class="text-xs technical-mono text-smokegrey">
+                <span class="text-xs technical-mono text-smoke">
                   {item.location}
                 </span>
               </div>
-              <span class="px-3 py-1 rounded-full text-xs technical-mono font-semibold bg-white/[0.03] text-softwhite border border-white/[0.06]">
+              <span class="px-3 py-1 rounded-full text-xs technical-mono font-semibold bg-white/5 text-pearl border border-white/10">
                 {item.period}
               </span>
             </div>
 
-            <h3 class="font-display font-bold text-xl sm:text-2xl text-softwhite mb-1">
+            <h3 class="font-display font-bold text-xl sm:text-2xl text-pearl mb-1">
               {item.role}
             </h3>
 
-            <h4 class="text-sm sm:text-base font-semibold text-softwhite/80 mb-4">
+            <h4 class="text-sm sm:text-base font-semibold text-orbital mb-4">
               {item.organization}
             </h4>
 
-            <p class="text-xs sm:text-sm text-smokegrey leading-relaxed mb-6">
+            <p class="text-xs sm:text-sm text-smoke-light leading-relaxed mb-6">
               {item.description}
             </p>
 
             <!-- Detailed Accomplishments -->
             <ul class="space-y-2 mb-6" role="list">
               {item.points.map((pt) => (
-                <li class="flex items-start space-x-2.5 text-xs sm:text-sm text-smokegrey">
-                  <span class="text-cherry font-bold shrink-0 mt-0.5">›</span>
+                <li class="flex items-start space-x-2.5 text-xs sm:text-sm text-smoke-light">
+                  <span class="text-coral font-bold shrink-0 mt-0.5">›</span>
                   <span>{pt}</span>
                 </li>
               ))}
             </ul>
 
             <!-- Tech Stack Tags -->
-            <div class="flex flex-wrap gap-1.5 pt-4 border-t border-white/[0.04]">
+            <div class="flex flex-wrap gap-1.5 pt-4 border-t border-white/5">
               {item.techStack.map((tech) => (
-                <span class="px-2.5 py-1 rounded text-[11px] technical-mono bg-jet text-smokegrey border border-white/[0.04]">
+                <span class="px-2.5 py-1 rounded text-[11px] technical-mono bg-ink-950 text-smoke-light border border-white/5">
                   {tech}
                 </span>
               ))}
