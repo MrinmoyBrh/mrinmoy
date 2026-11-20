@@ -84,8 +84,8 @@ Every project and technical claim in this portfolio has been verified directly a
 ### Installation
 ```bash
 # Clone repository
-git clone https://github.com/MrinmoyBrh/portfolio.git
-cd portfolio
+git clone https://github.com/MrinmoyBrh/My-Portfolio.git
+cd My-Portfolio
 
 # Install dependencies
 npm install
