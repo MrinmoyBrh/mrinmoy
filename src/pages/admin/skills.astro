@@ -48,6 +48,9 @@ const categories = getFullSkillsMatrix();
                       <span class="w-1.5 h-1.5 rounded-full bg-[#FF5A1F]" title="Highlighted core technology"></span>
                     ) : null}
                   </div>
+                  {s.description && (
+                    <p class="text-[11px] text-[#929292] mt-0.5 line-clamp-2 leading-tight">{s.description}</p>
+                  )}
                   <span class={`inline-block text-[10px] font-mono mt-1 px-1.5 py-0.2 rounded ${
                     s.proficiency === 'Advanced' ? 'bg-[#FF5A1F]/15 text-[#FF5A1F]' :
                     s.proficiency === 'Practiced' ? 'bg-[#22C55E]/15 text-[#22C55E]' :
@@ -76,6 +79,11 @@ const categories = getFullSkillsMatrix();
         <div>
           <label class="block text-xs font-semibold text-[#F5F5F5] mb-1">Skill Name</label>
           <input type="text" id="modal-skill-name" placeholder="e.g. PostgreSQL Optimization" class="w-full bg-[#202020] border border-[#343434] rounded-lg px-3 py-2 text-xs text-[#F5F5F5] focus:outline-none focus:border-[#FF5A1F]" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-[#F5F5F5] mb-1">Description / Context</label>
+          <input type="text" id="modal-skill-desc" placeholder="e.g. Building server-side applications with TypeScript" class="w-full bg-[#202020] border border-[#343434] rounded-lg px-3 py-2 text-xs text-[#F5F5F5] focus:outline-none focus:border-[#FF5A1F]" />
         </div>
 
         <div>
@@ -122,6 +130,7 @@ const categories = getFullSkillsMatrix();
 
     submitModalBtn?.addEventListener('click', async () => {
       const name = (document.getElementById('modal-skill-name') as HTMLInputElement).value;
+      const description = (document.getElementById('modal-skill-desc') as HTMLInputElement).value;
       const category_id = (document.getElementById('modal-skill-cat') as HTMLSelectElement).value;
       const proficiency = (document.getElementById('modal-skill-prof') as HTMLSelectElement).value;
       const is_highlighted = (document.getElementById('modal-skill-highlight') as HTMLInputElement).checked;
@@ -131,7 +140,7 @@ const categories = getFullSkillsMatrix();
       const res = await fetch('/api/cms/skills', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, category_id, proficiency, is_highlighted }),
+        body: JSON.stringify({ name, description, category_id, proficiency, is_highlighted }),
       });
 
       if (res.ok) window.location.reload();

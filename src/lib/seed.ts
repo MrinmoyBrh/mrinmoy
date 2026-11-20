@@ -131,8 +131,8 @@ export function runInitialSeed() {
   `);
 
   const insertSkill = db.prepare(`
-    INSERT INTO skills (id, category_id, name, proficiency, is_highlighted, display_order)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO skills (id, category_id, name, description, proficiency, is_highlighted, display_order)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `);
 
   skillCategories.forEach((cat, cIdx) => {
@@ -147,6 +147,7 @@ export function runInitialSeed() {
         `${cat.id}_${sIdx}`,
         cat.id,
         s.name,
+        s.context || null,
         prof,
         s.highlight ? 1 : 0,
         sIdx

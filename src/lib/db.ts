@@ -191,6 +191,7 @@ function initSchema(db: DatabaseSync) {
       id TEXT PRIMARY KEY,
       category_id TEXT NOT NULL,
       name TEXT NOT NULL,
+      description TEXT,
       proficiency TEXT NOT NULL DEFAULT 'Practiced', -- 'Basic', 'Familiar', 'Practiced', 'Advanced'
       is_highlighted INTEGER NOT NULL DEFAULT 0,
       display_order INTEGER NOT NULL DEFAULT 0,
@@ -198,6 +199,15 @@ function initSchema(db: DatabaseSync) {
     );
     CREATE INDEX IF NOT EXISTS idx_skills_category ON skills(category_id, display_order);
   `);
+
+  try {
+    const skillCols = (db.prepare('PRAGMA table_info(skills)').all() as any[]).map((c) => c.name);
+    if (!skillCols.includes('description')) {
+      db.exec('ALTER TABLE skills ADD COLUMN description TEXT;');
+    }
+  } catch (e) {
+    console.warn('Migration warning for skills:', e);
+  }
 
   // 7. Experience
   db.exec(`

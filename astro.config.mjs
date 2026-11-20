@@ -11,6 +11,9 @@ const isVercel = Boolean(process.env.VERCEL || process.env.VERCEL_ENV);
 export default defineConfig({
   site: 'https://mrinmoybrh.github.io',
   output: 'server',
+  devToolbar: {
+    enabled: false,
+  },
   adapter: isVercel
     ? vercel()
     : node({

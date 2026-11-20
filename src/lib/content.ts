@@ -263,15 +263,15 @@ export function saveSkill(s: any, userId: string) {
   if (existing) {
     db.prepare(`
       UPDATE skills SET
-        category_id = ?, name = ?, proficiency = ?, is_highlighted = ?, display_order = ?
+        category_id = ?, name = ?, description = ?, proficiency = ?, is_highlighted = ?, display_order = ?
       WHERE id = ?
-    `).run(s.category_id, s.name, s.proficiency || 'Practiced', s.is_highlighted ? 1 : 0, s.display_order || 0, id);
+    `).run(s.category_id, s.name, s.description || null, s.proficiency || 'Practiced', s.is_highlighted ? 1 : 0, s.display_order || 0, id);
     logActivity(userId, 'UPDATE', 'skill', id, `Updated skill "${s.name}"`);
   } else {
     db.prepare(`
-      INSERT INTO skills (id, category_id, name, proficiency, is_highlighted, display_order)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `).run(id, s.category_id, s.name, s.proficiency || 'Practiced', s.is_highlighted ? 1 : 0, s.display_order || 0);
+      INSERT INTO skills (id, category_id, name, description, proficiency, is_highlighted, display_order)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `).run(id, s.category_id, s.name, s.description || null, s.proficiency || 'Practiced', s.is_highlighted ? 1 : 0, s.display_order || 0);
     logActivity(userId, 'CREATE', 'skill', id, `Added skill "${s.name}"`);
   }
 }

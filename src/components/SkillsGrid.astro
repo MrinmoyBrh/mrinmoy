@@ -21,7 +21,7 @@ try {
         tagline: cat.description || fallbackCat.tagline,
         skills: cat.skills.map((s: any) => ({
           name: s.name,
-          context: contextMap.get(s.name) || `${s.proficiency || 'Practiced'} Engineering`,
+          context: s.description || contextMap.get(s.name) || `${s.proficiency || 'Practiced'} Engineering`,
           highlight: Boolean(s.is_highlighted),
         })),
       };

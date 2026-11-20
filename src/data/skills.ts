@@ -17,13 +17,57 @@ export const skillCategories: SkillCategory[] = [
     title: 'Backend & Web Development',
     tagline: 'Server-side development, database integration, administrative portals, and secure user authentication.',
     skills: [
-      { name: 'Laravel & PHP', context: 'Backend routing, MVC controllers, and application logic', highlight: true },
-      { name: 'MySQL Database', context: 'Relational schema design, SQL queries, and database integration', highlight: true },
-      { name: 'Admin Dashboards', context: 'Dynamic administrative workflows and component interfaces', highlight: true },
-      { name: 'Authentication Systems', context: 'User login workflows, session handling, and access control', highlight: false },
-      { name: 'Email Notifications', context: 'Transactional verification emails and automated alert dispatch', highlight: false },
-      { name: 'REST API Fundamentals', context: 'HTTP methods, JSON communication, and endpoint routing', highlight: false },
-    ]
+      {
+        name: 'Node.js & TypeScript',
+        context: 'Building server-side applications, handling asynchronous operations, and organizing backend logic using TypeScript.',
+        highlight: true,
+      },
+      {
+        name: 'Fastify & Express.js',
+        context: 'Developing REST APIs with structured routing, middleware, request handling, and error management.',
+        highlight: true,
+      },
+      {
+        name: 'REST API Development',
+        context: 'Working with HTTP methods, JSON payloads, request validation, API endpoints, and client-server communication.',
+        highlight: true,
+      },
+      {
+        name: 'PostgreSQL & MySQL',
+        context: 'Writing SQL queries, designing relational tables, managing database relationships, and integrating databases with backend applications.',
+        highlight: true,
+      },
+      {
+        name: 'Docker & Containerization',
+        context: 'Running applications and code evaluation tasks in isolated containers with resource limits and controlled execution.',
+        highlight: true,
+      },
+      {
+        name: 'Authentication & Security',
+        context: 'Implementing login workflows, session management, protected routes, access control, and secure authentication features.',
+        highlight: true,
+      },
+      {
+        name: 'Git & GitHub Integration',
+        context: 'Managing repositories, branches, pull requests, and GitHub-based development workflows.',
+        highlight: false,
+      },
+      {
+        name: 'Python & Backend Automation',
+        context: 'Writing Python scripts for automation, file handling, data processing, and backend utilities.',
+        highlight: false,
+      },
+      {
+        name: 'Laravel & PHP',
+        context: 'Developing MVC-based web applications, administrative workflows, database-backed features, and server-side business logic.',
+        highlight: false,
+      },
+      {
+        name: 'Admin Dashboards & Email Notifications',
+        context: 'Building administrative interfaces, content management workflows, email verification, and automated notification features.',
+        highlight: false,
+      },
+    ],
   },
   {
     id: 'languages',
