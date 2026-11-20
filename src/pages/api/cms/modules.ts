@@ -8,19 +8,19 @@ export const GET: APIRoute = async ({ url }) => {
   const key = url.searchParams.get('key');
   if (!key) return new Response(JSON.stringify({ error: 'Key required' }), { status: 400 });
 
-  const data = getModuleConfig(key);
+  const data = await getModuleConfig(key);
   return new Response(JSON.stringify(data), { status: 200, headers: { 'Content-Type': 'application/json' } });
 };
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   if (!user) return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
 
   try {
     const { key, data } = await request.json();
     if (!key || !data) return new Response(JSON.stringify({ error: 'Key and data required' }), { status: 400 });
 
-    saveModuleConfig(key, data, user.id);
+    await saveModuleConfig(key, data, user.id);
     return new Response(JSON.stringify({ success: true, message: `${key} settings updated successfully!` }), { status: 200 });
   } catch (err: any) {
     return new Response(JSON.stringify({ error: err.message }), { status: 500 });

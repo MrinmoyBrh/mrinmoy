@@ -5,15 +5,15 @@ import { getAllMedia, saveMediaFile, deleteMedia } from '../../../lib/media';
 export const prerender = false;
 
 export const GET: APIRoute = async ({ cookies }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   if (!user) return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
 
-  const media = getAllMedia();
+  const media = await getAllMedia();
   return new Response(JSON.stringify(media), { status: 200, headers: { 'Content-Type': 'application/json' } });
 };
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   if (!user) return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
 
   try {
@@ -40,13 +40,13 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 };
 
 export const DELETE: APIRoute = async ({ url, cookies }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   if (!user) return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
 
   const id = url.searchParams.get('id');
   if (!id) return new Response(JSON.stringify({ error: 'ID is required' }), { status: 400 });
 
-  const ok = deleteMedia(id);
+  const ok = await deleteMedia(id);
   if (!ok) return new Response(JSON.stringify({ error: 'Media asset not found' }), { status: 404 });
 
   return new Response(JSON.stringify({ success: true, message: 'Media removed.' }), { status: 200 });

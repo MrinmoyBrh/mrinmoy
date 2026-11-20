@@ -48,7 +48,7 @@ export const POST: APIRoute = async ({ request, cookies, clientAddress }) => {
     }
 
     const userAgent = request.headers.get('user-agent') || undefined;
-    createSession(result.user.id, cookies, userAgent, ip);
+    await createSession(result.user.id, cookies, userAgent, ip);
 
     return new Response(JSON.stringify({ success: true, user: result.user }), {
       status: 200,

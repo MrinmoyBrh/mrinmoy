@@ -4,8 +4,8 @@ import { getAllDrafts, getRevisions } from '../../lib/content';
 
 export const prerender = false;
 
-const drafts = getAllDrafts();
-const recentRevisions = getRevisions(undefined, 8);
+const drafts = await getAllDrafts();
+const recentRevisions = await getRevisions(undefined, 8);
 ---
 
 <AdminLayout title="Publishing & Draft Workflows" subtitle="Review pending drafts, staging state & live deployments" activeNav="publishing">

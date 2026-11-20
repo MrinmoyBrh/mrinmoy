@@ -6,13 +6,13 @@ import crypto from 'node:crypto';
 
 export const prerender = false;
 
-const user = getSessionUser(Astro.cookies);
+const user = await getSessionUser(Astro.cookies);
 if (!user) {
   return Astro.redirect('/admin/login');
 }
 
 const db = getDb();
-const adminRecord = db.prepare('SELECT id, username, email, name, role, mfa_enabled, last_login_at FROM admin_users WHERE id = ?').get(user.id) as any;
+const adminRecord = (await db.prepare('SELECT id, username, email, name, role, mfa_enabled, last_login_at FROM admin_users WHERE id = ?').get(user.id)) as any;
 const mfaEnabled = Boolean(adminRecord?.mfa_enabled);
 
 // Current session token hash to highlight current device
@@ -20,12 +20,12 @@ const currentToken = Astro.cookies.get('mb_cms_session')?.value || '';
 const currentTokenHash = crypto.createHash('sha256').update(currentToken).digest('hex');
 
 // Query active sessions
-const activeSessions = db.prepare(`
+const activeSessions = (await db.prepare(`
   SELECT id, token_hash, created_at, expires_at, last_active_at, user_agent, ip_address
   FROM sessions
   WHERE user_id = ? AND expires_at > ?
   ORDER BY last_active_at DESC
-`).all(user.id, Date.now()) as any[];
+`).all(user.id, Date.now())) as any[];
 
 function formatRelativeTime(timestamp: number): string {
   const diffSec = Math.floor((Date.now() - timestamp) / 1000);

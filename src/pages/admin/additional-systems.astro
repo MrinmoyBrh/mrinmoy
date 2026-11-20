@@ -4,8 +4,8 @@ import { getProjects } from '../../lib/content';
 
 export const prerender = false;
 
-const additionalProjects = getProjects('additional', false);
-const showcaseProjects = getProjects('showcase', false);
+const additionalProjects = await getProjects('additional', false);
+const showcaseProjects = await getProjects('showcase', false);
 ---
 
 <AdminLayout title="Additional Systems Manager" subtitle="Manage applied research, storage engines, and completed GitHub repositories." activeNav="additional-systems">

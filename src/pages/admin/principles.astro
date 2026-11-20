@@ -4,7 +4,7 @@ import { getPrinciples } from '../../lib/content';
 
 export const prerender = false;
 
-const principles = getPrinciples();
+const principles = await getPrinciples();
 ---
 
 <AdminLayout title="Engineering Principles" subtitle="Architectural philosophy & design invariants" activeNav="principles">

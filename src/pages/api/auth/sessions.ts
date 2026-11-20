@@ -7,7 +7,7 @@ export const prerender = false;
 
 // DELETE: Terminate all sessions except the current active session
 export const DELETE: APIRoute = async ({ cookies }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   if (!user) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
@@ -26,7 +26,7 @@ export const DELETE: APIRoute = async ({ cookies }) => {
   try {
     const db = getDb();
     const currentTokenHash = crypto.createHash('sha256').update(token).digest('hex');
-    const result = db.prepare('DELETE FROM sessions WHERE user_id = ? AND token_hash != ?').run(user.id, currentTokenHash);
+    const result = await db.prepare('DELETE FROM sessions WHERE user_id = ? AND token_hash != ?').run(user.id, currentTokenHash);
 
     return new Response(
       JSON.stringify({

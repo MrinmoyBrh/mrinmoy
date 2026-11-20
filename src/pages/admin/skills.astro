@@ -4,7 +4,7 @@ import { getFullSkillsMatrix } from '../../lib/content';
 
 export const prerender = false;
 
-const categories = getFullSkillsMatrix();
+const categories = await getFullSkillsMatrix();
 ---
 
 <AdminLayout title="Skills & Architecture Editor" subtitle="Curate technical competencies, category modules, and verified proficiency levels." activeNav="skills">

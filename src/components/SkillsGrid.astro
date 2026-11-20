@@ -4,7 +4,7 @@ import { getFullSkillsMatrix } from '../lib/content';
 
 let skillCategories = defaultCategories;
 try {
-  const dbMatrix = getFullSkillsMatrix();
+  const dbMatrix = await getFullSkillsMatrix();
   if (dbMatrix && dbMatrix.length > 0) {
     // Map with static fallback context
     const contextMap = new Map<string, string>();

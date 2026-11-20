@@ -5,7 +5,7 @@ import { getProjects, getProjectById, saveProject, deleteProject } from '../../.
 export const prerender = false;
 
 export const GET: APIRoute = async ({ url, cookies }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   const id = url.searchParams.get('id');
   const placement = url.searchParams.get('placement') || 'all';
 
@@ -13,7 +13,7 @@ export const GET: APIRoute = async ({ url, cookies }) => {
   const publishedOnly = !user;
 
   if (id) {
-    const project = getProjectById(id);
+    const project = await getProjectById(id);
     if (!project) return new Response(JSON.stringify({ error: 'Project not found' }), { status: 404 });
     if (publishedOnly && !project.is_published) {
       return new Response(JSON.stringify({ error: 'Project not found' }), { status: 404 });
@@ -21,12 +21,12 @@ export const GET: APIRoute = async ({ url, cookies }) => {
     return new Response(JSON.stringify(project), { status: 200, headers: { 'Content-Type': 'application/json' } });
   }
 
-  const projects = getProjects(placement, publishedOnly);
+  const projects = await getProjects(placement, publishedOnly);
   return new Response(JSON.stringify(projects), { status: 200, headers: { 'Content-Type': 'application/json' } });
 };
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   if (!user) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
@@ -37,7 +37,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       return new Response(JSON.stringify({ error: 'Project title and slug are required.' }), { status: 400 });
     }
 
-    const id = saveProject(body, user.id);
+    const id = await saveProject(body, user.id);
     return new Response(JSON.stringify({ success: true, id, message: 'Project saved successfully!' }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -48,7 +48,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 };
 
 export const DELETE: APIRoute = async ({ url, cookies }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   if (!user) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
@@ -56,6 +56,6 @@ export const DELETE: APIRoute = async ({ url, cookies }) => {
   const id = url.searchParams.get('id');
   if (!id) return new Response(JSON.stringify({ error: 'Project ID is required' }), { status: 400 });
 
-  deleteProject(id, user.id);
+  await deleteProject(id, user.id);
   return new Response(JSON.stringify({ success: true, message: 'Project deleted.' }), { status: 200 });
 };

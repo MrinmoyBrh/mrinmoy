@@ -4,12 +4,12 @@ import { skillCategories } from '../data/skills';
 import { timeline } from '../data/experience';
 import { principles } from '../data/principles';
 
-export function runInitialSeed() {
+export async function runInitialSeed() {
   const db = getDb();
 
-  // Check if already seeded
-  const checkHero = db.prepare('SELECT COUNT(*) as count FROM hero_content').get() as { count: number };
-  if (checkHero && checkHero.count > 0) {
+  // Check if already seeded (prevent overwriting existing data)
+  const checkHero = (await db.prepare('SELECT COUNT(*) as count FROM hero_content').get()) as { count: any } | null;
+  if (checkHero && Number(checkHero.count) > 0) {
     return; // Already initialized
   }
 
@@ -43,7 +43,7 @@ export function runInitialSeed() {
   const heroDesc = 'I focus on building reliable backend applications, designing APIs, and working with databases and cloud technologies. My experience includes developing web applications with Laravel, PHP, Python, and MySQL, along with exploring Linux, AWS, and backend system architecture. I enjoy solving practical engineering problems, understanding how systems work behind the scenes, and writing clean, maintainable code.';
   const heroDescHtml = 'I focus on building reliable backend applications, designing APIs, and working with databases and cloud technologies. My experience includes developing web applications with <strong class="text-pearl font-medium">Laravel, PHP, Python, and MySQL</strong>, along with exploring <strong class="text-pearl font-medium">Linux, AWS</strong>, and backend system architecture. I enjoy solving practical engineering problems, understanding how systems work behind the scenes, and writing clean, maintainable code.';
 
-  insertHero.run(
+  await insertHero.run(
     'hero_default',
     'Mrinmoy Borah',
     'BACKEND SOFTWARE ENGINEER',
@@ -88,13 +88,14 @@ export function runInitialSeed() {
     )
   `);
 
-  projects.forEach((p, idx) => {
+  for (let idx = 0; idx < projects.length; idx++) {
+    const p = projects[idx];
     let placement = 'showcase';
     if (!p.featured) {
       placement = 'additional';
     }
 
-    insertProject.run(
+    await insertProject.run(
       p.id,
       p.slug,
       p.title,
@@ -122,7 +123,7 @@ export function runInitialSeed() {
       Date.now(),
       Date.now()
     );
-  });
+  }
 
   // 3. Seed Skills & Categories
   const insertCategory = db.prepare(`
@@ -135,15 +136,17 @@ export function runInitialSeed() {
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `);
 
-  skillCategories.forEach((cat, cIdx) => {
-    insertCategory.run(cat.id, cat.title, cat.tagline, cIdx);
-    cat.skills.forEach((s, sIdx) => {
+  for (let cIdx = 0; cIdx < skillCategories.length; cIdx++) {
+    const cat = skillCategories[cIdx];
+    await insertCategory.run(cat.id, cat.title, cat.tagline, cIdx);
+    for (let sIdx = 0; sIdx < cat.skills.length; sIdx++) {
+      const s = cat.skills[sIdx];
       let prof = 'Practiced';
       if (s.name.includes('Laravel') || s.name.includes('Python') || s.name.includes('MySQL')) prof = 'Advanced';
       else if (s.name.includes('Fundamentals') || s.name.includes('Basic')) prof = 'Basic';
       else if (s.name.includes('AWS') || s.name.includes('Docker')) prof = 'Familiar';
 
-      insertSkill.run(
+      await insertSkill.run(
         `${cat.id}_${sIdx}`,
         cat.id,
         s.name,
@@ -152,8 +155,8 @@ export function runInitialSeed() {
         s.highlight ? 1 : 0,
         sIdx
       );
-    });
-  });
+    }
+  }
 
   // 4. Seed Experiences & Education
   const insertExperience = db.prepare(`
@@ -170,9 +173,10 @@ export function runInitialSeed() {
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
-  timeline.forEach((item, idx) => {
+  for (let idx = 0; idx < timeline.length; idx++) {
+    const item = timeline[idx];
     if (item.type === 'Education') {
-      insertEducation.run(
+      await insertEducation.run(
         `edu_${idx}`,
         item.role,
         'Computer Science and Engineering',
@@ -185,7 +189,7 @@ export function runInitialSeed() {
         Date.now()
       );
     } else {
-      insertExperience.run(
+      await insertExperience.run(
         `exp_${idx}`,
         item.role,
         item.organization,
@@ -200,7 +204,7 @@ export function runInitialSeed() {
         Date.now()
       );
     }
-  });
+  }
 
   // 5. Seed Engineering Principles
   const insertPrinciple = db.prepare(`
@@ -209,8 +213,9 @@ export function runInitialSeed() {
     ) VALUES (?, ?, ?, ?, ?, ?, ?, 1)
   `);
 
-  principles.forEach((p, idx) => {
-    insertPrinciple.run(
+  for (let idx = 0; idx < principles.length; idx++) {
+    const p = principles[idx];
+    await insertPrinciple.run(
       `prin_${p.number}`,
       p.number,
       p.title,
@@ -219,7 +224,7 @@ export function runInitialSeed() {
       p.codeAccent,
       idx
     );
-  });
+  }
 
   // 6. Seed Navigation Items
   const insertNav = db.prepare(`
@@ -237,9 +242,10 @@ export function runInitialSeed() {
     { id: 'nav_contact', label: 'Contact', url: '#contact', cta: 1 },
   ];
 
-  navItems.forEach((n, idx) => {
-    insertNav.run(n.id, n.label, n.url, idx, n.cta);
-  });
+  for (let idx = 0; idx < navItems.length; idx++) {
+    const n = navItems[idx];
+    await insertNav.run(n.id, n.label, n.url, idx, n.cta);
+  }
 
   // 7. Seed Interactive Modules (Simulation, Terminal, Contact, Footer)
   const insertModule = db.prepare(`
@@ -247,8 +253,7 @@ export function runInitialSeed() {
     VALUES (?, ?, ?, ?)
   `);
 
-  // Simulation Harness presentation config
-  insertModule.run(
+  await insertModule.run(
     'mod_simulation',
     'simulation',
     JSON.stringify({
@@ -262,8 +267,7 @@ export function runInitialSeed() {
     Date.now()
   );
 
-  // Terminal presentation config
-  insertModule.run(
+  await insertModule.run(
     'mod_terminal',
     'terminal',
     JSON.stringify({
@@ -277,8 +281,7 @@ export function runInitialSeed() {
     Date.now()
   );
 
-  // Contact details
-  insertModule.run(
+  await insertModule.run(
     'mod_contact',
     'contact',
     JSON.stringify({
@@ -294,8 +297,7 @@ export function runInitialSeed() {
     Date.now()
   );
 
-  // Footer config
-  insertModule.run(
+  await insertModule.run(
     'mod_footer',
     'footer',
     JSON.stringify({
@@ -306,13 +308,13 @@ export function runInitialSeed() {
     Date.now()
   );
 
-  // 8. Seed Appearance Settings (Public design tokens & Cloud animation parameters)
+  // 8. Seed Appearance Settings
   const insertAppearance = db.prepare(`
     INSERT INTO appearance_settings (id, data, is_published, updated_at)
     VALUES (?, ?, 1, ?)
   `);
 
-  insertAppearance.run(
+  await insertAppearance.run(
     'app_default',
     JSON.stringify({
       jetBlack: '#080808',
@@ -324,9 +326,9 @@ export function runInitialSeed() {
         opacity: 0.14,
         blurPx: 120,
         speedMultiplier: 1.0,
-        cloud1Color: '#C72C41', // Cherry red
-        cloud2Color: '#929292', // Smoke grey
-        cloud3Color: '#A82436'  // Deep crimson
+        cloud1Color: '#C72C41',
+        cloud2Color: '#929292',
+        cloud3Color: '#A82436'
       }
     }),
     Date.now()
@@ -340,7 +342,7 @@ export function runInitialSeed() {
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
-  insertSeo.run(
+  await insertSeo.run(
     'seo_default',
     'Mrinmoy Borah | Backend Software Engineer — Distributed Systems & Resilient Architectures',
     'Personal portfolio of Mrinmoy Borah, Backend Software Engineer and B.Tech CSE student at Dhemaji Engineering College (2027). Specializing in BullMQ queues, Redis state machines, deterministic caching, and fault-tolerant gateways.',
@@ -359,7 +361,7 @@ export function runInitialSeed() {
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `);
 
-  insertLog.run(
+  await insertLog.run(
     'log_init',
     'system',
     'INITIALIZE',

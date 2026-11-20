@@ -5,7 +5,7 @@ export const prerender = false;
 
 // GET: Check MFA status
 export const GET: APIRoute = async ({ cookies }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   if (!user) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
@@ -18,13 +18,13 @@ export const GET: APIRoute = async ({ cookies }) => {
 
 // POST: Start enrollment -> returns secret, URI, and 8 recovery codes
 export const POST: APIRoute = async ({ cookies }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   if (!user) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
 
   try {
-    const enrollment = startMfaEnrollment(user.id);
+    const enrollment = await startMfaEnrollment(user.id);
     return new Response(JSON.stringify({ success: true, ...enrollment }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -36,7 +36,7 @@ export const POST: APIRoute = async ({ cookies }) => {
 
 // PUT: Confirm enrollment with 6-digit TOTP code
 export const PUT: APIRoute = async ({ request, cookies }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   if (!user) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
@@ -48,7 +48,7 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       return new Response(JSON.stringify({ error: 'Verification code is required.' }), { status: 400 });
     }
 
-    const result = confirmMfaEnrollment(user.id, token);
+    const result = await confirmMfaEnrollment(user.id, token);
     if (!result.success) {
       return new Response(JSON.stringify({ error: result.error || 'Invalid code' }), { status: 400 });
     }
@@ -64,7 +64,7 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
 
 // DELETE: Disable MFA with password confirmation
 export const DELETE: APIRoute = async ({ request, cookies }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   if (!user) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }

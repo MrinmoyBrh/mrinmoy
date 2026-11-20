@@ -4,7 +4,7 @@ import { getModuleConfig } from '../../lib/content';
 
 export const prerender = false;
 
-const simConfig = getModuleConfig('simulation') || {
+const simConfig = (await getModuleConfig('simulation')) || {
   title: 'SIMULATION HARNESS // LIVE ORCHESTRATION',
   subtitle: 'INTERACTIVE RUNNER TELEMETRY',
   description: 'Interactive execution harness demonstrating Docker container lifecycle, task queue buffering, and exit code verification.',

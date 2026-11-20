@@ -4,7 +4,7 @@ import { getModuleConfig } from '../../lib/content';
 
 export const prerender = false;
 
-const contactConfig = getModuleConfig('contact') || {
+const contactConfig = (await getModuleConfig('contact')) || {
   heading: 'Coordinates.',
   subheading: 'Initiate Secure Transmission',
   tagline: 'Always open to discussing resilient backend architectures, API engineering, databases, and practical distributed computing problems.',

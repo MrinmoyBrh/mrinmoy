@@ -14,7 +14,7 @@ const previewDraft = Astro.url.searchParams.get('preview') === 'draft';
 let project: ProjectCaseStudy | null = null;
 if (slug) {
   try {
-    const dbProject = getProjectBySlug(slug, !previewDraft);
+    const dbProject = await getProjectBySlug(slug, !previewDraft);
     if (dbProject) {
       project = dbProject as unknown as ProjectCaseStudy;
     }

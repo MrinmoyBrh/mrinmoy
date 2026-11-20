@@ -5,7 +5,7 @@ import { getHeroContent } from '../../lib/content';
 export const prerender = false;
 
 // Get draft if available, otherwise published
-const hero = getHeroContent(false);
+const hero = await getHeroContent(false);
 ---
 
 <AdminLayout title="Hero Section Editor" subtitle="Visually edit typography, descriptions, buttons, and orbital telemetry." activeNav="hero">

@@ -4,7 +4,7 @@ import { getModuleConfig } from '../../lib/content';
 
 export const prerender = false;
 
-const footerConfig = getModuleConfig('footer') || {
+const footerConfig = (await getModuleConfig('footer')) || {
   copyrightText: 'Mrinmoy Borah. Engineered with architectural precision.',
   locationText: 'ASSAM, INDIA // UTC+5:30',
   availabilityText: 'SYSTEM NOMINAL — READY FOR DEPLOYMENT'

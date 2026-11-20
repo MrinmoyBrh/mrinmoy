@@ -4,12 +4,12 @@ import '../../styles/global.css';
 
 export const prerender = false;
 
-const adminCount = getAdminUserCount();
+const adminCount = await getAdminUserCount();
 if (adminCount === 0) {
   return Astro.redirect('/admin/setup');
 }
 
-const user = getSessionUser(Astro.cookies);
+const user = await getSessionUser(Astro.cookies);
 if (user) {
   return Astro.redirect('/admin');
 }

@@ -10,7 +10,7 @@ const { previewDraft = false } = Astro.props;
 
 let hero: any = null;
 try {
-  hero = getHeroContent(!previewDraft);
+  hero = await getHeroContent(!previewDraft);
 } catch (e) {
   // Fail-safe database fallback
 }

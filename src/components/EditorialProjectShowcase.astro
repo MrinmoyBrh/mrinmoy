@@ -11,7 +11,7 @@ const { previewDraft = false } = Astro.props;
 
 let allProjects: ProjectCaseStudy[] = projects;
 try {
-  const dbProjects = getProjects('all', !previewDraft) as any;
+  const dbProjects = (await getProjects('all', !previewDraft)) as any;
   if (dbProjects && dbProjects.length > 0) {
     allProjects = dbProjects;
   }

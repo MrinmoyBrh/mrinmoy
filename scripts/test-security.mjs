@@ -69,16 +69,16 @@ assert(!(await argon2Verify({ password: 'WrongPassword!', hash: hashedPassword }
 
 // 2. Single-Admin Gating & Setup Reuse Prevention
 console.log('\n--- Test Group 2: Single-Admin Gating ---');
-const adminCount = getAdminUserCount();
+const adminCount = await getAdminUserCount();
 assert(adminCount >= 1, `Existing administrator account detected (count: ${adminCount})`);
 
 // 3. Login Rate Limiting & Account Lockout
 console.log('\n--- Test Group 3: Rate Limiting & Lockout Defense ---');
 const testIp = '198.51.100.99';
 for (let i = 0; i < 5; i++) {
-  recordLoginAttempt(testIp, false);
+  await recordLoginAttempt(testIp, false);
 }
-assert(isRateLimited(testIp), 'IP address locked after 5 failed login attempts');
+assert(await isRateLimited(testIp), 'IP address locked after 5 failed login attempts');
 const loginResult = await authenticateAdmin('admin@example.com', 'wrongpassword', testIp);
 assert(loginResult.error?.includes('locked'), 'Locked IP rejected with rate limit message');
 

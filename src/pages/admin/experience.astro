@@ -4,7 +4,7 @@ import { getExperiences } from '../../lib/content';
 
 export const prerender = false;
 
-const experiences = getExperiences(false);
+const experiences = await getExperiences(false);
 ---
 
 <AdminLayout title="Experience Manager" subtitle="Curate work history, internships & technical contributions" activeNav="experience">

@@ -4,7 +4,7 @@ import { getAllMedia } from '../../lib/media';
 
 export const prerender = false;
 
-const mediaList = getAllMedia();
+const mediaList = await getAllMedia();
 ---
 
 <AdminLayout title="Media Library" subtitle="Manage architecture diagrams, project covers & visual assets" activeNav="media">

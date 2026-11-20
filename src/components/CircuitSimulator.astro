@@ -11,7 +11,7 @@ let simConfig = {
 };
 
 try {
-  const dbConfig = getModuleConfig('simulation');
+  const dbConfig = await getModuleConfig('simulation');
   if (dbConfig) simConfig = { ...simConfig, ...dbConfig };
 } catch (e) {
   // Fallback

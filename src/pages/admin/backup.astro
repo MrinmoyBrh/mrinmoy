@@ -4,7 +4,7 @@ import { getDashboardStats } from '../../lib/content';
 
 export const prerender = false;
 
-const stats = getDashboardStats();
+const stats = await getDashboardStats();
 ---
 
 <AdminLayout title="Backup & Disaster Recovery" subtitle="Complete SQLite database export, schema migration & JSON import" activeNav="backup">

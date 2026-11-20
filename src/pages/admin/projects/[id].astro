@@ -6,7 +6,7 @@ import { getProjectById } from '../../../lib/content';
 export const prerender = false;
 
 const { id } = Astro.params;
-const project = getProjectById(id!);
+const project = await getProjectById(id!);
 
 if (!project) {
   return Astro.redirect('/admin/projects');

@@ -5,12 +5,12 @@ import { getAllDrafts } from '../../lib/content';
 
 export const prerender = false;
 
-const user = getSessionUser(Astro.cookies);
+const user = await getSessionUser(Astro.cookies);
 if (!user) {
   return Astro.redirect('/admin/login');
 }
 
-const drafts = getAllDrafts();
+const drafts = await getAllDrafts();
 ---
 
 <!doctype html>

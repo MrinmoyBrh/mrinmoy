@@ -4,7 +4,7 @@ import { getEducation } from '../../lib/content';
 
 export const prerender = false;
 
-const educationList = getEducation();
+const educationList = await getEducation();
 ---
 
 <AdminLayout title="Education Manager" subtitle="Manage academic credentials, coursework & institutions" activeNav="education">

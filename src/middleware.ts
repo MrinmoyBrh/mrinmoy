@@ -7,7 +7,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // 1. Initial Setup Guard
   if (pathname === '/admin/setup' || pathname === '/api/auth/setup') {
-    const adminCount = getAdminUserCount();
+    const adminCount = await getAdminUserCount();
     if (adminCount > 0) {
       if (pathname.startsWith('/api/')) {
         return new Response(JSON.stringify({ error: 'Setup is locked. An administrator already exists.' }), {
@@ -47,7 +47,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // 3. Centralized API Guard for all /api/cms/* mutating routes
   if (pathname.startsWith('/api/cms') && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method)) {
-    const user = getSessionUser(context.cookies);
+    const user = await getSessionUser(context.cookies);
     if (!user) {
       return new Response(JSON.stringify({ error: 'Unauthorized: Administrative authentication required.' }), {
         status: 401,
@@ -58,7 +58,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // 4. Centralized Admin Page Guard for /admin/* (except login & setup)
   if (pathname.startsWith('/admin') && pathname !== '/admin/login' && pathname !== '/admin/setup') {
-    const user = getSessionUser(context.cookies);
+    const user = await getSessionUser(context.cookies);
     if (!user) {
       return context.redirect('/admin/login');
     }

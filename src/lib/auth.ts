@@ -51,30 +51,30 @@ export async function verifyPassword(plain: string, hash: string): Promise<boole
   return bcrypt.compare(plain, hash);
 }
 
-export function getAdminUserCount(): number {
+export async function getAdminUserCount(): Promise<number> {
   const db = getDb();
-  const row = db.prepare('SELECT COUNT(*) as count FROM admin_users').get() as { count: number };
-  return row ? row.count : 0;
+  const row = (await db.prepare('SELECT COUNT(*) as count FROM admin_users').get()) as { count: any } | null;
+  return row ? Number(row.count) : 0;
 }
 
-export function isRateLimited(ip: string): boolean {
+export async function isRateLimited(ip: string): Promise<boolean> {
   const db = getDb();
   const cutoff = Date.now() - RATE_LIMIT_WINDOW_MS;
-  const countRow = db.prepare(`
+  const countRow = (await db.prepare(`
     SELECT COUNT(*) as count FROM login_attempts
     WHERE ip_address = ? AND attempted_at > ? AND success = 0
-  `).get(ip, cutoff) as { count: number };
+  `).get(ip, cutoff)) as { count: any } | null;
 
-  return (countRow?.count || 0) >= MAX_FAILED_ATTEMPTS;
+  return (Number(countRow?.count) || 0) >= MAX_FAILED_ATTEMPTS;
 }
 
-export function recordLoginAttempt(ip: string, success: boolean) {
+export async function recordLoginAttempt(ip: string, success: boolean): Promise<void> {
   const db = getDb();
   const insert = db.prepare(`
     INSERT INTO login_attempts (id, ip_address, attempted_at, success)
     VALUES (?, ?, ?, ?)
   `);
-  insert.run(crypto.randomUUID(), ip, Date.now(), success ? 1 : 0);
+  await insert.run(crypto.randomUUID(), ip, Date.now(), success ? 1 : 0);
 }
 
 export async function createAdminUser(
@@ -88,14 +88,14 @@ export async function createAdminUser(
   const cleanEmail = email.trim().toLowerCase();
   const cleanName = name.trim();
 
-  db.exec('BEGIN IMMEDIATE TRANSACTION;');
+  await db.exec('BEGIN;');
   try {
-    const countRow = db.prepare('SELECT COUNT(*) as count FROM admin_users').get() as { count: number };
-    if (countRow && countRow.count > 0) {
+    const countRow = (await db.prepare('SELECT COUNT(*) as count FROM admin_users').get()) as { count: any } | null;
+    if (countRow && Number(countRow.count) > 0) {
       throw new Error('Initial setup is locked. An administrator account already exists.');
     }
 
-    const existingEmail = db.prepare('SELECT id FROM admin_users WHERE email = ?').get(cleanEmail);
+    const existingEmail = await db.prepare('SELECT id FROM admin_users WHERE email = ?').get(cleanEmail);
     if (existingEmail) {
       throw new Error('An administrator account with this email address already exists.');
     }
@@ -109,8 +109,8 @@ export async function createAdminUser(
       VALUES (?, ?, ?, ?, ?, 'admin', ?, ?)
     `);
 
-    insert.run(id, cleanUsername, cleanEmail, passwordHash, cleanName, now, now);
-    db.exec('COMMIT;');
+    await insert.run(id, cleanUsername, cleanEmail, passwordHash, cleanName, now, now);
+    await db.exec('COMMIT;');
 
     return {
       id,
@@ -123,7 +123,7 @@ export async function createAdminUser(
     };
   } catch (err) {
     try {
-      db.exec('ROLLBACK;');
+      await db.exec('ROLLBACK;');
     } catch {}
     throw err;
   }
@@ -136,34 +136,34 @@ export async function authenticateAdmin(
 ): Promise<{ user?: AdminUser; requiresMfa?: boolean; mfaToken?: string; error?: string }> {
   const db = getDb();
 
-  if (isRateLimited(ip)) {
+  if (await isRateLimited(ip)) {
     return { error: 'Too many failed login attempts. Account temporarily locked for 15 minutes.' };
   }
 
   const cleanIdent = identifier.trim().toLowerCase();
-  const row = db.prepare(`
+  const row = (await db.prepare(`
     SELECT * FROM admin_users
     WHERE username = ? OR email = ?
-  `).get(cleanIdent, cleanIdent) as any;
+  `).get(cleanIdent, cleanIdent)) as any;
 
   if (!row) {
-    recordLoginAttempt(ip, false);
+    await recordLoginAttempt(ip, false);
     return { error: 'Invalid username/email or password.' };
   }
 
   const isValid = await verifyPassword(plainPassword, row.password_hash);
   if (!isValid) {
-    recordLoginAttempt(ip, false);
+    await recordLoginAttempt(ip, false);
     return { error: 'Invalid username/email or password.' };
   }
 
   // Check if TOTP Multi-Factor Authentication is enabled
-  if (row.mfa_enabled === 1 && row.mfa_secret) {
+  if (Number(row.mfa_enabled) === 1 && row.mfa_secret) {
     const now = Date.now();
     const mfaToken = crypto.randomBytes(32).toString('hex');
     const expiresAt = now + 5 * 60 * 1000; // 5 minutes challenge validity
 
-    db.prepare(`
+    await db.prepare(`
       INSERT INTO mfa_challenges (token, user_id, expires_at, ip_address)
       VALUES (?, ?, ?, ?)
     `).run(mfaToken, row.id, expiresAt, ip);
@@ -175,9 +175,9 @@ export async function authenticateAdmin(
   }
 
   // Record success and update last login
-  recordLoginAttempt(ip, true);
+  await recordLoginAttempt(ip, true);
   const now = Date.now();
-  db.prepare('UPDATE admin_users SET last_login_at = ? WHERE id = ?').run(now, row.id);
+  await db.prepare('UPDATE admin_users SET last_login_at = ? WHERE id = ?').run(now, row.id);
 
   return {
     user: {
@@ -186,7 +186,7 @@ export async function authenticateAdmin(
       email: row.email,
       name: row.name,
       role: row.role,
-      created_at: row.created_at,
+      created_at: Number(row.created_at),
       last_login_at: now,
       mfa_enabled: Boolean(row.mfa_enabled),
     },
@@ -202,23 +202,23 @@ export async function verifyMfaLogin(
 ): Promise<{ success: boolean; user?: AdminUser; error?: string }> {
   const db = getDb();
 
-  if (isRateLimited(ip)) {
+  if (await isRateLimited(ip)) {
     return { success: false, error: 'Too many failed attempts. Account temporarily locked for 15 minutes.' };
   }
 
   const now = Date.now();
-  const challenge = db.prepare(`
+  const challenge = (await db.prepare(`
     SELECT * FROM mfa_challenges WHERE token = ? AND expires_at > ?
-  `).get(mfaToken, now) as any;
+  `).get(mfaToken, now)) as any;
 
   if (!challenge) {
-    recordLoginAttempt(ip, false);
+    await recordLoginAttempt(ip, false);
     return { success: false, error: 'MFA challenge expired or invalid. Please sign in again.' };
   }
 
-  const user = db.prepare('SELECT * FROM admin_users WHERE id = ?').get(challenge.user_id) as any;
+  const user = (await db.prepare('SELECT * FROM admin_users WHERE id = ?').get(challenge.user_id)) as any;
   if (!user || !user.mfa_secret) {
-    recordLoginAttempt(ip, false);
+    await recordLoginAttempt(ip, false);
     return { success: false, error: 'User configuration error.' };
   }
 
@@ -238,7 +238,7 @@ export async function verifyMfaLogin(
       if (recoveryResult.valid) {
         verified = true;
         // Update remaining recovery codes in DB
-        db.prepare('UPDATE admin_users SET mfa_recovery_codes = ? WHERE id = ?').run(
+        await db.prepare('UPDATE admin_users SET mfa_recovery_codes = ? WHERE id = ?').run(
           JSON.stringify(recoveryResult.remainingHashedCodes),
           user.id
         );
@@ -249,17 +249,17 @@ export async function verifyMfaLogin(
   }
 
   if (!verified) {
-    recordLoginAttempt(ip, false);
+    await recordLoginAttempt(ip, false);
     return { success: false, error: 'Invalid verification code or recovery code.' };
   }
 
   // Consume the challenge token so it cannot be replayed
-  db.prepare('DELETE FROM mfa_challenges WHERE token = ?').run(mfaToken);
+  await db.prepare('DELETE FROM mfa_challenges WHERE token = ?').run(mfaToken);
 
   // Success
-  recordLoginAttempt(ip, true);
-  db.prepare('UPDATE admin_users SET last_login_at = ? WHERE id = ?').run(now, user.id);
-  createSession(user.id, cookies, userAgent, ip);
+  await recordLoginAttempt(ip, true);
+  await db.prepare('UPDATE admin_users SET last_login_at = ? WHERE id = ?').run(now, user.id);
+  await createSession(user.id, cookies, userAgent, ip);
 
   return {
     success: true,
@@ -269,23 +269,23 @@ export async function verifyMfaLogin(
       email: user.email,
       name: user.name,
       role: user.role,
-      created_at: user.created_at,
+      created_at: Number(user.created_at),
       last_login_at: now,
       mfa_enabled: true,
     },
   };
 }
 
-export function startMfaEnrollment(userId: string): { secret: string; uri: string; recoveryCodes: string[] } {
+export async function startMfaEnrollment(userId: string): Promise<{ secret: string; uri: string; recoveryCodes: string[] }> {
   const db = getDb();
-  const user = db.prepare('SELECT email, username FROM admin_users WHERE id = ?').get(userId) as any;
+  const user = (await db.prepare('SELECT email, username FROM admin_users WHERE id = ?').get(userId)) as any;
   if (!user) throw new Error('User not found.');
 
   const secret = generateBase32Secret(20);
   const { plainCodes, hashedCodes } = generateRecoveryCodes(8);
   const uri = generateTotpUri(secret, user.email || user.username);
 
-  db.prepare(`
+  await db.prepare(`
     UPDATE admin_users SET
       mfa_pending_secret = ?,
       mfa_recovery_codes = ?
@@ -299,9 +299,9 @@ export function startMfaEnrollment(userId: string): { secret: string; uri: strin
   };
 }
 
-export function confirmMfaEnrollment(userId: string, token: string): { success: boolean; error?: string } {
+export async function confirmMfaEnrollment(userId: string, token: string): Promise<{ success: boolean; error?: string }> {
   const db = getDb();
-  const user = db.prepare('SELECT mfa_pending_secret FROM admin_users WHERE id = ?').get(userId) as any;
+  const user = (await db.prepare('SELECT mfa_pending_secret FROM admin_users WHERE id = ?').get(userId)) as any;
   if (!user || !user.mfa_pending_secret) {
     return { success: false, error: 'No pending MFA enrollment found. Please initiate enrollment first.' };
   }
@@ -312,7 +312,7 @@ export function confirmMfaEnrollment(userId: string, token: string): { success: 
   }
 
   // Activate MFA and clear pending secret
-  db.prepare(`
+  await db.prepare(`
     UPDATE admin_users SET
       mfa_enabled = 1,
       mfa_secret = mfa_pending_secret,
@@ -325,7 +325,7 @@ export function confirmMfaEnrollment(userId: string, token: string): { success: 
 
 export async function disableMfa(userId: string, passwordConfirm: string): Promise<{ success: boolean; error?: string }> {
   const db = getDb();
-  const user = db.prepare('SELECT password_hash FROM admin_users WHERE id = ?').get(userId) as any;
+  const user = (await db.prepare('SELECT password_hash FROM admin_users WHERE id = ?').get(userId)) as any;
   if (!user) return { success: false, error: 'User not found' };
 
   const valid = await verifyPassword(passwordConfirm, user.password_hash);
@@ -333,7 +333,7 @@ export async function disableMfa(userId: string, passwordConfirm: string): Promi
     return { success: false, error: 'Incorrect password.' };
   }
 
-  db.prepare(`
+  await db.prepare(`
     UPDATE admin_users SET
       mfa_enabled = 0,
       mfa_secret = NULL,
@@ -345,9 +345,9 @@ export async function disableMfa(userId: string, passwordConfirm: string): Promi
   return { success: true };
 }
 
-export function invalidateUserSessions(userId: string) {
+export async function invalidateUserSessions(userId: string): Promise<void> {
   const db = getDb();
-  db.prepare('DELETE FROM sessions WHERE user_id = ?').run(userId);
+  await db.prepare('DELETE FROM sessions WHERE user_id = ?').run(userId);
 }
 
 export async function updateAdminPassword(
@@ -356,7 +356,7 @@ export async function updateAdminPassword(
   newPlain: string
 ): Promise<{ success: boolean; error?: string }> {
   const db = getDb();
-  const user = db.prepare('SELECT password_hash FROM admin_users WHERE id = ?').get(userId) as any;
+  const user = (await db.prepare('SELECT password_hash FROM admin_users WHERE id = ?').get(userId)) as any;
   if (!user) return { success: false, error: 'User not found' };
 
   const valid = await verifyPassword(currentPlain, user.password_hash);
@@ -371,17 +371,17 @@ export async function updateAdminPassword(
   const newHash = await hashPassword(newPlain);
   const now = Date.now();
 
-  db.prepare(`
+  await db.prepare(`
     UPDATE admin_users SET password_hash = ?, updated_at = ? WHERE id = ?
   `).run(newHash, now, userId);
 
   // Invalidate all existing sessions upon password change
-  invalidateUserSessions(userId);
+  await invalidateUserSessions(userId);
 
   return { success: true };
 }
 
-export function createSession(userId: string, cookies: AstroCookies, userAgent?: string, ip?: string): string {
+export async function createSession(userId: string, cookies: AstroCookies, userAgent?: string, ip?: string): Promise<string> {
   const db = getDb();
   const token = crypto.randomBytes(32).toString('hex');
   const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
@@ -394,7 +394,7 @@ export function createSession(userId: string, cookies: AstroCookies, userAgent?:
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
-  insert.run(sessionId, tokenHash, userId, now, expiresAt, now, userAgent || null, ip || null);
+  await insert.run(sessionId, tokenHash, userId, now, expiresAt, now, userAgent || null, ip || null);
 
   cookies.set(SESSION_COOKIE_NAME, token, {
     path: '/',
@@ -407,12 +407,12 @@ export function createSession(userId: string, cookies: AstroCookies, userAgent?:
   return token;
 }
 
-export function destroySession(cookies: AstroCookies) {
+export async function destroySession(cookies: AstroCookies): Promise<void> {
   const token = cookies.get(SESSION_COOKIE_NAME)?.value;
   if (token) {
     const db = getDb();
     const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
-    db.prepare('DELETE FROM sessions WHERE token_hash = ?').run(tokenHash);
+    await db.prepare('DELETE FROM sessions WHERE token_hash = ?').run(tokenHash);
   }
 
   cookies.delete(SESSION_COOKIE_NAME, {
@@ -420,7 +420,7 @@ export function destroySession(cookies: AstroCookies) {
   });
 }
 
-export function getSessionUser(cookies: AstroCookies): AdminUser | null {
+export async function getSessionUser(cookies: AstroCookies): Promise<AdminUser | null> {
   const token = cookies.get(SESSION_COOKIE_NAME)?.value;
   if (!token) return null;
 
@@ -428,12 +428,12 @@ export function getSessionUser(cookies: AstroCookies): AdminUser | null {
   const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
   const now = Date.now();
 
-  const row = db.prepare(`
+  const row = (await db.prepare(`
     SELECT s.id as session_id, s.expires_at, s.last_active_at, u.id, u.username, u.email, u.name, u.role, u.created_at, u.last_login_at, u.mfa_enabled
     FROM sessions s
     JOIN admin_users u ON s.user_id = u.id
     WHERE s.token_hash = ? AND s.expires_at > ?
-  `).get(tokenHash, now) as any;
+  `).get(tokenHash, now)) as any;
 
   if (!row) {
     cookies.delete(SESSION_COOKIE_NAME, { path: '/' });
@@ -441,14 +441,14 @@ export function getSessionUser(cookies: AstroCookies): AdminUser | null {
   }
 
   // Check 2-hour idle timeout
-  if (row.last_active_at && now - row.last_active_at > IDLE_TIMEOUT_MS) {
-    db.prepare('DELETE FROM sessions WHERE id = ?').run(row.session_id);
+  if (row.last_active_at && now - Number(row.last_active_at) > IDLE_TIMEOUT_MS) {
+    await db.prepare('DELETE FROM sessions WHERE id = ?').run(row.session_id);
     cookies.delete(SESSION_COOKIE_NAME, { path: '/' });
     return null;
   }
 
   // Refresh activity timestamp
-  db.prepare('UPDATE sessions SET last_active_at = ? WHERE id = ?').run(now, row.session_id);
+  await db.prepare('UPDATE sessions SET last_active_at = ? WHERE id = ?').run(now, row.session_id);
 
   return {
     id: row.id,
@@ -456,8 +456,8 @@ export function getSessionUser(cookies: AstroCookies): AdminUser | null {
     email: row.email,
     name: row.name,
     role: row.role,
-    created_at: row.created_at,
-    last_login_at: row.last_login_at,
+    created_at: Number(row.created_at),
+    last_login_at: row.last_login_at ? Number(row.last_login_at) : null,
     mfa_enabled: Boolean(row.mfa_enabled),
   };
 }

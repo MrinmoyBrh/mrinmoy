@@ -10,7 +10,7 @@ let footerConfig = {
 };
 
 try {
-  const dbFooter = getModuleConfig('footer');
+  const dbFooter = await getModuleConfig('footer');
   if (dbFooter) footerConfig = { ...footerConfig, ...dbFooter };
 } catch (e) {
   // Fallback

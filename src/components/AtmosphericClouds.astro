@@ -12,7 +12,7 @@ let cloudsConfig = {
 };
 
 try {
-  const app = getAppearanceSettings(true);
+  const app = await getAppearanceSettings(true);
   if (app?.cloudAnimation) {
     cloudsConfig = { ...cloudsConfig, ...app.cloudAnimation };
   }

@@ -5,7 +5,7 @@ import { reorderProjects } from '../../../../lib/content';
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   if (!user) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
@@ -16,7 +16,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       return new Response(JSON.stringify({ error: 'orderedIds array required' }), { status: 400 });
     }
 
-    reorderProjects(orderedIds, user.id);
+    await reorderProjects(orderedIds, user.id);
     return new Response(JSON.stringify({ success: true, message: 'Projects reordered successfully!' }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },

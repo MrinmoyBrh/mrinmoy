@@ -4,8 +4,8 @@ import { getExperiences, getEducation } from '../lib/content';
 
 let timeline = defaultTimeline;
 try {
-  const dbExperiences = getExperiences(true);
-  const dbEducation = getEducation();
+  const dbExperiences = await getExperiences(true);
+  const dbEducation = await getEducation();
 
   if (dbExperiences.length > 0 || dbEducation.length > 0) {
     const combined: any[] = [];

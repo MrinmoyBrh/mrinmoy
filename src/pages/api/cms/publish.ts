@@ -5,7 +5,7 @@ import { publishHero, publishAppearance, logActivity } from '../../../lib/conten
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   if (!user) return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
 
   try {
@@ -13,13 +13,13 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const target = body.target || 'all';
 
     if (target === 'hero' || target === 'all') {
-      publishHero(user.id);
+      await publishHero(user.id);
     }
     if (target === 'appearance' || target === 'all') {
-      publishAppearance(user.id);
+      await publishAppearance(user.id);
     }
 
-    logActivity(user.id, 'PUBLISH_ALL', 'site', null, 'Published all pending CMS drafts to public website');
+    await logActivity(user.id, 'PUBLISH_ALL', 'site', null, 'Published all pending CMS drafts to public website');
 
     return new Response(JSON.stringify({
       success: true,

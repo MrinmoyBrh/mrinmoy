@@ -80,14 +80,14 @@ function sanitizeSvg(content: string): { safe: boolean; sanitized?: string; reas
   return { safe: true, sanitized: content };
 }
 
-export function getAllMedia() {
+export async function getAllMedia(): Promise<any[]> {
   const db = getDb();
-  return db.prepare('SELECT * FROM media_assets ORDER BY created_at DESC').all() as any[];
+  return (await db.prepare('SELECT * FROM media_assets ORDER BY created_at DESC').all()) as any[];
 }
 
-export function getMediaById(id: string) {
+export async function getMediaById(id: string): Promise<any | null> {
   const db = getDb();
-  return db.prepare('SELECT * FROM media_assets WHERE id = ?').get(id) as any;
+  return (await db.prepare('SELECT * FROM media_assets WHERE id = ?').get(id)) as any;
 }
 
 export async function saveMediaFile(
@@ -126,7 +126,6 @@ export async function saveMediaFile(
   const db = getDb();
   let ext = path.extname(originalName).toLowerCase();
   if (!ALLOWED_EXTENSIONS.includes(ext)) {
-    // Map mime to safe default extension
     const mimeMap: Record<string, string> = {
       'image/jpeg': '.jpg',
       'image/png': '.png',
@@ -152,7 +151,7 @@ export async function saveMediaFile(
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
-    insert.run(id, originalName, uniqueName, publicUrl, mimeType, buffer.length, altText || originalName, Date.now());
+    await insert.run(id, originalName, uniqueName, publicUrl, mimeType, buffer.length, altText || originalName, Date.now());
 
     return {
       success: true,
@@ -173,9 +172,9 @@ export async function saveMediaFile(
   }
 }
 
-export function deleteMedia(id: string): boolean {
+export async function deleteMedia(id: string): Promise<boolean> {
   const db = getDb();
-  const media = getMediaById(id);
+  const media = await getMediaById(id);
   if (!media) return false;
 
   const diskPath = path.join(UPLOAD_DIR, media.filename);
@@ -187,11 +186,11 @@ export function deleteMedia(id: string): boolean {
     }
   }
 
-  db.prepare('DELETE FROM media_assets WHERE id = ?').run(id);
+  await db.prepare('DELETE FROM media_assets WHERE id = ?').run(id);
   return true;
 }
 
-export function updateMediaAlt(id: string, altText: string) {
+export async function updateMediaAlt(id: string, altText: string): Promise<void> {
   const db = getDb();
-  db.prepare('UPDATE media_assets SET alt_text = ? WHERE id = ?').run(altText, id);
+  await db.prepare('UPDATE media_assets SET alt_text = ? WHERE id = ?').run(altText, id);
 }

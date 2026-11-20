@@ -13,7 +13,7 @@ let contact = {
 };
 
 try {
-  const dbContact = getModuleConfig('contact');
+  const dbContact = await getModuleConfig('contact');
   if (dbContact) contact = { ...contact, ...dbContact };
 } catch (e) {
   // Fallback

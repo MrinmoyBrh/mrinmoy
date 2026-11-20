@@ -4,7 +4,7 @@ import { getModuleConfig } from '../../lib/content';
 
 export const prerender = false;
 
-const termConfig = getModuleConfig('terminal') || {
+const termConfig = (await getModuleConfig('terminal')) || {
   title: 'INTERACTIVE TERMINAL // CLIENT INGRESS',
   promptPrefix: 'mrinmoy>',
   welcomeMessage: 'MB-TERM v1.0.4 - Connected to live portfolio node worker-01.production\nType "help" to inspect verified architectural coordinates.',

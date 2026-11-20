@@ -4,7 +4,7 @@ import { getSessionUser, updateAdminPassword, createSession } from '../../../lib
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request, cookies, clientAddress }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   if (!user) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
@@ -47,7 +47,7 @@ export const POST: APIRoute = async ({ request, cookies, clientAddress }) => {
 
     // Refresh current session with a new token after invalidating all others
     const userAgent = request.headers.get('user-agent') || undefined;
-    createSession(user.id, cookies, userAgent, clientAddress);
+    await createSession(user.id, cookies, userAgent, clientAddress);
 
     return new Response(
       JSON.stringify({

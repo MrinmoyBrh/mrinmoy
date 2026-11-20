@@ -6,7 +6,7 @@ import { logActivity } from '../../../lib/content';
 export const prerender = false;
 
 export const GET: APIRoute = async ({ cookies }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   if (!user) return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
 
   const db = getDb();
@@ -14,17 +14,17 @@ export const GET: APIRoute = async ({ cookies }) => {
     version: '1.0.0',
     exported_at: Date.now(),
     exported_by: user.username,
-    hero_content: db.prepare('SELECT * FROM hero_content').all(),
-    projects: db.prepare('SELECT * FROM projects').all(),
-    skill_categories: db.prepare('SELECT * FROM skill_categories').all(),
-    skills: db.prepare('SELECT * FROM skills').all(),
-    experiences: db.prepare('SELECT * FROM experiences').all(),
-    education: db.prepare('SELECT * FROM education').all(),
-    principles: db.prepare('SELECT * FROM principles').all(),
-    navigation_items: db.prepare('SELECT * FROM navigation_items').all(),
-    module_configs: db.prepare('SELECT * FROM module_configs').all(),
-    appearance_settings: db.prepare('SELECT * FROM appearance_settings').all(),
-    seo_settings: db.prepare('SELECT * FROM seo_settings').all(),
+    hero_content: await db.prepare('SELECT * FROM hero_content').all(),
+    projects: await db.prepare('SELECT * FROM projects').all(),
+    skill_categories: await db.prepare('SELECT * FROM skill_categories').all(),
+    skills: await db.prepare('SELECT * FROM skills').all(),
+    experiences: await db.prepare('SELECT * FROM experiences').all(),
+    education: await db.prepare('SELECT * FROM education').all(),
+    principles: await db.prepare('SELECT * FROM principles').all(),
+    navigation_items: await db.prepare('SELECT * FROM navigation_items').all(),
+    module_configs: await db.prepare('SELECT * FROM module_configs').all(),
+    appearance_settings: await db.prepare('SELECT * FROM appearance_settings').all(),
+    seo_settings: await db.prepare('SELECT * FROM seo_settings').all(),
   };
 
   return new Response(JSON.stringify(backup, null, 2), {
@@ -37,7 +37,7 @@ export const GET: APIRoute = async ({ cookies }) => {
 };
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   if (!user) return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
 
   try {
@@ -49,10 +49,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const db = getDb();
 
     // Use transaction for restore
-    db.exec('BEGIN TRANSACTION;');
+    await db.exec('BEGIN TRANSACTION;');
     try {
       if (Array.isArray(data.hero_content) && data.hero_content.length > 0) {
-        db.prepare('DELETE FROM hero_content').run();
+        await db.prepare('DELETE FROM hero_content').run();
         const insertHero = db.prepare(`
           INSERT INTO hero_content (
             id, name, role_badge, education_badge, college_badge,
@@ -67,8 +67,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
             is_published, updated_at
           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `);
-        data.hero_content.forEach((h: any) => {
-          insertHero.run(
+        for (const h of data.hero_content) {
+          await insertHero.run(
             h.id, h.name, h.role_badge, h.education_badge, h.college_badge,
             h.headline_line1, h.headline_highlight, h.headline_gradient,
             h.description, h.description_html,
@@ -80,11 +80,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
             h.orbital_status_title, h.orbital_status_reliability, h.orbital_core_label,
             h.is_published, h.updated_at
           );
-        });
+        }
       }
 
       if (Array.isArray(data.projects)) {
-        db.prepare('DELETE FROM projects').run();
+        await db.prepare('DELETE FROM projects').run();
         const insertProj = db.prepare(`
           INSERT INTO projects (
             id, slug, title, tagline, category, role, organization, period,
@@ -94,8 +94,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
             cover_image, is_published, created_at, updated_at
           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `);
-        data.projects.forEach((p: any) => {
-          insertProj.run(
+        for (const p of data.projects) {
+          await insertProj.run(
             p.id, p.slug, p.title, p.tagline, p.category, p.role, p.organization || null, p.period,
             p.placement || 'showcase', p.featured ? 1 : 0, p.display_order || 0, p.github_url || null, p.live_url || null,
             typeof p.badges === 'string' ? p.badges : JSON.stringify(p.badges),
@@ -107,15 +107,15 @@ export const POST: APIRoute = async ({ request, cookies }) => {
             typeof p.key_features === 'string' ? p.key_features : JSON.stringify(p.key_features || []),
             p.cover_image || null, p.is_published ? 1 : 0, p.created_at || Date.now(), p.updated_at || Date.now()
           );
-        });
+        }
       }
 
-      db.exec('COMMIT;');
-      logActivity(user.id, 'RESTORE_BACKUP', 'backup', null, `Restored full portfolio data backup from ${data.exported_by || 'archive'}`);
+      await db.exec('COMMIT;');
+      await logActivity(user.id, 'RESTORE_BACKUP', 'backup', null, `Restored full portfolio data backup from ${data.exported_by || 'archive'}`);
 
       return new Response(JSON.stringify({ success: true, message: 'Backup successfully restored!' }), { status: 200 });
     } catch (txErr: any) {
-      db.exec('ROLLBACK;');
+      await db.exec('ROLLBACK;');
       throw txErr;
     }
   } catch (err: any) {

@@ -16,3 +16,4 @@ data/*.json
 data/backups/
 public/uploads/*
 !public/uploads/.gitkeep
+.neon

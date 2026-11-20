@@ -4,7 +4,7 @@ import { getProjects } from '../../../lib/content';
 
 export const prerender = false;
 
-const allProjects = getProjects('all', false);
+const allProjects = await getProjects('all', false);
 ---
 
 <AdminLayout title="Project Showcase & Systems" subtitle="Create, edit, reorder, and assign project placement across your portfolio." activeNav="projects">

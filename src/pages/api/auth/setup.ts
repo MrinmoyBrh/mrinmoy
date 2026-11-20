@@ -11,7 +11,7 @@ export const POST: APIRoute = async ({ request, cookies, clientAddress }) => {
 
   try {
     // 1. Rate limiting check
-    if (isRateLimited(ip)) {
+    if (await isRateLimited(ip)) {
       return new Response(JSON.stringify({ error: 'Too many registration attempts. Please wait 15 minutes.' }), {
         status: 429,
         headers: { 'Content-Type': 'application/json' },
@@ -19,9 +19,9 @@ export const POST: APIRoute = async ({ request, cookies, clientAddress }) => {
     }
 
     // 2. Strict single-admin gating check
-    const adminCount = getAdminUserCount();
+    const adminCount = await getAdminUserCount();
     if (adminCount > 0) {
-      recordLoginAttempt(ip, false);
+      await recordLoginAttempt(ip, false);
       return new Response(JSON.stringify({ error: 'Setup is locked. An administrator account already exists. Please sign in.' }), {
         status: 403,
         headers: { 'Content-Type': 'application/json' },
@@ -88,9 +88,9 @@ export const POST: APIRoute = async ({ request, cookies, clientAddress }) => {
     const userAgent = request.headers.get('user-agent') || undefined;
 
     // 7. Establish secure authenticated session
-    createSession(user.id, cookies, userAgent, ip);
-    recordLoginAttempt(ip, true);
-    logActivity(user.id, 'SETUP', 'admin_user', user.id, `Created primary administrator "${user.username}" (${user.email})`);
+    await createSession(user.id, cookies, userAgent, ip);
+    await recordLoginAttempt(ip, true);
+    await logActivity(user.id, 'SETUP', 'admin_user', user.id, `Created primary administrator "${user.username}" (${user.email})`);
 
     return new Response(JSON.stringify({
       success: true,
@@ -106,7 +106,7 @@ export const POST: APIRoute = async ({ request, cookies, clientAddress }) => {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (err: any) {
-    recordLoginAttempt(ip, false);
+    await recordLoginAttempt(ip, false);
     return new Response(JSON.stringify({ error: err.message || 'Setup initialization failed.' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },

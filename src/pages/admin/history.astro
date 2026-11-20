@@ -5,10 +5,10 @@ import { getDb } from '../../lib/db';
 
 export const prerender = false;
 
-const revisions = getRevisions(undefined, 50);
+const revisions = await getRevisions(undefined, 50);
 
 const db = getDb();
-const logs = db.prepare('SELECT * FROM activity_logs ORDER BY created_at DESC LIMIT 50').all() as any[];
+const logs = (await db.prepare('SELECT * FROM activity_logs ORDER BY created_at DESC LIMIT 50').all()) as any[];
 ---
 
 <AdminLayout title="Revisions & Audit History" subtitle="Trace operational events, audit trail & one-click snapshot rollback" activeNav="history">

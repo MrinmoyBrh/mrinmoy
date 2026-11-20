@@ -5,17 +5,17 @@ import { getEducation, saveEducation } from '../../../lib/content';
 export const prerender = false;
 
 export const GET: APIRoute = async () => {
-  const edu = getEducation();
+  const edu = await getEducation();
   return new Response(JSON.stringify(edu), { status: 200, headers: { 'Content-Type': 'application/json' } });
 };
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  const user = getSessionUser(cookies);
+  const user = await getSessionUser(cookies);
   if (!user) return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
 
   try {
     const body = await request.json();
-    saveEducation(body, user.id);
+    await saveEducation(body, user.id);
     return new Response(JSON.stringify({ success: true, message: 'Education updated.' }), { status: 200 });
   } catch (err: any) {
     return new Response(JSON.stringify({ error: err.message }), { status: 500 });

@@ -4,10 +4,10 @@ import { getDashboardStats } from '../../lib/content';
 
 export const prerender = false;
 
-let stats;
+let stats: any;
 let dbError: string | null = null;
 try {
-  stats = getDashboardStats();
+  stats = await getDashboardStats();
 } catch (err: any) {
   console.error('[Admin Dashboard] Error loading dashboard statistics:', err);
   dbError = err?.message || 'Database error occurred while retrieving dashboard statistics.';
@@ -24,7 +24,7 @@ try {
   };
 }
 
-const maxActivity = Math.max(...stats.activityDays.map((d) => d.count), 1);
+const maxActivity = Math.max(...(stats.activityDays || []).map((d: any) => d.count), 1);
 ---
 
 <AdminLayout title="Overview" subtitle="Manage your portfolio, projects, and website content from one place." activeNav="dashboard">
@@ -217,7 +217,7 @@ const maxActivity = Math.max(...stats.activityDays.map((d) => d.count), 1);
 
       <!-- Activity Bar Chart Inspired by Fintrixity -->
       <div class="h-44 flex items-end justify-between gap-2 pt-6 pb-2 px-2 border-b border-[#343434]/50">
-        {stats.activityDays.map((d) => {
+        {stats.activityDays.map((d: any) => {
           const heightPercent = Math.max(Math.round((d.count / maxActivity) * 100), 12);
           return (
             <div class="flex-1 flex flex-col items-center h-full justify-end group">
@@ -263,7 +263,7 @@ const maxActivity = Math.max(...stats.activityDays.map((d) => d.count), 1);
           </thead>
           <tbody class="divide-y divide-[#343434]/40 text-[#F5F5F5]">
             {stats.recentActivities.length > 0 ? (
-              stats.recentActivities.map((act) => (
+              stats.recentActivities.map((act: any) => (
                 <tr class="hover:bg-[#282828] transition-colors">
                   <td class="py-3.5 px-6 font-mono font-bold text-[#FF5A1F]">
                     [{act.action}]

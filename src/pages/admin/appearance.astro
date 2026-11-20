@@ -4,7 +4,7 @@ import { getAppearanceSettings } from '../../lib/content';
 
 export const prerender = false;
 
-const appearance = getAppearanceSettings(false);
+const appearance = await getAppearanceSettings(false);
 const clouds = appearance.cloudAnimation || {
   enabled: true,
   opacity: 0.14,

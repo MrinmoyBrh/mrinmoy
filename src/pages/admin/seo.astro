@@ -4,7 +4,7 @@ import { getSeoSettings } from '../../lib/content';
 
 export const prerender = false;
 
-const seo = getSeoSettings();
+const seo = await getSeoSettings();
 ---
 
 <AdminLayout title="SEO & OpenGraph Settings" subtitle="Search engine metadata, social share cards & crawl directives" activeNav="seo">
