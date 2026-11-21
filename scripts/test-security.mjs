@@ -127,3 +127,4 @@ assert(pngResult.success, 'Valid PNG header accepted with sanitized storage');
 console.log(`\n====================================================`);
 console.log(`ALL TESTS PASSED: ${passedTests}/${totalTests} security assertions verified.`);
 console.log(`====================================================\n`);
+process.exit(0);

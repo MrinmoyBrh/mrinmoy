@@ -50,6 +50,10 @@ export default {
         display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
         sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'Fira Code', 'monospace'],
+        brush: ['"Neoradical Brush Lettering"', 'cursive', 'sans-serif'],
+        manrope: ['"Manrope"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+        serifBody: ['"Manrope"', 'sans-serif'],
+        script: ['"Royale Amoure Script"', 'cursive', 'serif'],
       },
       animation: {
         'orbit-slow': 'orbit 60s linear infinite',

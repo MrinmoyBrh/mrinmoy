@@ -39,12 +39,12 @@ if (additional.length === 0) {
           <span class="w-2 h-2 rounded-full bg-coral animate-pulse"></span>
           <span class="tracking-widest uppercase text-cherry">ENGINEERING PORTFOLIO // VERIFIED WORK</span>
         </div>
-        <h2 class="editorial-title text-5xl sm:text-6xl lg:text-7xl font-bold text-pearl tracking-tight">
-          Featured <span class="italic font-serif text-smoke-light font-normal">Systems.</span>
+        <h2 class="font-brush text-4xl sm:text-5xl lg:text-6xl text-pearl tracking-wide">
+          Featured <span class="font-script text-smoke-light font-normal text-[1.08em]">Systems.</span>
         </h2>
       </div>
       
-      <p class="text-smoke text-sm sm:text-base max-w-md leading-relaxed font-normal">
+      <p class="paragraph-manrope font-manrope text-[16px] sm:text-[17px] lg:text-[18px] text-smoke max-w-md leading-[1.65] lg:leading-[1.7] tracking-[-0.01em] font-normal">
         Three distinct architectural undertakings—distributed queue gateways, public utility infrastructure, and containerized code runners.
       </p>
     </div>
@@ -71,13 +71,13 @@ if (additional.length === 0) {
               <span class="text-smoke-dark">2024</span>
             </div>
 
-            <h3 class="editorial-title text-3xl sm:text-4xl lg:text-5xl font-bold text-pearl mb-6 leading-[1.08]">
+            <h3 class="font-brush text-2xl sm:text-3xl lg:text-4xl text-pearl mb-6 leading-snug">
               <a href={`/projects/${p1.slug}`} class="hover:text-cherry transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cherry">
                 {p1.title}
               </a>
             </h3>
 
-            <p class="text-sm sm:text-base text-smoke-light leading-relaxed mb-8 font-normal">
+            <p class="paragraph-manrope font-manrope text-[16px] sm:text-[17px] lg:text-[18px] text-smoke-light leading-[1.65] lg:leading-[1.7] tracking-[-0.01em] mb-8 font-normal">
               A high-throughput API gateway built with Fastify and TypeScript. It buffers inference traffic through BullMQ queues so sudden surges don't stall upstream models, caches repetitive prompts in Redis with sub-5ms SHA-256 lookups, and automatically trips a circuit breaker to switch between Groq and Gemini when upstream errors spike.
             </p>
 
@@ -305,13 +305,13 @@ if (additional.length === 0) {
               <span class="text-smoke-dark">2026</span>
             </div>
 
-            <h3 class="editorial-title text-3xl sm:text-4xl lg:text-5xl font-bold text-pearl mb-6 leading-[1.08]">
+            <h3 class="font-brush text-2xl sm:text-3xl lg:text-4xl text-pearl mb-6 leading-snug">
               <a href={`/projects/${p2.slug}`} class="hover:text-cherry transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cherry">
                 {p2.title}
               </a>
             </h3>
 
-            <p class="text-sm sm:text-base text-smoke-light leading-relaxed mb-8 font-normal">
+            <p class="paragraph-manrope font-manrope text-[16px] sm:text-[17px] lg:text-[18px] text-smoke-light leading-[1.65] lg:leading-[1.7] tracking-[-0.01em] mb-8 font-normal">
               Engineered during my software engineering internship at Assam Power Generation Corporation Limited (2026). The application serves as an operations portal equipped with secure authentication, an administrative dashboard, transactional email notifications, and an organized document repository for statutory state electricity filings.
             </p>
 
@@ -378,13 +378,13 @@ if (additional.length === 0) {
               <span class="text-smoke-dark">2024</span>
             </div>
 
-            <h3 class="editorial-title text-3xl sm:text-4xl lg:text-5xl font-bold text-pearl mb-6 leading-[1.08]">
+            <h3 class="font-brush text-2xl sm:text-3xl lg:text-4xl text-pearl mb-6 leading-snug">
               <a href={`/projects/${p3.slug}`} class="hover:text-cherry transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cherry">
                 {p3.title}
               </a>
             </h3>
 
-            <p class="text-sm sm:text-base text-smoke-light leading-relaxed mb-8 font-normal">
+            <p class="paragraph-manrope font-manrope text-[16px] sm:text-[17px] lg:text-[18px] text-smoke-light leading-[1.65] lg:leading-[1.7] tracking-[-0.01em] mb-8 font-normal">
               An automated code evaluation runner that tests code submissions and pull requests inside isolated Docker containers. It sets strict resource limits (128MB RAM, 0.5 CPU cores) to prevent memory exhaustion, buffers incoming tasks through BullMQ and Redis queues, and processes webhook triggers to return structured execution logs and exit codes.
             </p>
 
@@ -568,7 +568,7 @@ if (additional.length === 0) {
                 </div>
 
                 <!-- Project Title -->
-                <h4 class="editorial-title text-xl sm:text-2xl font-bold text-pearl mb-3 leading-snug">
+                <h4 class="font-brush text-xl sm:text-2xl text-pearl mb-3 leading-snug">
                   <a
                     href={`/projects/${item.slug}`}
                     class="hover:text-cherry transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cherry"
@@ -578,7 +578,7 @@ if (additional.length === 0) {
                 </h4>
 
                 <!-- Short Natural Description -->
-                <p class="text-xs sm:text-sm text-smoke-light leading-relaxed mb-6 font-normal">
+                <p class="paragraph-manrope font-manrope text-[14px] sm:text-[15px] lg:text-[16px] text-smoke-light leading-[1.65] tracking-[-0.01em] mb-6 font-normal">
                   {item.summary}
                 </p>
 

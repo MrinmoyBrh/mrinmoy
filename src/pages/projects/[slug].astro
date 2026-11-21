@@ -76,11 +76,11 @@ if (!project) {
           </span>
         </div>
 
-        <h1 class="editorial-title text-4xl sm:text-5xl lg:text-6xl font-black text-pearl leading-[1.05] mb-6">
+        <h1 class="font-brush text-3xl sm:text-5xl lg:text-6xl text-pearl leading-snug mb-6">
           {project.title}
         </h1>
 
-        <p class="text-lg sm:text-xl text-smoke-light leading-relaxed max-w-3xl mb-8">
+        <p class="paragraph-manrope font-manrope text-[16px] sm:text-[17px] lg:text-[18px] text-smoke-light leading-[1.65] lg:leading-[1.7] tracking-[-0.01em] max-w-3xl mb-8">
           {project.tagline}
         </p>
 
@@ -128,10 +128,10 @@ if (!project) {
 
       <!-- Section: The Engineering Challenge -->
       <section class="mb-14">
-        <h2 class="editorial-title text-2xl sm:text-3xl font-bold text-pearl mb-4">
+        <h2 class="font-brush text-2xl sm:text-3xl text-pearl mb-4 leading-snug">
           The Problem & Requirements
         </h2>
-        <div class="p-6 bg-[#0A0A0A] border border-white/10 text-smoke-light text-sm sm:text-base leading-relaxed">
+        <div class="paragraph-manrope font-manrope p-6 bg-[#0A0A0A] border border-white/10 text-smoke-light text-[16px] sm:text-[17px] lg:text-[18px] leading-[1.65] lg:leading-[1.7] tracking-[-0.01em]">
           {project.challenge}
         </div>
       </section>
@@ -139,14 +139,14 @@ if (!project) {
       <!-- Section: Architecture Flow Diagram -->
       {project.architectureSteps.length > 0 && (
         <section class="mb-14">
-          <h2 class="editorial-title text-2xl sm:text-3xl font-bold text-pearl mb-2">
+          <h2 class="font-brush text-2xl sm:text-3xl text-pearl mb-2 leading-snug">
             Execution Flow & System Decoupling
           </h2>
-          <p class="text-sm text-smoke mb-6">
+          <p class="paragraph-manrope font-manrope text-[15px] sm:text-[16px] text-smoke mb-6 leading-[1.65] tracking-[-0.01em]">
             Detailed walkthrough of request lifecycle, data mutations, and asynchronous transitions.
           </p>
           <ArchitectureDiagram steps={project.architectureSteps} title={`${project.title} Lifecycle`} />
-          <p class="text-sm sm:text-base text-smoke-light leading-relaxed mt-6">
+          <p class="paragraph-manrope font-manrope text-[16px] sm:text-[17px] lg:text-[18px] text-smoke-light leading-[1.65] lg:leading-[1.7] tracking-[-0.01em] mt-6">
             {project.architectureNarrative}
           </p>
         </section>
@@ -154,7 +154,7 @@ if (!project) {
 
       <!-- Section: Verified Code Snippets & Implementation Details -->
       <section class="mb-14 space-y-8">
-        <h2 class="editorial-title text-2xl sm:text-3xl font-bold text-pearl">
+        <h2 class="font-brush text-2xl sm:text-3xl text-pearl mb-4 leading-snug">
           Implementation Patterns
         </h2>
 
@@ -163,7 +163,7 @@ if (!project) {
             <h3 class="font-display font-bold text-lg text-pearl mb-3">
               {highlight.title}
             </h3>
-            <p class="text-xs sm:text-sm text-smoke-light leading-relaxed mb-4">
+            <p class="paragraph-manrope font-manrope text-[14px] sm:text-[15px] lg:text-[16px] text-smoke-light leading-[1.65] tracking-[-0.01em] mb-4">
               {highlight.description}
             </p>
             {highlight.codeSnippet && (
@@ -177,7 +177,7 @@ if (!project) {
 
       <!-- Section: Technical Stack Topology -->
       <section class="mb-16 p-6 sm:p-7 bg-[#0A0A0A] border border-white/10 relative">
-        <h2 class="editorial-title text-2xl font-bold text-pearl mb-6">
+        <h2 class="font-brush text-2xl text-pearl mb-6 leading-snug">
           Component Stack & Tooling Matrix
         </h2>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">

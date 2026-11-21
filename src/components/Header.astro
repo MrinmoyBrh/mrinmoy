@@ -1,6 +1,4 @@
 ---
-import profilePic from '../assets/mrinmoy.jpg';
-
 const navLinks = [
   { name: 'Systems', href: '#systems' },
   { name: 'Principles', href: '#principles' },
@@ -23,15 +21,15 @@ const navLinks = [
             <!-- Fallback avatar displaying "MB" if the image fails to load -->
             <span class="technical-mono text-xs font-bold text-coral select-none pointer-events-none" aria-hidden="true">MB</span>
             <img
-              src={profilePic.src}
-              alt=""
+              src="/mrinmoy.jpg"
+              alt="Mrinmoy Borah"
               width="44"
               height="44"
               loading="eager"
               decoding="async"
               class="absolute inset-0 w-full h-full object-cover rounded-full"
               style="object-position: center 30%;"
-              onerror="if (this.src !== '/images/profile.jpg') { this.src = '/images/profile.jpg'; } else { this.style.display = 'none'; }"
+              onerror="this.style.display = 'none';"
             />
           </div>
           <div>

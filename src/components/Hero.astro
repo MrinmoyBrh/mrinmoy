@@ -40,20 +40,22 @@ try {
           </span>
         </div>
 
-        <!-- Massive Editorial Headline -->
-        <h1 class="editorial-title text-5xl sm:text-7xl lg:text-8xl font-black text-pearl tracking-tight leading-[0.98] mb-6">
-          {hero?.headline_line1 || 'Architecting'} <br />
-          <span class="italic font-serif text-pearl font-normal">{hero?.headline_highlight || 'fault-tolerant'}</span> <br />
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-coral via-coral-light to-orbital">
-            {hero?.headline_gradient || 'backends.'}
+        <!-- Massive Hero Headline in Neoradical Brush Lettering -->
+        <h1 class="font-brush text-4xl sm:text-6xl lg:text-7xl text-pearl tracking-wide leading-[1.12] sm:leading-[1.1] mb-6">
+          <span class="block">{hero?.headline_line1 || 'Architecting'}</span>
+          <span class="block text-pearl">{hero?.headline_highlight || 'fault-tolerant'}</span>
+          <span class="block">
+            <span class="inline-block text-transparent bg-clip-text bg-gradient-to-r from-coral via-coral-light to-orbital pb-1">
+              {hero?.headline_gradient || 'backends.'}
+            </span>
           </span>
         </h1>
 
         <!-- High-Impact Technical Mission Statement -->
         {hero?.description_html ? (
-          <p class="text-lg sm:text-xl text-smoke-light font-normal leading-relaxed max-w-2xl mb-8" set:html={hero.description_html} />
+          <p class="paragraph-manrope font-manrope text-[17px] sm:text-[18px] lg:text-[19.5px] text-smoke-light font-normal leading-[1.7] tracking-[-0.01em] max-w-2xl mb-8" set:html={hero.description_html} />
         ) : (
-          <p class="text-lg sm:text-xl text-smoke-light font-normal leading-relaxed max-w-2xl mb-8">
+          <p class="paragraph-manrope font-manrope text-[17px] sm:text-[18px] lg:text-[19.5px] text-smoke-light font-normal leading-[1.7] tracking-[-0.01em] max-w-2xl mb-8">
             I focus on building reliable backend applications, designing APIs, and working with databases and cloud technologies. My experience includes developing web applications with <strong class="text-pearl font-medium">Laravel, PHP, Python, and MySQL</strong>, along with exploring <strong class="text-pearl font-medium">Linux, AWS</strong>, and backend system architecture. I enjoy solving practical engineering problems, understanding how systems work behind the scenes, and writing clean, maintainable code.
           </p>
         )}
